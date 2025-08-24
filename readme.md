@@ -1,4 +1,4 @@
 Features:
-**golden standard** website design \n
-Form submission \n
-Backend **Fully** Implemented 86% \n
+>>> **golden standard** website design 
+>>> Form submission 
+>>> Backend **Fully** Implemented 86% 
