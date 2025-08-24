@@ -1,786 +1,485 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fest!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Basic Reset and Font */
-        :root {
-            --primary-yellow: #FFDF00;
-            --dark-text: #1a1a1a;
-            --light-text: #fff;
-            --background-light: #f4f4f4;
-            --border-color: #e0e0e0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            background-color: var(--background-light);
-            color: #333;
-        }
-
-        /* --- Unified Header and Navigation --- */
-        header {
-            background-color: #c4c4c4;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .header-logo {
-            max-height: 50px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--light-text);
-            font-weight: 600;
-            transition: color 0.3s ease;
-            position: relative;
-            cursor: pointer;
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: var(--primary-yellow);
-            bottom: -8px;
-            left: 0;
-            transform: scaleX(0);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary-yellow);
-        }
-
-        nav ul li a:hover::after {
-            transform: scaleX(1);
-        }
-
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .hamburger .bar {
-            width: 25px;
-            height: 3px;
-            background-color: var(--light-text);
-            transition: all 0.3s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .logo-container {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-                align-items: center;
-            }
-
-            nav ul {
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-                gap: 0;
-                display: none;
-                background-color: #111;
-            }
-
-            nav ul.active {
-                display: flex;
-            }
-
-            nav ul li {
-                padding: 15px 0;
-                width: 100%;
-                border-bottom: 1px solid #222;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .hamburger.active .bar:nth-child(2) {
-                opacity: 0;
-            }
-
-            .hamburger.active .bar:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-
-            .hamburger.active .bar:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
-        }
-
-        /* --- Main Content --- */
-        main {
-            padding: 0 5%;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        section {
-            padding: 4rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        section:last-of-type {
-            border-bottom: none;
-        }
-
-        /* Slideshow */
-        .slideshow-container {
-            position: relative;
-            max-width: 100%;
-            margin: auto;
-            overflow: hidden;
-            height: 60vh;
-            max-height: 600px;
-        }
-
-        .mySlides {
-            display: none;
-            width: 100%;
-            height: 100%;
-        }
-
-        .mySlides img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .fade {
-            animation: fade 1.5s;
-        }
-
-        @keyframes fade {
-            from {
-                opacity: .4
-            }
-
-            to {
-                opacity: 1
-            }
-        }
-
-        /* Home Section */
-        #home {
-            text-align: center;
-        }
-
-        #home h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        #home p {
-            font-size: 1.1rem;
-            color: #666;
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
-        }
-
-        .register-btn {
-            display: inline-block;
-            background-color: var(--primary-yellow);
-            color: #000;
-            padding: 1.2rem 3rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(255, 223, 0, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .register-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 223, 0, 0.6);
-        }
-
-        /* Events Section */
-        #rules h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 2rem;
-        }
-
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .event-box {
-            background-color: var(--light-text);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .event-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .event-box h3 {
-            color: var(--primary-yellow);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .event-box .register-btn {
-            font-size: 0.9rem;
-            padding: 0.8rem 1.5rem;
-            margin-top: 1rem;
-        }
-
-        /* --- Modal Styles --- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 16px;
-            position: relative;
-            animation: slideIn 0.4s ease-out;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-        }
-
-        .modal-body { /* Renamed from terms-container for general use */
-            padding: 40px;
-        }
-
-        .modal-header { /* Renamed from terms-header for general use */
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
-        .modal-header .icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-            color: var(--primary-yellow);
-        }
-
-        .modal-header h1 {
-            color: var(--dark-text);
-            font-size: 2.8em;
-            margin: 0;
-        }
-
-        .modal-scroll-container { /* Renamed from terms-scroll-container */
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            background-color: #fcfcfc;
-            line-height: 1.7;
-            text-align: left;
-        }
-
-        .modal-scroll-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .modal-scroll-container::-webkit-scrollbar-track {
-            background: #f8f8f8;
-            border-radius: 10px;
-        }
-
-        .modal-scroll-container::-webkit-scrollbar-thumb {
-            background-color: var(--primary-yellow);
-            border-radius: 10px;
-            border: 2px solid #f8f8f8;
-        }
-
-        .modal-scroll-container h2 {
-            font-size: 1.6em;
-            color: var(--dark-text);
-            border-bottom: 2px solid var(--primary-yellow);
-            padding-bottom: 8px;
-            margin: 25px 0 15px 0;
-        }
-
-        .modal-scroll-container h2:first-of-type {
-            margin-top: 0;
-        }
-
-        .modal-scroll-container p, .modal-scroll-container li {
-            font-size: 1em;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .button-container {
-            margin-top: 25px;
-            text-align: center;
-        }
-
-        .agree-button {
-            background-color: var(--primary-yellow);
-            color: var(--dark-text);
-            padding: 14px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2em;
-            font-weight: 700;
-            cursor: not-allowed;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            opacity: 0.5;
-        }
-
-        .agree-button.active {
-            cursor: pointer;
-            opacity: 1;
-        }
-
-        .agree-button.active:hover {
-            background-color: #ffde40;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-        }
-
-        /* --- Footer --- */
-        footer {
-            background-color: #000;
-            color: #f4f4f4;
-            text-align: center;
-            padding: 2rem 5%;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .social-links a {
-            color: #f4f4f4;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--primary-yellow);
-        }
-    </style>
+    <title>Soar Fest 2025 | The Future is Now</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/000000/FFDF00?text=S" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    
 </head>
+<body class="antialiased">
 
-<body>
+    <!-- Background Slideshow -->
+    <div id="slideshow-container">
+        <!-- Replace these with your slide1.jpg and slide2.jpg -->
+        <img src="slide1.jpg" alt="Abstract tech background slide 1" class="slide active" onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/0a0a0a/FFDF00?text=Slide+1+Not+Found';">
+        <img src="slide2.jpg" alt="Abstract tech background slide 2" class="slide" onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/0a0a0a/FFDF00?text=Slide+2+Not+Found';">
+    </div>
+    <div id="gradient-overlay"></div>
 
-    <header>
-        <nav>
-            <div class="logo-container">
-                <a href="https://staloysius.edu.in" class="header__logo--link">
-                    <img src="https://staloysius.edu.in/storage/config/1724662600_66cc43483ca0b.png" alt="SAU"
-                        class="header-logo">
+    <!-- Page Content Wrapper -->
+    <div id="page-content">
+        <!-- Header & Navigation -->
+        <header id="header" class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#home" class="text-2xl font-bold text-white flex items-center gap-2">
+                    <span class="bg-yellow-400 text-black rounded-md px-2 py-1 font-extrabold">S</span>
+                    SOAR FEST
                 </a>
-                <div class="hamburger">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="nav-link text-gray-300 hover:text-yellow-400 font-medium relative">About</a>
+                    <a href="#events" class="nav-link text-gray-300 hover:text-yellow-400 font-medium relative">Events</a>
+                    <a href="#sponsors" class="nav-link text-gray-300 hover:text-yellow-400 font-medium relative">Sponsors</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-yellow-400 font-medium relative">Contact</a>
+                </div>
+                <button class="open-register-modal hidden md:inline-block btn-primary font-bold py-2 px-6 rounded-full">
+                    Register Now
+                </button>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </nav>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden">
+                <a href="#about" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">About</a>
+                <a href="#events" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Events</a>
+                <a href="#sponsors" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Sponsors</a>
+                <a href="#contact" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Contact</a>
+                <div class="p-4">
+                     <button class="open-register-modal block text-center btn-primary font-bold py-3 px-6 rounded-full w-full">
+                        Register Now
+                    </button>
                 </div>
             </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#rules">Events</a></li>
-                <li><a id="navTermsLink">Terms</a></li>
-            </ul>
-        </nav>
-    </header>
+        </header>
 
-    <div class="slideshow-container">
-        <div class="mySlides fade"><img src="https://placehold.co/1920x1080/000000/FFFFFF?text=FEST+2025"
-                alt="Fest slide 1"></div>
-        <div class="mySlides fade"><img src="https://placehold.co/1920x1080/333333/FFFFFF?text=INNOVATE"
-                alt="Fest slide 2"></div>
-        <div class="mySlides fade"><img src="https://placehold.co/1920x1080/555555/FFFFFF?text=CREATE"
-                alt="Fest slide 3"></div>
-    </div>
-
-    <main>
-        <section id="home">
-            <h1>FEST</h1>
-            <p>Welcome to our annual festival, a celebration of innovation, creativity, and knowledge. Join us for a
-                weekend filled with exciting events, competitions, and fun. Our fest brings together students and
-                professionals from all walks of life to learn, compete, and network.</p>
-
-        </section>
-
-        <section id="rules">
-            <h2>Select Your Event</h2>
-            <div class="events-grid">
-                <div class="event-box">
-                    <h3>Brainwave</h3>
-                    <p>Bring your groundbreaking ideas to life. Compete with the best to win great prizes.</p>
-                    <button class="register-btn" data-modal-target="#brainwaveModal">About</button>
+        <main>
+            <!-- Hero Section -->
+            <section id="home" class="min-h-screen flex items-center">
+                <div class="container mx-auto px-6 text-center">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
+                        IGNITE THE <span class="text-yellow-400 text-glow">FUTURE</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8">
+                        Soar Fest 2025 is the ultimate convergence of technology, creativity, and innovation. Join us for three days of groundbreaking events, workshops, and competitions.
+                    </p>
+                    <button class="open-register-modal btn-primary font-bold text-lg py-4 px-10 rounded-full inline-block">
+                        Secure Your Spot
+                    </button>
                 </div>
-                <div class="event-box">
-                    <h3>IdeaJam</h3>
-                    <p>Challenge your knowledge on a wide range of topics. Fast-paced and full of fun.</p>
-                    <button class="register-btn" data-modal-target="#ideaJamModal">About</button>
-                </div>
-                <div class="event-box">
-                    <h3>#Ctrl+Alt+Escape</h3>
-                    <p>Sharpen your arguments and public speaking skills in a competitive environment.</p>
-                    <button class="register-btn" data-modal-target="#escapeModal">About</button>
-                </div>
+            </section>
 
-                <div class="event-box">
-                    <h3>ReelGear</h3>
-                    <p>Collaborate with a team to build innovative solutions to real-world problems.</p>
-                    <button class="register-btn" data-modal-target="#reelGearModal">About</button>
+            <!-- About Section -->
+            <section id="about" class="py-20">
+                <div class="container mx-auto px-6">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">About <span class="text-yellow-400">Soar Fest</span></h2>
+                            <p class="text-gray-300 mb-4">
+                                Soar Fest is an annual technical and cultural festival that is held in St Aloysius University, Mangalore. Our mission is to foster a culture of innovation, collaboration, and learning. From intense coding marathons to mind-bending robotics challenges, Soar Fest is the platform to showcase your skills, learn from experts, and network with peers who share your passion.
+                            </p>
+                            <p class="text-gray-300">
+                                This year, we're pushing the boundaries further with new event categories, esteemed guest speakers, and bigger prizes. Get ready for an unforgettable experience that will challenge, inspire, and elevate you.
+                            </p>
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-2xl">
+                             <img src="https://placehold.co/600x400/0a0a0a/FFDF00?text=Innovate" alt="A vibrant, abstract image representing innovation and technology" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events" class="py-20 bg-[#111]">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">Flagship Events</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Event Card 1 -->
+                        <div class="event-card rounded-lg p-8 flex flex-col">
+                            <div class="mb-4" id="event-icon-1">
+                                <svg class="w-12 h-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Code Forge</h3>
+                            <p class="text-gray-300 flex-grow mb-6">The ultimate 24-hour hackathon. Build, innovate, and create solutions to real-world problems. Team up and push your coding skills to the limit.</p>
+                            <button class="open-details-modal text-yellow-400 font-semibold hover:underline self-start" data-event="Code Forge" data-icon="event-icon-1" data-details="Dive into 24 hours of intense coding, problem-solving, and creation. Collaborate with a team to build a project from scratch that addresses a real-world challenge. Mentors from top tech companies will be available to guide you. Prizes include cash awards, tech gadgets, and internship opportunities. All skill levels are welcome!">Learn More &rarr;</button>
+                        </div>
+                        
+                        <!-- Event Card 2 -->
+                        <div class="event-card rounded-lg p-8 flex flex-col">
+                            <div class="mb-4" id="event-icon-2">
+                                <svg class="w-12 h-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.52 4.674c.3.921-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.52-4.674a1 1 0 00-.363-1.118L2.98 10.11c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Web Weavers</h3>
+                            <p class="text-gray-300 flex-grow mb-6">A web design and development competition. Showcase your front-end wizardry and UI/UX skills to build a stunning, functional website.</p>
+                            <button class="open-details-modal text-yellow-400 font-semibold hover:underline self-start" data-event="Web Weavers" data-icon="event-icon-2" data-details="This is where design meets development. Participants will be given a theme and a set of constraints to build a visually appealing and highly functional website. You will be judged on creativity, user experience, code quality, and responsiveness. Perfect for aspiring full-stack developers and UI/UX designers.">Learn More &rarr;</button>
+                        </div>
+
+                        <!-- Event Card 3 -->
+                        <div class="event-card rounded-lg p-8 flex flex-col">
+                            <div class="mb-4" id="event-icon-3">
+                               <svg class="w-12 h-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M7.05 7.05l2.122 2.122m6.856 6.856l2.122 2.122m0-11.314l-2.122 2.122m-6.856 6.856l-2.122 2.122M12 12a5 5 0 110-10 5 5 0 010 10z"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Brainwave</h3>
+                            <p class="text-gray-300 flex-grow mb-6">A challenging quiz covering everything from tech history to the latest in artificial intelligence. Test your knowledge and compete for the top spot.</p>
+                            <button class="open-details-modal text-yellow-400 font-semibold hover:underline self-start" data-event="Brainwave" data-icon="event-icon-3" data-details="Put your trivia knowledge to the test in this fast-paced quiz competition. Rounds will cover a wide range of topics including computer science fundamentals, the history of technology, famous innovators, and emerging trends like AI and blockchain. Compete individually or in teams to be crowned the Brainwave champion.">Learn More &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sponsors Section -->
+            <section id="sponsors" class="py-20">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Sponsors</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto mb-12">Powering innovation with the support of industry leaders.</p>
+                    <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-8">
+                        <img src="https://placehold.co/150x50/FFFFFF/000000?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-70 hover:opacity-100 transition-opacity">
+                        <img src="https://placehold.co/150x50/FFFFFF/000000?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-70 hover:opacity-100 transition-opacity">
+                        <img src="https://placehold.co/150x50/FFFFFF/000000?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-70 hover:opacity-100 transition-opacity">
+                        <img src="https://placehold.co/150x50/FFFFFF/000000?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-70 hover:opacity-100 transition-opacity">
+                        <img src="https://placehold.co/150x50/FFFFFF/000000?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-70 hover:opacity-100 transition-opacity">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer id="contact" class="bg-[#111] text-gray-300">
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-white text-lg font-semibold mb-4">Soar Fest</h3>
+                        <p class="text-sm">The future of tech and culture, celebrated annually.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
+                        <ul>
+                            <li class="mb-2"><a href="#about" class="hover:text-yellow-400 transition-colors">About Us</a></li>
+                            <li class="mb-2"><a href="#events" class="hover:text-yellow-400 transition-colors">All Events</a></li>
+                            <li class="mb-2"><a href="#" class="hover:text-yellow-400 transition-colors">Schedule</a></li>
+                            <li class="mb-2"><a href="#sponsors" class="hover:text-yellow-400 transition-colors">Sponsorship</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-lg font-semibold mb-4">Contact Us</h3>
+                        <p class="text-sm mb-2">Nexus Institute of Technology</p>
+                        <p class="text-sm mb-2">Innovation Park, Tech City</p>
+                        <p class="text-sm"><a href="mailto:contact@soarfest.com" class="hover:text-yellow-400 transition-colors">contact@soarfest.com</a></p>
+                    </div>
+                    <div>
+                        <h3 class="text-white text-lg font-semibold mb-4">Follow Us</h3>
+                        <div class="flex space-x-4">
+                            <!-- Social Icons -->
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 pt-8 border-t border-gray-800 text-center text-sm">
+                    <p>&copy; 2025 Soar Fest. All Rights Reserved.</p>
                 </div>
             </div>
-        </section>
-    </main>
+        </footer>
+    </div> <!-- End Page Content Wrapper -->
 
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2025 FEST. All Rights Reserved.</p>
-            <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
-                <a href="#">Instagram</a>
-            </div>
-        </div>
-    </footer>
-
-    <div id="termsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div class="modal-body">
-                <div class="modal-header">
-                    <div class="icon">📜</div>
-                    <h1>Terms of Service</h1>
+    <!-- Event Details Modal -->
+    <div id="details-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
+        <div class="modal-content bg-[#1a1a1a] border border-gray-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative">
+            <button class="close-modal-btn absolute top-4 right-4 text-gray-500 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-start gap-6">
+                <div id="modal-event-icon" class="flex-shrink-0">
+                    <!-- Event icon will be inserted here by JS -->
                 </div>
-                <div class="modal-scroll-container" id="termsContainer">
-                    <h2>Introduction</h2>
-                    <p>Welcome to our service. By accessing and using our platform, you agree to be bound by the terms
-                        and conditions outlined in this document...</p>
-                    <h2>Your Content</h2>
-                    <p>You are solely responsible for all content you submit, post, or display on our platform...</p>
-                    <h2>User Conduct</h2>
-                    <p>You agree to use our service only for lawful purposes. You shall not post, upload, or transmit
-                        any content that is illegal, defamatory, obscene, or harmful...</p>
-                </div>
-                <div class="button-container">
-                    <button class="agree-button" id="agreeButton" disabled>Agree and Continue</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="brainwaveModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div class="modal-body">
-                <div class="modal-header">
-                    <div class="icon">💡</div>
-                    <h1>Brainwave</h1>
-                </div>
-                <div class="modal-scroll-container">
-                    <h2>About the Event</h2>
-                    <p>Brainwave is the ultimate idea-pitching competition. Participants are challenged to present groundbreaking and innovative ideas to a panel of judges. It's a platform to bring your visionary concepts to life and compete for amazing prizes.</p>
-                    <h2>Rules</h2>
-                    <ul>
-                        <li>Each participant/team gets 5 minutes to present, followed by a 3-minute Q&A.</li>
-                        <li>Presentations must be accompanied by a slide deck.</li>
-                        <li>Ideas will be judged based on originality, feasibility, and market potential.</li>
-                    </ul>
-                     <h2>Prizes</h2>
-                    <p>Cash prizes, mentorship opportunities, and more for the top 3 ideas!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ideaJamModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div class="modal-body">
-                <div class="modal-header">
-                    <div class="icon">🧠</div>
-                    <h1>IdeaJam</h1>
-                </div>
-                <div class="modal-scroll-container">
-                    <h2>About the Event</h2>
-                    <p>IdeaJam is a fast-paced quiz competition designed to test your knowledge across a wide spectrum of topics, from technology and science to pop culture and history. It’s a fun, engaging, and high-energy event for trivia enthusiasts.</p>
-                    <h2>Format</h2>
-                    <ul>
-                        <li>Preliminary round with multiple-choice questions.</li>
-                        <li>Top 8 teams advance to the final buzzer round.</li>
-                        <li>Final round includes rapid-fire questions and audio-visual challenges.</li>
-                    </ul>
-                     <h2>Team Size</h2>
-                    <p>Teams of 2 members are allowed.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="escapeModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div class="modal-body">
-                <div class="modal-header">
-                    <div class="icon">💬</div>
-                    <h1>#Ctrl+Alt+Escape</h1>
-                </div>
-                <div class="modal-scroll-container">
-                    <h2>About the Event</h2>
-                    <p>#Ctrl+Alt+Escape is a competitive debate where participants sharpen their arguments and public speaking skills. Debaters will be given topics on the spot, challenging them to think on their feet and deliver persuasive arguments.</p>
-                    <h2>Structure</h2>
-                    <ul>
-                        <li>Classic 1-on-1 parliamentary debate format.</li>
-                        <li>Topics will be from current affairs, technology, and ethics.</li>
-                        <li>Participants are judged on content, clarity, and rhetorical skill.</li>
-                    </ul>
-                     <h2>Who can participate?</h2>
-                    <p>Individual participation is required.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="reelGearModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div class="modal-body">
-                <div class="modal-header">
-                    <div class="icon">🎬</div>
-                    <h1>ReelGear</h1>
-                </div>
-                <div class="modal-scroll-container">
-                    <h2>About the Event</h2>
-                    <p>ReelGear is a 24-hour hackathon where teams collaborate to build innovative solutions for real-world problems. It's a test of creativity, technical skill, and teamwork under pressure. Code, design, and build something amazing!</p>
-                    <h2>Themes</h2>
-                    <ul>
-                        <li>Sustainable Technology</li>
-                        <li>Health & Wellness</li>
-                        <li>Education Technology</li>
-                    </ul>
-                     <h2>Requirements</h2>
-                    <p>Bring your own laptop and gear. Food, drinks, and a great coding environment will be provided.</p>
+                <div>
+                    <h2 id="modal-event-title" class="text-3xl font-bold text-white mb-4">Event Title</h2>
+                    <p id="modal-event-details" class="text-gray-300 mb-6">Event details will go here.</p>
+                    <button class="open-register-modal-from-details btn-primary font-bold py-3 px-8 rounded-full">Register for this Event</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
+    <!-- Registration Form Modal -->
+    <div id="register-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
+        <div class="modal-content bg-[#1a1a1a] border border-gray-700 rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button class="close-modal-btn absolute top-4 right-6 text-gray-500 hover:text-white text-3xl leading-none">&times;</button>
+            
+            <!-- Form Header -->
+            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-6">Register for Soar Fest</h1>
+
+            <!-- Registration Form -->
+            <form id="registrationForm" action="/register" method="post" novalidate>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-4">
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-300 mb-1">Full name*</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Eg: Joseph Leonardo" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="fullNameError">Name is required</p>
+                    </div>
+                    <div>
+                        <label for="teamName" class="block text-sm font-medium text-gray-300 mb-1">Team Name*</label>
+                        <input type="text" id="teamName" name="teamName" placeholder="Eg: The Scotches" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="teamNameError">Team name is required.</p>
+                    </div>
+                    <div>
+                        <label for="class" class="block text-sm font-medium text-gray-300 mb-1">Class*</label>
+                        <input type="text" id="class" name="class" placeholder="e.g., 11th" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="classError">Class is required.</p>
+                    </div>
+                    <div>
+                        <label for="school" class="block text-sm font-medium text-gray-300 mb-1">School or College name*</label>
+                        <input type="text" id="school" name="school" placeholder="Lincoln Middle School" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                         <p class="error-message" id="schoolError">School/College is required.</p>
+                    </div>
+                    <div>
+                        <label for="contactNumber" class="block text-sm font-medium text-gray-300 mb-1">Contact Number*</label>
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="eg:1234567890" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="contactNumberError">Contact number is required.</p>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email ID (optional)</label>
+                        <input type="email" id="email" name="email" placeholder="Eg: You@gmail.com" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="emailError">Please enter a valid email.</p>
+                    </div>
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-300 mb-1">Place you are coming from*</label>
+                        <input type="text" id="location" name="location" placeholder="Bejai" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="locationError">Please specify your location.</p>
+                    </div>
+                    <div>
+                        <label for="guardianPhone" class="block text-sm font-medium text-gray-300 mb-1">Guardian's phone number*</label>
+                        <input type="tel" id="guardianPhone" name="guardianPhone" placeholder="Eg: 0987654321" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="guardianPhoneError">Guardian's phone number is required.</p>
+                    </div>
+                </div>
+                
+                <!-- General Form Message Area -->
+                <div id="form-message" class="hidden text-center p-3 rounded-lg mb-4"></div>
+
+                <!-- Submit Button -->
+                <div class="mt-6">
+                    <button type="submit" class="w-full btn-primary font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-yellow-400 transition duration-300 ease-in-out transform hover:scale-105">
+                        Submit Registration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', () => {
 
-            // --- 1. Slideshow functionality ---
-            let slideIndex = 0;
-            showSlides();
-            function showSlides() {
-                let slides = document.getElementsByClassName("mySlides");
-                if (slides.length === 0) return;
-                for (let i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";
-                }
-                slideIndex++;
-                if (slideIndex > slides.length) { slideIndex = 1; }
-                slides[slideIndex - 1].style.display = "block";
-                setTimeout(showSlides, 3000);
+            // --- Slideshow Logic ---
+            const slides = document.querySelectorAll('#slideshow-container .slide');
+            let currentSlide = 0;
+            const slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
             }
 
-            // --- 2. Mobile menu functionality ---
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('.nav-links');
-            if (hamburger) {
-                hamburger.addEventListener('click', () => {
-                    navMenu.classList.toggle('active');
-                    hamburger.classList.toggle('active');
-                });
-            }
-            document.querySelectorAll('.nav-links a').forEach(link => {
+            // --- Mobile Menu Toggle ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (navMenu.classList.contains('active')) {
-                        navMenu.classList.remove('active');
-                        hamburger.classList.remove('active');
-                    }
+                    mobileMenu.classList.add('hidden');
                 });
             });
+            
+            // --- Header Scroll Effect ---
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('bg-black');
+                    header.classList.remove('bg-black/80');
+                } else {
+                    header.classList.remove('bg-black');
+                    header.classList.add('bg-black/80');
+                }
+            });
 
-            // --- 3. All Modal Functionality ---
-            const allModals = document.querySelectorAll('.modal');
-            const eventRegisterBtns = document.querySelectorAll('[data-modal-target]');
-            const allCloseButtons = document.querySelectorAll('.close-button');
-            const navTermsLink = document.getElementById('navTermsLink');
+            // --- Modal Handling ---
+            const detailsModal = document.getElementById('details-modal');
+            const registerModal = document.getElementById('register-modal');
+            const openDetailsButtons = document.querySelectorAll('.open-details-modal');
+            const openRegisterButtons = document.querySelectorAll('.open-register-modal');
+            const openRegisterFromDetailsBtn = document.querySelector('.open-register-modal-from-details');
+            const allCloseButtons = document.querySelectorAll('.close-modal-btn');
 
-            // Function to open a specific modal
             const openModal = (modal) => {
-                if (modal) modal.style.display = 'block';
+                if (!modal) return;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                setTimeout(() => {
+                    modal.querySelector('.modal-content').classList.add('active');
+                }, 10);
             };
 
-            // Function to close any modal
             const closeModal = (modal) => {
-                if (modal) modal.style.display = 'none';
+                if (!modal) return;
+                modal.querySelector('.modal-content').classList.remove('active');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
             };
 
-            // Event listeners for event buttons
-            eventRegisterBtns.forEach(button => {
+            openDetailsButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const modalId = button.getAttribute('data-modal-target');
-                    const modal = document.querySelector(modalId);
-                    openModal(modal);
+                    const eventTitle = button.dataset.event;
+                    const eventDetails = button.dataset.details;
+                    const iconContainerId = button.dataset.icon;
+                    const iconContainer = document.getElementById(iconContainerId);
+                    const iconHTML = iconContainer ? iconContainer.innerHTML : '';
+                    document.getElementById('modal-event-title').textContent = eventTitle;
+                    document.getElementById('modal-event-details').textContent = eventDetails;
+                    document.getElementById('modal-event-icon').innerHTML = iconHTML;
+                    openModal(detailsModal);
                 });
             });
 
-            // Event listener for the navigation "Terms" link
-            if (navTermsLink) {
-                navTermsLink.addEventListener('click', () => {
-                    const termsModal = document.getElementById('termsModal');
-                    openModal(termsModal);
-                });
-            }
+            openRegisterButtons.forEach(button => {
+                button.addEventListener('click', () => openModal(registerModal));
+            });
 
-            // Event listeners for all close buttons
+            openRegisterFromDetailsBtn.addEventListener('click', () => {
+                closeModal(detailsModal);
+                setTimeout(() => openModal(registerModal), 300);
+            });
+
             allCloseButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const modal = button.closest('.modal');
+                    const modal = button.closest('.modal-backdrop');
                     closeModal(modal);
                 });
             });
 
-            // Click outside to close any open modal
-            window.addEventListener('click', (event) => {
-                allModals.forEach(modal => {
-                    if (event.target == modal) {
-                        closeModal(modal);
-                    }
+            document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                backdrop.addEventListener('click', (e) => {
+                    if (e.target === backdrop) closeModal(backdrop);
                 });
             });
 
+            // --- Form Validation Logic ---
+            const form = document.getElementById('registrationForm');
+            const formMessage = document.getElementById('form-message');
 
-            // --- 4. Terms of Service scroll-to-agree logic (inside the specific termsModal) ---
-            const termsContainer = document.getElementById('termsContainer');
-            const agreeButton = document.getElementById('agreeButton');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                clearErrors();
+                formMessage.classList.add('hidden');
 
-            if (termsContainer && agreeButton) {
-                termsContainer.addEventListener('scroll', function () {
-                    const isAtBottom = termsContainer.scrollHeight - termsContainer.scrollTop <= termsContainer.clientHeight + 5;
-                    if (isAtBottom) {
-                        agreeButton.disabled = false;
-                        agreeButton.classList.add('active');
+                // --- 1. Client-Side Validation (same as before) ---
+                let isValid = true;
+                const requiredFields = ['fullName', 'teamName', 'class', 'school', 'contactNumber', 'location', 'guardianPhone'];
+                
+                requiredFields.forEach(fieldId => {
+                    const input = document.getElementById(fieldId);
+                    if (!input.value.trim()) {
+                        showError(fieldId, `${input.previousElementSibling.textContent.replace('*','')} is required.`);
+                        isValid = false;
                     }
                 });
 
-                agreeButton.addEventListener('click', function () {
-                    if (!this.disabled) {
-                        alert("Thank you for agreeing to the terms! You may now proceed.");
-                        closeModal(this.closest('.modal'));
+                const emailInput = document.getElementById('email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailInput.value.trim() && !emailRegex.test(emailInput.value)) {
+                    showError('email', 'Please enter a valid email format.');
+                    isValid = false;
+                }
+
+                // --- 2. If validation fails, stop and show errors ---
+                if (!isValid) {
+                    formMessage.textContent = 'Please correct the errors above.';
+                    formMessage.className = 'block bg-red-900/50 border border-red-500 text-red-300 text-center p-3 rounded-lg mb-4';
+                    formMessage.classList.remove('hidden');
+                    return; // Stop the function here
+                }
+
+                // --- 3. If validation passes, send data to the backend ---
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = 'Submitting...';
+
+                // Serialize form data for the backend
+                const formData = new FormData(form);
+                const body = new URLSearchParams(formData).toString();
+
+                fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: body,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Success response from server
+                        formMessage.textContent = data.message;
+                        formMessage.className = 'block bg-green-900/50 border border-green-500 text-green-300 text-center p-3 rounded-lg mb-4';
+                        form.reset();
+                    } else {
+                        // Error response from server (e.g., duplicate entry, server-side validation error)
+                        let errorMessage = data.message;
+                        if(data.errors) {
+                           errorMessage += `: ${data.errors.join(', ')}`;
+                        }
+                        formMessage.textContent = errorMessage;
+                        formMessage.className = 'block bg-red-900/50 border border-red-500 text-red-300 text-center p-3 rounded-lg mb-4';
                     }
+                })
+                .catch(error => {
+                    // Network or other unexpected errors
+                    console.error('Submission Error:', error);
+                    formMessage.textContent = 'An error occurred. Please check your connection and try again.';
+                    formMessage.className = 'block bg-red-900/50 border border-red-500 text-red-300 text-center p-3 rounded-lg mb-4';
+                })
+                .finally(() => {
+                    // Re-enable the button and restore its text
+                    formMessage.classList.remove('hidden');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonText;
                 });
+            });
+
+            function showError(fieldId, message) {
+                const input = document.getElementById(fieldId);
+                const errorElement = document.getElementById(`${fieldId}Error`);
+                input.classList.add('invalid-input');
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                }
+            }
+
+            function clearErrors() {
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.invalid-input').forEach(el => el.classList.remove('invalid-input'));
             }
         });
     </script>
 </body>
-
 </html>
