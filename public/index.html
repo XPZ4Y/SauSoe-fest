@@ -21,43 +21,96 @@
     <style>
         /* --- Base & Theme Styles --- */
         :root {
-            --primary-yellow: #FFB800; /* A slightly richer yellow for better contrast */
-            --secondary-tan: #E9CCA0;
-            --light-tan: #fdf8f0;
-            --dark-text: #1f2937; /* gray-800 */
-            --light-text: #4b5563; /* gray-600 */
+            --primary-yellow: #FFB800;
+            --primary-dark-blue: #0a0f2c;
+            --primary-light-blue: #1a237e;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: var(--dark-text);
+            background-image: linear-gradient(180deg, var(--primary-dark-blue) 0%, #000000 100%);
+            color: #ffffff;
+            overscroll-behavior: none; 
         }
 
-        /* --- NEW: Background Slideshow Styles --- */
-        #slideshow-container {
+        /* --- 3D Carousel Background Styles --- */
+        #carousel-background-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2; /* Behind everything */
+            z-index: -2;
+            overflow: hidden;
+            opacity: 0.5; /* Soften the background carousel */
+        }
+
+        [carousel="component"] {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel_track {
+            height: 500vh; /* Adjust height to control scroll duration */
+        }
+
+        .carousel_sticky {
+            position: sticky;
+            top: 0px;
+            height: 100vh;
             overflow: hidden;
         }
 
-        .slide {
+        [carousel="wrap"] {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            will-change: contents;
+            --3d-carousel-item-width: 30vw;
+            --3d-carousel-gap: 30vw;
+            --3d-carousel-rotate: 0deg;
+            --3d-carousel-z: 0px;
+        }
+        
+        @media screen and (max-width: 991px) {
+          [carousel="wrap"] {
+            --3d-carousel-item-width: 70vw;
+            --3d-carousel-gap: 40vw;
+          }
+        }
+
+        [carousel="wrap"] > div {
+            transform-style: preserve-3d;
+            transform: translate3d(0px, 0px, var(--3d-carousel-z)) rotateX(0deg) rotateY(var(--3d-carousel-rotate));
+        }
+
+        .carousel_list {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .carousel_item {
             position: absolute;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: var(--3d-carousel-item-width);
+            height: auto;
+        }
+        
+        .carousel_img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Cover the screen without distortion */
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out; /* Fade transition */
-        }
-
-        .slide.active {
-            opacity: 1;
+            object-fit: cover;
+            border-radius: 1rem;
         }
 
         #gradient-overlay {
@@ -66,19 +119,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
-            z-index: -1; /* On top of slideshow, behind content */
+            background: radial-gradient(circle, rgba(10, 15, 44, 0.2) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: -1; 
         }
-
+        
+        .section-container {
+            background-color: rgba(10, 15, 44, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 1.5rem;
+            margin: 4rem auto;
+            max-width: 1200px;
+        }
 
         /* --- Typography & Helpers --- */
         .text-glow {
-            text-shadow: 0 0 8px rgba(255, 184, 0, 0.5);
+            text-shadow: 0 0 12px rgba(255, 184, 0, 0.7);
         }
         
         .btn-primary {
             background-color: var(--primary-yellow);
-            color: var(--dark-text);
+            color: #000;
             transition: all 0.3s ease;
             font-weight: 700;
         }
@@ -111,10 +173,23 @@
         }
 
         /* --- Header Styles --- */
-        #header.scrolled {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            background-color: rgba(255, 255, 255, 0.85);
+        #header {
+            background-color: rgba(10, 15, 44, 0.5);
             backdrop-filter: blur(8px);
+        }
+        #header.scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: rgba(10, 15, 44, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #header a, #header svg {
+            color: #fff;
+        }
+        #header .nav-link {
+            color: #d1d5db;
+        }
+        #header .nav-link:hover {
+            color: #fff;
         }
 
         /* --- Hero Typewriter Animation --- */
@@ -124,32 +199,27 @@
         }
 
         /* --- Event Slider Section --- */
-        .events-slider-section {
-            background-color: var(--light-tan);
-            padding-top: 4rem;
-            padding-bottom: 4rem;
-            overflow: hidden;
-        }
-        
         .events-slider {
             width: 100%;
-            height: 500px; /* Increased height for content */
+            height: 500px; 
             padding-top: 50px;
             padding-bottom: 50px;
         }
 
         .events-slider .swiper-slide {
-            width: 340px;
+            /* FIX: Removed fixed width to allow Swiper to calculate it based on slidesPerView */
             height: 400px;
-            border-radius: 1.5rem; /* 24px */
+            border-radius: 1.5rem;
             transition: transform 0.5s ease, opacity 0.5s ease;
             opacity: 0.4;
             transform: scale(0.85);
-            background-color: #ffffff;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            background-color: rgba(26, 35, 126, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
-            padding: 2rem; /* 32px */
+            padding: 2rem;
         }
 
         .events-slider .swiper-slide-active {
@@ -161,23 +231,6 @@
         .events-slider .swiper-slide-prev {
             transform: scaleX(1.2) scaleY(0.95);
             opacity: 0.6;
-        }
-        
-        .swiper-button-next, .swiper-button-prev {
-            color: var(--dark-text);
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 9999px;
-            width: 44px;
-            height: 44px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: background-color 0.3s ease;
-        }
-        .swiper-button-next:hover, .swiper-button-prev:hover {
-            background-color: white;
-        }
-        .swiper-button-next::after, .swiper-button-prev::after {
-            font-size: 18px;
-            font-weight: 800;
         }
         
         /* --- Sponsors Marquee --- */
@@ -197,11 +250,11 @@
             height: 100%;
         }
         .rfm-overlay::before, .rfm-overlay::after {
-            background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0));
+            background: linear-gradient(to right, var(--primary-dark-blue), rgba(10, 15, 44, 0));
             content: "";
             height: 100%;
             position: absolute;
-            width: 6rem; /* gradient width */
+            width: 6rem; 
             z-index: 2;
         }
         .rfm-overlay::after {
@@ -230,7 +283,8 @@
         /* --- Team Section Styles --- */
         .team-card-wrapper {
             perspective: 1500px;
-            min-height: 420px;
+            width: 100%;
+            height: 100%;
         }
         .team-card-inner {
             position: relative;
@@ -248,9 +302,53 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            background-color: rgba(26, 35, 126, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
         }
         .card-back {
             transform: rotateY(180deg);
+            border-color: var(--primary-yellow);
+        }
+
+        /* --- Team Slider Styles --- */
+        .team-slider {
+            width: 100%;
+            height: 550px; 
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .team-slider .swiper-slide {
+            /* FIX: Removed fixed width to allow Swiper to calculate it based on slidesPerView */
+            height: 450px; 
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 0.4;
+            transform: scale(0.85);
+        }
+
+        .team-slider .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Shared Swiper Navigation Styles */
+        .swiper-button-next, .swiper-button-prev {
+            color: #fff;
+            background-color: rgba(26, 35, 126, 0.7);
+            border-radius: 9999px;
+            width: 44px;
+            height: 44px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background-color: rgba(26, 35, 126, 1);
+        }
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 18px;
+            font-weight: 800;
         }
 
         /* --- Modal & Form Styles --- */
@@ -267,7 +365,7 @@
             opacity: 1;
         }
         .error-message {
-            color: #ef4444; /* red-500 */
+            color: #ef4444; 
             font-size: 0.875rem;
             margin-top: 0.25rem;
             display: none;
@@ -282,72 +380,83 @@
 </head>
 <body class="antialiased">
 
-    <!-- NEW: Background Slideshow HTML -->
-    <div id="slideshow-container">
-        <!-- You can replace these with your own images -->
-        <img src="slide1.jpg" alt="Abstract tech background slide 1" class="slide active">
-        <img src="slide2.jpg" alt="Abstract tech background slide 2" class="slide">
-        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1920&auto=format&fit=crop" alt="Abstract tech background slide 3" class="slide">
+    <div id="carousel-background-container">
+        <div carousel="component">
+            <div class="carousel_track">
+                <div class="carousel_sticky">
+                    <div carousel="wrap">
+                        <div class="carousel_list">
+                            <div class="carousel_item"><img alt="Carousel Image 1" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 2" src="https://images.unsplash.com/photo-1550745165-9bc0b252726a?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 3" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 4" src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 5" src="https://images.unsplash.com/photo-1573495627361-ab2b808a68a8?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 6" src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 7" src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 8" src="https://images.unsplash.com/photo-1605810230464-4712e0613526?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 9" src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 10" src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="gradient-overlay"></div>
 
-    <header id="header" class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
+    <header id="header" class="sticky top-0 z-50 transition-all duration-300">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-dark-text flex items-center gap-2">
-                <span class="bg-primary-yellow text-dark-text rounded-md px-2 py-1 font-extrabold">S</span>
+            <a href="#home" class="text-2xl font-bold flex items-center gap-2">
+                <span class="bg-primary-yellow text-white rounded-md px-2 py-1 font-extrabold">S</span>
                 SOAR FEST
             </a>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#about" class="nav-link text-gray-600 hover:text-dark-text font-medium">About</a>
-                <a href="#events" class="nav-link text-gray-600 hover:text-dark-text font-medium">Events</a>
-                <a href="#sponsors" class="nav-link text-gray-600 hover:text-dark-text font-medium">Sponsors</a>
-                <a href="#team" class="nav-link text-gray-600 hover:text-dark-text font-medium">Team</a>
-                <a href="#contact" class="nav-link text-gray-600 hover:text-dark-text font-medium">Contact</a>
+                <a href="#about" class="nav-link font-medium">About</a>
+                <a href="#events" class="nav-link font-medium">Events</a>
+                <a href="#sponsors" class="nav-link font-medium">Sponsors</a>
+                <a href="#team" class="nav-link font-medium">Team</a>
+                <a href="#contact" class="nav-link font-medium">Contact</a>
             </div>
             
             <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
-                <svg class="w-6 h-6 text-dark-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
-            <a href="#about" class="block py-3 px-6 text-sm text-gray-600 hover:bg-gray-50">About</a>
-            <a href="#events" class="block py-3 px-6 text-sm text-gray-600 hover:bg-gray-50">Events</a>
-            <a href="#sponsors" class="block py-3 px-6 text-sm text-gray-600 hover:bg-gray-50">Sponsors</a>
-            <a href="#team" class="block py-3 px-6 text-sm text-gray-600 hover:bg-gray-50">Team</a>
-            <a href="#contact" class="block py-3 px-6 text-sm text-gray-600 hover:bg-gray-50">Contact</a>
-            
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/90 backdrop-blur-sm border-t border-gray-700">
+            <a href="#about" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">About</a>
+            <a href="#events" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Events</a>
+            <a href="#sponsors" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Sponsors</a>
+            <a href="#team" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Team</a>
+            <a href="#contact" class="block py-3 px-6 text-sm text-gray-300 hover:bg-gray-800">Contact</a>
         </div>
     </header>
 
     <main>
-        <!-- MODIFIED: Removed inline background style from hero section -->
         <section id="home" class="min-h-screen flex items-center bg-transparent">
             <div class="container mx-auto px-6 text-center relative z-10">
-                <!-- MODIFIED: Changed text color to white for better contrast -->
                 <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
                     IGNITE THE <span class="text-primary-yellow text-glow inline-block"><span id="typewriter-text"></span><span id="typewriter-cursor">|</span></span>
                 </h1>
                 <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8">
                     Soar Fest 2025 is the ultimate convergence of technology, creativity, and innovation. Join us for three days of groundbreaking events, workshops, and competitions.
                 </p>
-                
             </div>
         </section>
 
-        <section id="about" class="py-20 lg:py-32 bg-white"> <!-- Added bg-white to ensure it's not transparent -->
-            <div class="container mx-auto px-6">
+        <section id="about" class="py-20 lg:py-32 bg-transparent">
+            <div class="section-container">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h2 class="text-3xl md:text-4xl font-bold text-dark-text mb-4">About <span class="text-primary-yellow">Soar Fest</span></h2>
-                        <p class="text-light-text mb-4">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">About <span class="text-primary-yellow">Soar Fest</span></h2>
+                        <p class="text-gray-300 mb-4">
                             Soar Fest is an annual technical and cultural festival that is held in St Aloysius University, Mangalore. Our mission is to foster a culture of innovation, collaboration, and learning. From intense coding marathons to mind-bending robotics challenges, Soar Fest is the platform to showcase your skills, learn from experts, and network with peers who share your passion.
                         </p>
-                        <p class="text-light-text">
+                        <p class="text-gray-300">
                             This year, we're pushing the boundaries further with new event categories, esteemed guest speakers, and bigger prizes. Get ready for an unforgettable experience that will challenge, inspire, and elevate you.
                         </p>
                     </div>
-                    <div id="animated-terminal" class="bg-gray-800 text-sm rounded-lg shadow-2xl font-mono min-h-[300px] w-full flex flex-col">
-                        <div class="flex items-center gap-1.5 bg-gray-900 rounded-t-lg p-3">
+                    <div id="animated-terminal" class="bg-gray-800/80 backdrop-blur-sm border border-gray-700 text-sm rounded-lg shadow-2xl font-mono min-h-[300px] w-full flex flex-col">
+                        <div class="flex items-center gap-1.5 bg-gray-900/80 rounded-t-lg p-3">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
                             <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
@@ -360,408 +469,195 @@
             </div>
         </section>
         
-        <section id="events" class="events-slider-section">
+        <section id="events" class="py-20 lg:py-32 bg-transparent overflow-hidden">
             <div class="container mx-auto px-6 text-center">
-                 <h2 class="text-3xl md:text-4xl font-bold text-dark-text mb-12">Flagship Events</h2>
+                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">Flagship Events</h2>
             </div>
             <div class="swiper events-slider">
                 <div class="swiper-wrapper">
-                    
                     <div class="swiper-slide">
-                        <div class="mb-4" id="event-icon-1">
-                           <svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M7.05 7.05l2.122 2.122m6.856 6.856l2.122 2.122m0-11.314l-2.122 2.122m-6.856 6.856l-2.122 2.122M12 12a5 5 0 110-10 5 5 0 010 10z"></path></svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-dark-text mb-3">Brainwave</h3>
-                        <p class="text-light-text flex-grow mb-6">Power up your IQ.</p>
+                        <div class="mb-4" id="event-icon-1"><svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M7.05 7.05l2.122 2.122m6.856 6.856l2.122 2.122m0-11.314l-2.122 2.122m-6.856 6.856l-2.122 2.122M12 12a5 5 0 110-10 5 5 0 010 10z"></path></svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Brainwave</h3>
+                        <p class="text-gray-300 flex-grow mb-6">Power up your IQ.</p>
                         <button class="open-details-modal text-primary-yellow font-semibold hover:underline self-start" data-event="Brainwave" data-icon="event-icon-1" data-details="Put your trivia knowledge to the test in this fast-paced quiz competition. Rounds will cover a wide range of topics including computer science fundamentals, the history of technology, famous innovators, and emerging trends like AI and blockchain. Compete individually or in teams to be crowned the Brainwave champion.">Learn More &rarr;</button>
                     </div>
-
                     <div class="swiper-slide">
-                        <div class="mb-4" id="event-icon-2">
-                            <svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-dark-text mb-3">Idea Jam</h3>
-                        <p class="text-light-text flex-grow mb-6">Turn daily challenges into smart solutions.</p>
+                        <div class="mb-4" id="event-icon-2"><svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Idea Jam</h3>
+                        <p class="text-gray-300 flex-grow mb-6">Turn daily challenges into smart solutions.</p>
                         <button class="open-details-modal text-primary-yellow font-semibold hover:underline self-start" data-event="Idea Jam" data-icon="event-icon-2" data-details="Dive into hours of intense coding, problem-solving, and creation. Collaborate with a team to build a project from scratch that addresses a real-world challenge. Mentors from top tech companies will be available to guide you. Prizes include cash awards, tech gadgets, and internship opportunities. All skill levels are welcome!">Learn More &rarr;</button>
                     </div>
-
                     <div class="swiper-slide">
-                        <div class="mb-4" id="event-icon-3">
-                           <svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.52 4.674c.3.921-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.52-4.674a1 1 0 00-.363-1.118L2.98 10.11c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-dark-text mb-3">#Ctrl+Alt+Escape</h3>
-                        <p class="text-light-text flex-grow mb-6">Think.Solve.Escape.</p>
+                        <div class="mb-4" id="event-icon-3"><svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.52 4.674c.3.921-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.52-4.674a1 1 0 00-.363-1.118L2.98 10.11c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">#Ctrl+Alt+Escape</h3>
+                        <p class="text-gray-300 flex-grow mb-6">Think.Solve.Escape.</p>
                         <button class="open-details-modal text-primary-yellow font-semibold hover:underline self-start" data-event="#Ctrl+Alt+Escape" data-icon="event-icon-3" data-details="A digital treasure hunt combined with an escape room challenge. Decipher clues, solve programming puzzles, and race against the clock. Test your problem-solving skills and teamwork to find the final key.">Learn More &rarr;</button>
                     </div>
-                    
                     <div class="swiper-slide">
-                        <div class="mb-4" id="event-icon-4">
-                           <svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-dark-text mb-3">ReelGear</h3>
-                        <p class="text-light-text flex-grow mb-6">Shoot.Edit.Blow up your feed.</p>
+                        <div class="mb-4" id="event-icon-4"><svg class="w-12 h-12 text-primary-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">ReelGear</h3>
+                        <p class="text-gray-300 flex-grow mb-6">Shoot.Edit.Blow up your feed.</p>
                         <button class="open-details-modal text-primary-yellow font-semibold hover:underline self-start" data-event="ReelGear" data-icon="event-icon-4" data-details="Unleash your inner filmmaker in this short-film and reel-making competition. You'll be given a theme and a limited time to shoot, edit, and produce a captivating video. Judged on creativity, storytelling, and technical execution.">Learn More &rarr;</button>
                     </div>
-
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
         </section>
         
-        <section id="sponsors" class="py-20 lg:py-32 overflow-hidden bg-white"> <!-- Added bg-white -->
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-dark-text mb-4">Our Sponsors</h2>
-                <p class="text-light-text max-w-2xl mx-auto mb-12">Powering innovation with the support of industry leaders.</p>
+        <section id="sponsors" class="py-20 lg:py-32 overflow-hidden bg-transparent">
+            <div class="section-container text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Sponsors</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto mb-12">Powering innovation with the support of industry leaders.</p>
                 <div class="rfm-marquee-container">
                     <div class="rfm-overlay"></div>
                     <div class="rfm-marquee">
                         <div class="flex flex-shrink-0 justify-around items-center w-full">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
                         </div>
                     </div>
                      <div class="rfm-marquee">
                         <div class="flex flex-shrink-0 justify-around items-center w-full">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/000000/888888?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="team" class="py-20 lg:py-32 bg-light-tan">
+        <section id="team" class="py-20 lg:py-32 bg-transparent overflow-hidden">
              <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-dark-text mb-4">Meet The Team</h2>
-                <p class="text-light-text max-w-2xl mx-auto mb-12">The brilliant minds behind Soar Fest. Click on a card to learn more.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="aaron.jpg" alt="Profile picture of Aaron" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">Aaron</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Creative Director</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.instagram.com/aaronkennyz/" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">About Aaron</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Aaron is a roblox player.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Brand Strategy</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> UI/UX Design</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Digital Art</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">Shawn</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">BOI</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                    <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
-                                </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Shawn ensures our projects are delivered on time and exceed expectations, bridging the gap between clients and the dev team.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
-                                </ul>
-                            </div>
-
-                            
-                        </div>
-                    </div>
-
-                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Meet The Team</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto mb-12">The brilliant minds behind Soar Fest. Click on a card to learn more.</p>
             </div>
-        </section>
-
-
-        <!--meet the developers-->
-
-        
-        <section id="team" class="py-20 lg:py-32 bg-light-tan">
-             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-dark-text mb-4">Meet The Developers</h2>
-                <p class="text-light-text max-w-2xl mx-auto mb-12">The brilliant minds behind Soar Fest Webwaffle. Click on a card to Crossiant .</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            
+            <div class="swiper team-slider">
+                <div class="swiper-wrapper">
                     
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="aaron.jpg" alt="Profile picture of Aaron" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">Aaron</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Creative Director</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.instagram.com/aaronkennyz/" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop" alt="Profile picture of Aaron" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Aaron';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Aaron</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Creative Director</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="https://www.instagram.com/aaronkennyz/" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">About Aaron</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Aaron is a roblox player.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Brand Strategy</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> UI/UX Design</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Digital Art</li>
-                                </ul>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Aaron</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Aaron is a roblox player.</p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Brand Strategy</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> UI/UX Design</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Digital Art</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="chris.jpg" alt="Profile picture of Bob Greenfield" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">chris</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                    <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="Profile picture of Chris" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Chris';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Chris</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Bob is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
-                                </ul>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Chris is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="team-card-wrapper cursor-pointer">
-                        <div class="team-card-inner">
-                            <div class="card-front w-full h-full bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-primary-yellow hover:shadow-lg hover:-translate-y-2">
-                                <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 mb-4 shadow-md">
-                                <h3 class="text-2xl font-bold text-dark-text mb-1">Shawn</h3>
-                                <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">BOI</p>
-                                <div class="flex space-x-5 text-gray-400 text-xl">
-                                    <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                    <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Shawn</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Project Manager</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-back w-full h-full bg-white border border-primary-yellow rounded-lg p-8 flex flex-col">
-                                <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
-                                <p class="text-light-text mb-5 text-left text-sm flex-grow">Shawn ensures our projects are delivered on time and exceed expectations, bridging the gap between clients and the dev team.</p>
-                                <ul class="text-left w-full space-y-2 text-sm">
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
-                                    <li class="text-light-text"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
-                                </ul>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn ensures our projects are delivered on time and exceed expectations, bridging the gap between clients and the dev team.</p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
         </section>
     </main>
 
-    <footer id="contact" class="bg-gray-800 text-gray-300">
-        <div class="container mx-auto px-6 py-12">
+    <footer id="contact" class="bg-transparent">
+        <div class="section-container">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Soar Fest</h3>
-                    <p class="text-sm">The future of tech and culture, celebrated annually.</p>
+                    <p class="text-sm text-gray-400">The future of tech and culture, celebrated annually.</p>
                 </div>
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
                     <ul>
-                        <li class="mb-2"><a href="#about" class="hover:text-primary-yellow transition-colors">About Us</a></li>
-                        <li class="mb-2"><a href="#events" class="hover:text-primary-yellow transition-colors">All Events</a></li>
-                        <li class="mb-2"><a href="#" class="hover:text-primary-yellow transition-colors">Schedule</a></li>
-                        <li class="mb-2"><a href="#sponsors" class="hover:text-primary-yellow transition-colors">Sponsorship</a></li>
+                        <li class="mb-2"><a href="#about" class="hover:text-primary-yellow transition-colors text-gray-300">About Us</a></li>
+                        <li class="mb-2"><a href="#events" class="hover:text-primary-yellow transition-colors text-gray-300">All Events</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-primary-yellow transition-colors text-gray-300">Schedule</a></li>
+                        <li class="mb-2"><a href="#sponsors" class="hover:text-primary-yellow transition-colors text-gray-300">Sponsorship</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Contact Us</h3>
-                    <p class="text-sm mb-2">St Aloysius (Deemed to be university)</p>
-                    <p class="text-sm mb-2">Mangalore</p>
-                    <p class="text-sm"><a href="mailto:contact@soarfest.com" class="hover:text-primary-yellow transition-colors">contact@soarfest.com</a></p>
+                    <p class="text-sm text-gray-300 mb-2">St Aloysius (Deemed to be university)</p>
+                    <p class="text-sm text-gray-300 mb-2">Mangalore</p>
+                    <p class="text-sm"><a href="mailto:contact@soarfest.com" class="hover:text-primary-yellow transition-colors text-gray-300">contact@soarfest.com</a></p>
                 </div>
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Follow Us</h3>
-                    <div class="flex space-x-4">
-                      
+                    <div class="flex space-x-4 text-gray-300">
                         <a href="https://www.facebook.com/staloysiuscollegemangaluru/" aria-label="Facebook" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://x.com/sacmangaluru?lang=en" aria-label="Twitter" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-twitter"></i></a>
                         <a href="https://www.instagram.com/staloysiusmangaluru/?hl=en" aria-label="Instagram" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
             </div>
-            <div class="mt-12 pt-8 border-t border-gray-700 text-center text-sm">
+            <div class="mt-12 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
                 <p>&copy; 2025 Soar Fest. All Rights Reserved.</p>
                 <p>Created By GUSSAL </p>
             </div>
@@ -769,29 +665,23 @@
     </footer>
 
     <div id="details-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
-        <div class="modal-content bg-white border border-gray-200 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative">
-            <button class="close-modal-btn absolute top-4 right-4 text-gray-400 hover:text-dark-text text-3xl leading-none">&times;</button>
+        <div class="modal-content bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative">
+            <button class="close-modal-btn absolute top-4 right-4 text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
             <div class="flex items-start gap-6">
                 <div id="modal-event-icon" class="flex-shrink-0"></div>
                 <div>
-                    <h2 id="modal-event-title" class="text-3xl font-bold text-dark-text mb-4">Event Title</h2>
-                    <p id="modal-event-details" class="text-light-text mb-6">Event details will go here.</p>
+                    <h2 id="modal-event-title" class="text-3xl font-bold text-white mb-4">Event Title</h2>
+                    <p id="modal-event-details" class="text-gray-300 mb-6">Event details will go here.</p>
                     <button class="open-register-modal-from-details btn-primary py-3 px-8 rounded-full">Register for this Event</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Registration Form Modal -->
     <div id="register-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div class="modal-content bg-[#1a1a1a] border border-gray-700 rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
-            <!-- Close Button -->
             <button class="close-modal-btn absolute top-4 right-6 text-gray-500 hover:text-white text-3xl leading-none">&times;</button>
-            
-            <!-- Form Header -->
             <h1 class="text-2xl sm:text-3xl font-bold text-white mb-6">Register for Soar Fest</h1>
-
-            <!-- Registration Form -->
             <form id="registrationForm" action="/register" method="post" novalidate>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-4">
                     <div>
@@ -835,11 +725,7 @@
                         <p class="error-message" id="guardianPhoneError">Guardian's phone number is required.</p>
                     </div>
                 </div>
-                
-                <!-- General Form Message Area -->
                 <div id="form-message" class="hidden text-center p-3 rounded-lg mb-4"></div>
-
-                <!-- Submit Button -->
                 <div class="mt-6">
                     <button type="submit" class="w-full btn-primary font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-yellow-400 transition duration-300 ease-in-out transform hover:scale-105">
                         Submit Registration
@@ -849,22 +735,46 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- NEW: Background Slideshow Logic ---
-            const slides = document.querySelectorAll('#slideshow-container .slide');
-            let currentSlide = 0;
+            // --- 3D Carousel Scroll Logic ---
+            const carouselComponent = document.querySelector('[carousel="component"]');
+            if (carouselComponent) {
+                const wrapEl = carouselComponent.querySelector('[carousel="wrap"]');
+                const itemEls = wrapEl.querySelectorAll('.carousel_item');
+                const rotateAmount = 360 / itemEls.length;
+                const zTranslate = 2 * Math.tan((rotateAmount / 2) * (Math.PI / 180));
+                
+                const negTranslate = `calc(var(--3d-carousel-item-width) / -${zTranslate} - var(--3d-carousel-gap))`;
+                const posTranslate = `calc(var(--3d-carousel-item-width) / ${zTranslate} + var(--3d-carousel-gap))`;
 
-            function nextSlide() {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
+                wrapEl.style.setProperty('--3d-carousel-z', negTranslate);
+                wrapEl.style.perspective = posTranslate;
+                
+                gsap.to(wrapEl, { opacity: 1 });
+
+                itemEls.forEach((item, index) => {
+                    item.style.transform = `rotateY(${rotateAmount * index}deg) translateZ(${posTranslate})`;
+                });
+
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: document.body, 
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1.5 
+                    }
+                }).fromTo(wrapEl, { 
+                    '--3d-carousel-rotate': '0deg' 
+                }, { 
+                    '--3d-carousel-rotate': `-${360 - rotateAmount}deg`,
+                    ease: "none" 
+                });
             }
-
-            // Change slide every 5 seconds (5000 milliseconds)
-            setInterval(nextSlide, 5000);
-
 
             // --- Hero Section Typewriter Animation ---
             const typewriterText = document.getElementById('typewriter-text');
@@ -872,7 +782,6 @@
             let wordIndex = 0;
             let charIndex = 0;
             let isDeleting = false;
-
             function type() {
                 const currentWord = words[wordIndex];
                 if (isDeleting) {
@@ -882,66 +791,58 @@
                     typewriterText.textContent = currentWord.substring(0, charIndex + 1);
                     charIndex++;
                 }
-
                 if (!isDeleting && charIndex === currentWord.length) {
                     setTimeout(() => isDeleting = true, 2000);
                 } else if (isDeleting && charIndex === 0) {
                     isDeleting = false;
                     wordIndex = (wordIndex + 1) % words.length;
                 }
-
                 const typingSpeed = isDeleting ? 100 : 200;
                 setTimeout(type, typingSpeed);
             }
-            type();
+            if(typewriterText) type();
 
             // --- Animated Terminal in About Section ---
             const terminalCode = document.getElementById('terminal-code');
-            const terminalLines = [
-                { text: '$ soarfest connect', isCommand: true, delayAfter: 500 },
-                { text: 'Connecting to Soar Fest 2025...', isCommand: false, delayAfter: 1000 },
-                { text: 'Connection successful. ✅', isCommand: false, delayAfter: 1000 },
-                { text: '$ register --event "Idea Jam" --team "Innovators"', isCommand: true, delayAfter: 500 },
-                { text: 'Building team...', isCommand: false },
-                { text: 'Deploying registration... Done! 🚀', isCommand: false, delayAfter: 1000 },
-                { text: 'Your spot is secured. Welcome to the future!', isCommand: false, cursor: true }
-            ];
-
-            let lineIndex = 0;
-            
-            function typeTerminalLine() {
-                if (lineIndex >= terminalLines.length) return;
-
-                const line = terminalLines[lineIndex];
-                
-                if (line.isCommand) {
-                    let charIdx = 0;
-                    const prompt = document.createElement('span');
-                    prompt.className = 'text-green-400';
-                    const commandText = document.createElement('span');
-                    commandText.className = 'text-white';
-                    terminalCode.appendChild(prompt);
-                    terminalCode.appendChild(commandText);
-                    
-                    const intervalId = setInterval(() => {
-                        commandText.textContent += line.text[charIdx];
-                        charIdx++;
-                        if (charIdx === line.text.length) {
-                            clearInterval(intervalId);
-                            terminalCode.innerHTML += '\n';
-                            lineIndex++;
-                            setTimeout(typeTerminalLine, line.delayAfter);
-                        }
-                    }, 50);
-                } else {
-                    terminalCode.innerHTML += `<span class="text-gray-300">${line.text}</span>\n`;
-                    lineIndex++;
-                    if(line.cursor) terminalCode.innerHTML += '<span class="animate-blink">█</span>';
-                    setTimeout(typeTerminalLine, line.delayAfter);
+            if(terminalCode) {
+                const terminalLines = [
+                    { text: '$ soarfest connect', isCommand: true, delayAfter: 500 },
+                    { text: 'Connecting to Soar Fest 2025...', isCommand: false, delayAfter: 1000 },
+                    { text: 'Connection successful. ✅', isCommand: false, delayAfter: 1000 },
+                    { text: '$ register --event "Idea Jam" --team "Innovators"', isCommand: true, delayAfter: 500 },
+                    { text: 'Building team...', isCommand: false },
+                    { text: 'Deploying registration... Done! 🚀', isCommand: false, delayAfter: 1000 },
+                    { text: 'Your spot is secured. Welcome to the future!', isCommand: false, cursor: true }
+                ];
+                let lineIndex = 0;
+                function typeTerminalLine() {
+                    if (lineIndex >= terminalLines.length) return;
+                    const line = terminalLines[lineIndex];
+                    if (line.isCommand) {
+                        let charIdx = 0;
+                        const commandText = document.createElement('span');
+                        commandText.className = 'text-white';
+                        terminalCode.innerHTML += `<span class="text-green-400">$ </span>`;
+                        terminalCode.appendChild(commandText);
+                        const intervalId = setInterval(() => {
+                            commandText.textContent += line.text[charIdx+2]; // +2 to skip '$ '
+                            charIdx++;
+                            if (charIdx === line.text.length - 2) {
+                                clearInterval(intervalId);
+                                terminalCode.innerHTML += '\n';
+                                lineIndex++;
+                                setTimeout(typeTerminalLine, line.delayAfter);
+                            }
+                        }, 50);
+                    } else {
+                        terminalCode.innerHTML += `<span class="text-gray-300">${line.text}</span>\n`;
+                        lineIndex++;
+                        if(line.cursor) terminalCode.innerHTML += '<span class="animate-blink">█</span>';
+                        setTimeout(typeTerminalLine, line.delayAfter);
+                    }
                 }
+                typeTerminalLine();
             }
-            typeTerminalLine();
-
 
             // --- Mobile Menu Toggle ---
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -956,31 +857,73 @@
             });
 
             // --- Swiper Initialization for Events Slider ---
-            var swiper = new Swiper('.events-slider', {
+            var eventsSwiper = new Swiper('.events-slider', {
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
-                slidesPerView: 'auto',
                 loop: true,
+                slidesPerView: 1, // Set default slides per view for mobile
                 coverflowEffect: {
                     rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
+                    stretch: 80,
+                    depth: 150,
+                    modifier: 1,
                     slideShadows: false,
                 },
                 navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
+                    nextEl: '#events .swiper-button-next',
+                    prevEl: '#events .swiper-button-prev',
                 },
-                initialSlide: 1, // Start with the second slide in center
+                initialSlide: 1,
+                // FIX: Added breakpoints for responsive behavior
+                breakpoints: {
+                    // when window width is >= 768px (tablets)
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    // when window width is >= 1024px (desktops)
+                    1024: {
+                        slidesPerView: 3,
+                    }
+                }
             });
             
-            // --- Modal Handling (No changes to this logic) ---
+            // --- Swiper Initialization for Team Slider ---
+            var teamSwiper = new Swiper('.team-slider', {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                loop: true,
+                slidesPerView: 1, // Set default slides per view for mobile
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 80,
+                    depth: 150,
+                    modifier: 1,
+                    slideShadows: false,
+                },
+                navigation: {
+                    nextEl: '#team .swiper-button-next',
+                    prevEl: '#team .swiper-button-prev',
+                },
+                initialSlide: 1,
+                // FIX: Added breakpoints for responsive behavior
+                breakpoints: {
+                    // when window width is >= 768px (tablets)
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    // when window width is >= 1024px (desktops)
+                    1024: {
+                        slidesPerView: 3,
+                    }
+                }
+            });
+            
+            // --- Modal Handling ---
             const detailsModal = document.getElementById('details-modal');
             const registerModal = document.getElementById('register-modal');
             const openDetailsButtons = document.querySelectorAll('.open-details-modal');
-            const openRegisterButtons = document.querySelectorAll('.open-register-modal');
             const openRegisterFromDetailsBtn = document.querySelector('.open-register-modal-from-details');
             const allCloseButtons = document.querySelectorAll('.close-modal-btn');
 
@@ -1012,11 +955,12 @@
                 });
             });
 
-            openRegisterButtons.forEach(button => button.addEventListener('click', () => openModal(registerModal)));
-            openRegisterFromDetailsBtn.addEventListener('click', () => {
-                closeModal(detailsModal);
-                setTimeout(() => openModal(registerModal), 300);
-            });
+            if(openRegisterFromDetailsBtn) {
+                openRegisterFromDetailsBtn.addEventListener('click', () => {
+                    closeModal(detailsModal);
+                    setTimeout(() => openModal(registerModal), 300);
+                });
+            }
             allCloseButtons.forEach(button => button.addEventListener('click', () => closeModal(button.closest('.modal-backdrop'))));
             document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.addEventListener('click', (e) => {
                 if (e.target === backdrop) closeModal(backdrop);
@@ -1125,10 +1069,12 @@
                 document.querySelectorAll('.invalid-input').forEach(el => el.classList.remove('invalid-input'));
             }
 
-
-            // --- Team Card Flip Functionality (No changes to this logic) ---
+            // --- Team Card Flip Functionality ---
             document.querySelectorAll('.team-card-wrapper').forEach(card => {
-                card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('a')) return;
+                    card.classList.toggle('is-flipped');
+                });
             });
         });
     </script>
