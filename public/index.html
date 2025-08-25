@@ -571,21 +571,66 @@
         </div>
     </div>
 
-    <div id="register-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
-        <div class="modal-content bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
-            <button class="close-modal-btn absolute top-4 right-6 text-gray-400 hover:text-dark-text text-3xl leading-none">&times;</button>
-            <h1 class="text-2xl sm:text-3xl font-bold text-dark-text mb-6">Register for Soar Fest</h1>
+    <!-- Registration Form Modal -->
+    <div id="register-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
+        <div class="modal-content bg-[#1a1a1a] border border-gray-700 rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button class="close-modal-btn absolute top-4 right-6 text-gray-500 hover:text-white text-3xl leading-none">&times;</button>
+            
+            <!-- Form Header -->
+            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-6">Register for Soar Fest</h1>
+
+            <!-- Registration Form -->
             <form id="registrationForm" action="/register" method="post" novalidate>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-4">
                     <div>
-                        <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full name*</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="Eg: Joseph Leonardo" required class="w-full px-4 py-3 bg-gray-100 border border-gray-300 text-dark-text rounded-lg focus:ring-2 focus:ring-primary-yellow focus:border-transparent transition duration-200">
+                        <label for="fullName" class="block text-sm font-medium text-gray-300 mb-1">Full name*</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Eg: Joseph Leonardo" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
                         <p class="error-message" id="fullNameError">Name is required</p>
                     </div>
+                    <div>
+                        <label for="teamName" class="block text-sm font-medium text-gray-300 mb-1">Team Name*</label>
+                        <input type="text" id="teamName" name="teamName" placeholder="Eg: The Scotches" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="teamNameError">Team name is required.</p>
                     </div>
+                    <div>
+                        <label for="class" class="block text-sm font-medium text-gray-300 mb-1">Class*</label>
+                        <input type="text" id="class" name="class" placeholder="e.g., 11th" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="classError">Class is required.</p>
+                    </div>
+                    <div>
+                        <label for="school" class="block text-sm font-medium text-gray-300 mb-1">School or College name*</label>
+                        <input type="text" id="school" name="school" placeholder="Lincoln Middle School" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                         <p class="error-message" id="schoolError">School/College is required.</p>
+                    </div>
+                    <div>
+                        <label for="contactNumber" class="block text-sm font-medium text-gray-300 mb-1">Contact Number*</label>
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="eg:1234567890" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="contactNumberError">Contact number is required.</p>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email ID (optional)</label>
+                        <input type="email" id="email" name="email" placeholder="Eg: You@gmail.com" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="emailError">Please enter a valid email.</p>
+                    </div>
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-300 mb-1">Place you are coming from*</label>
+                        <input type="text" id="location" name="location" placeholder="Bejai" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="locationError">Please specify your location.</p>
+                    </div>
+                    <div>
+                        <label for="guardianPhone" class="block text-sm font-medium text-gray-300 mb-1">Guardian's phone number*</label>
+                        <input type="tel" id="guardianPhone" name="guardianPhone" placeholder="Eg: 0987654321" required class="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="guardianPhoneError">Guardian's phone number is required.</p>
+                    </div>
+                </div>
+                
+                <!-- General Form Message Area -->
                 <div id="form-message" class="hidden text-center p-3 rounded-lg mb-4"></div>
+
+                <!-- Submit Button -->
                 <div class="mt-6">
-                    <button type="submit" class="w-full btn-primary py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-yellow transition duration-300 ease-in-out transform hover:scale-105">
+                    <button type="submit" class="w-full btn-primary font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-yellow-400 transition duration-300 ease-in-out transform hover:scale-105">
                         Submit Registration
                     </button>
                 </div>
