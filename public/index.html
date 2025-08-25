@@ -22,14 +22,16 @@
         /* --- Base & Theme Styles --- */
         :root {
             --primary-yellow: #FFB800;
-            --primary-dark-blue: #0a0f2c;
-            --primary-light-blue: #1a237e;
+            --secondary-tan: #E9CCA0;
+            --light-tan: #fdf8f0;
+            --dark-text: #ffffff; 
+            --light-text: #ffffff; 
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-image: linear-gradient(180deg, var(--primary-dark-blue) 0%, #000000 100%);
-            color: #ffffff;
+            background-color: #000; /* Black background for carousel */
+            color: var(--light-text);
             overscroll-behavior: none; 
         }
 
@@ -42,7 +44,6 @@
             height: 100%;
             z-index: -2;
             overflow: hidden;
-            opacity: 0.5; /* Soften the background carousel */
         }
 
         [carousel="component"] {
@@ -92,7 +93,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            transform-style: preserve-3d;
+            transform-style: preserve-d;
         }
 
         .carousel_item {
@@ -119,28 +120,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(10, 15, 44, 0.2) 0%, rgba(0,0,0,0.8) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)); /* Darker gradient */
             z-index: -1; 
-        }
-        
-        .section-container {
-            background-color: rgba(10, 15, 44, 0.6);
-            backdrop-filter: blur(12px);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4rem 1.5rem;
-            margin: 4rem auto;
-            max-width: 1200px;
         }
 
         /* --- Typography & Helpers --- */
         .text-glow {
-            text-shadow: 0 0 12px rgba(255, 184, 0, 0.7);
+            text-shadow: 0 0 8px rgba(255, 184, 0, 0.5);
         }
         
         .btn-primary {
             background-color: var(--primary-yellow);
-            color: #000;
+            color: var(--dark-text);
             transition: all 0.3s ease;
             font-weight: 700;
         }
@@ -174,19 +165,18 @@
 
         /* --- Header Styles --- */
         #header {
-            background-color: rgba(10, 15, 44, 0.5);
+            background-color: rgba(17, 17, 17, 0.5); /* Darker transparent background */
             backdrop-filter: blur(8px);
         }
         #header.scrolled {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            background-color: rgba(10, 15, 44, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(17, 17, 17, 0.8);
         }
         #header a, #header svg {
-            color: #fff;
+            color: #fff; /* White text for header */
         }
         #header .nav-link {
-            color: #d1d5db;
+            color: #d1d5db; /* gray-300 */
         }
         #header .nav-link:hover {
             color: #fff;
@@ -207,13 +197,13 @@
         }
 
         .events-slider .swiper-slide {
-            /* FIX: Removed fixed width to allow Swiper to calculate it based on slidesPerView */
+            width: 340px;
             height: 400px;
             border-radius: 1.5rem;
             transition: transform 0.5s ease, opacity 0.5s ease;
             opacity: 0.4;
             transform: scale(0.85);
-            background-color: rgba(26, 35, 126, 0.5);
+            background-color: rgba(23, 23, 23, 0.7); /* Dark transparent background */
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
@@ -250,7 +240,7 @@
             height: 100%;
         }
         .rfm-overlay::before, .rfm-overlay::after {
-            background: linear-gradient(to right, var(--primary-dark-blue), rgba(10, 15, 44, 0));
+            background: linear-gradient(to right, #000, rgba(0, 0, 0, 0)); /* Black gradient */
             content: "";
             height: 100%;
             position: absolute;
@@ -302,10 +292,10 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            background-color: rgba(26, 35, 126, 0.5);
+            background-color: rgba(23, 23, 23, 0.7); /* Dark transparent background */
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
+            border-radius: 0.5rem; /* from tailwind rounded-lg */
         }
         .card-back {
             transform: rotateY(180deg);
@@ -321,7 +311,7 @@
         }
 
         .team-slider .swiper-slide {
-            /* FIX: Removed fixed width to allow Swiper to calculate it based on slidesPerView */
+            width: 350px;
             height: 450px; 
             transition: transform 0.5s ease, opacity 0.5s ease;
             opacity: 0.4;
@@ -336,7 +326,7 @@
         /* Shared Swiper Navigation Styles */
         .swiper-button-next, .swiper-button-prev {
             color: #fff;
-            background-color: rgba(26, 35, 126, 0.7);
+            background-color: rgba(31, 41, 55, 0.5);
             border-radius: 9999px;
             width: 44px;
             height: 44px;
@@ -344,7 +334,7 @@
             transition: background-color 0.3s ease;
         }
         .swiper-button-next:hover, .swiper-button-prev:hover {
-            background-color: rgba(26, 35, 126, 1);
+            background-color: rgba(55, 65, 81, 0.7);
         }
         .swiper-button-next::after, .swiper-button-prev::after {
             font-size: 18px;
@@ -380,12 +370,14 @@
 </head>
 <body class="antialiased">
 
+    <!-- 3D Carousel Background HTML -->
     <div id="carousel-background-container">
         <div carousel="component">
             <div class="carousel_track">
                 <div class="carousel_sticky">
                     <div carousel="wrap">
                         <div class="carousel_list">
+                            <!-- Images for the carousel -->
                             <div class="carousel_item"><img alt="Carousel Image 1" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
                             <div class="carousel_item"><img alt="Carousel Image 2" src="https://images.unsplash.com/photo-1550745165-9bc0b252726a?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
                             <div class="carousel_item"><img alt="Carousel Image 3" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1920&auto=format&fit=crop" class="carousel_img"></div>
@@ -407,7 +399,7 @@
     <header id="header" class="sticky top-0 z-50 transition-all duration-300">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold flex items-center gap-2">
-                <span class="bg-primary-yellow text-white rounded-md px-2 py-1 font-extrabold">S</span>
+                <span class="bg-primary-yellow text-dark-text rounded-md px-2 py-1 font-extrabold">S</span>
                 SOAR FEST
             </a>
             <div class="hidden md:flex items-center space-x-8">
@@ -444,7 +436,7 @@
         </section>
 
         <section id="about" class="py-20 lg:py-32 bg-transparent">
-            <div class="section-container">
+            <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">About <span class="text-primary-yellow">Soar Fest</span></h2>
@@ -506,27 +498,27 @@
         </section>
         
         <section id="sponsors" class="py-20 lg:py-32 overflow-hidden bg-transparent">
-            <div class="section-container text-center">
+            <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Sponsors</h2>
                 <p class="text-gray-300 max-w-2xl mx-auto mb-12">Powering innovation with the support of industry leaders.</p>
                 <div class="rfm-marquee-container">
                     <div class="rfm-overlay"></div>
                     <div class="rfm-marquee">
                         <div class="flex flex-shrink-0 justify-around items-center w-full">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=MicroHard" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=MomoCafe" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=Googol" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
                         </div>
                     </div>
                      <div class="rfm-marquee">
                         <div class="flex flex-shrink-0 justify-around items-center w-full">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+A" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
-                            <img src="https://placehold.co/150x50/FFFFFF/0a0f2c?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-80 hover:opacity-100 transition-opacity mx-8 rounded-md">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=Bihar" alt="Sponsor A Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=SPONSOR+B" alt="Sponsor B Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=SPONSOR+C" alt="Sponsor C Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=SPONSOR+D" alt="Sponsor D Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/333333/FFFFFF?text=SPONSOR+E" alt="Sponsor E Logo" class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
                         </div>
                     </div>
                 </div>
@@ -546,18 +538,18 @@
                         <div class="team-card-wrapper cursor-pointer">
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
-                                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop" alt="Profile picture of Aaron" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Aaron';">
+                                    <img src="notaaron.jpg" alt="Profile picture of Aaron" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Aaron';">
                                     <h3 class="text-2xl font-bold text-white mb-1">Aaron</h3>
                                     <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Creative Director</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
-                                        <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                                        <a href="https://www.instagram.com/aaronkennyz/" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-twitter"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
                                     </div>
                                 </div>
                                 <div class="card-back p-8 flex flex-col">
                                     <h4 class="text-xl font-bold text-primary-yellow mb-4">About Aaron</h4>
-                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Aaron is a roblox player.</p>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Aaron is a guitar and a piano player. Also a 10x programmer.</p>
                                     <ul class="text-left w-full space-y-2 text-sm">
                                         <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Brand Strategy</li>
                                         <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> UI/UX Design</li>
@@ -572,18 +564,18 @@
                         <div class="team-card-wrapper cursor-pointer">
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="Profile picture of Chris" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Chris';">
+                                    <img src="chris.jpg" alt="Profile picture of Chris" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Chris';">
                                     <h3 class="text-2xl font-bold text-white mb-1">Chris</h3>
                                     <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
                                         <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
-                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-twitter"></i></a>
                                     </div>
                                 </div>
                                 <div class="card-back p-8 flex flex-col">
                                     <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Chris is a full-stack guru who brings our designs to life with clean, efficient code and a passion for new technologies.</p>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Chris is a cool tech guy.</p>
                                     <ul class="text-left w-full space-y-2 text-sm">
                                         <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
                                         <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
@@ -598,18 +590,18 @@
                         <div class="team-card-wrapper cursor-pointer">
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
-                                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
                                     <h3 class="text-2xl font-bold text-white mb-1">Shawn</h3>
                                     <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Project Manager</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
                                         <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
-                                        <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="erfe.com" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
                                     </div>
                                 </div>
                                 <div class="card-back p-8 flex flex-col">
                                     <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
-                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn ensures our projects are delivered on time and exceed expectations, bridging the gap between clients and the dev team.</p>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn is the CEO. </p>
                                     <ul class="text-left w-full space-y-2 text-sm">
                                         <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
                                         <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
@@ -626,38 +618,38 @@
         </section>
     </main>
 
-    <footer id="contact" class="bg-transparent">
-        <div class="section-container">
+    <footer id="contact" class="bg-gray-900/80 backdrop-blur-sm text-gray-300">
+        <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Soar Fest</h3>
-                    <p class="text-sm text-gray-400">The future of tech and culture, celebrated annually.</p>
+                    <p class="text-sm">The future of tech and culture, celebrated annually.</p>
                 </div>
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
                     <ul>
-                        <li class="mb-2"><a href="#about" class="hover:text-primary-yellow transition-colors text-gray-300">About Us</a></li>
-                        <li class="mb-2"><a href="#events" class="hover:text-primary-yellow transition-colors text-gray-300">All Events</a></li>
-                        <li class="mb-2"><a href="#" class="hover:text-primary-yellow transition-colors text-gray-300">Schedule</a></li>
-                        <li class="mb-2"><a href="#sponsors" class="hover:text-primary-yellow transition-colors text-gray-300">Sponsorship</a></li>
+                        <li class="mb-2"><a href="#about" class="hover:text-primary-yellow transition-colors">About Us</a></li>
+                        <li class="mb-2"><a href="#events" class="hover:text-primary-yellow transition-colors">All Events</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-primary-yellow transition-colors">Schedule</a></li>
+                        <li class="mb-2"><a href="#sponsors" class="hover:text-primary-yellow transition-colors">Sponsorship</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Contact Us</h3>
-                    <p class="text-sm text-gray-300 mb-2">St Aloysius (Deemed to be university)</p>
-                    <p class="text-sm text-gray-300 mb-2">Mangalore</p>
-                    <p class="text-sm"><a href="mailto:contact@soarfest.com" class="hover:text-primary-yellow transition-colors text-gray-300">contact@soarfest.com</a></p>
+                    <p class="text-sm mb-2">St Aloysius (Deemed to be university)</p>
+                    <p class="text-sm mb-2">Mangalore</p>
+                    <p class="text-sm"><a href="mailto:contact@soarfest.com" class="hover:text-primary-yellow transition-colors">contact@soarfest.com</a></p>
                 </div>
                 <div>
                     <h3 class="text-white text-lg font-semibold mb-4">Follow Us</h3>
-                    <div class="flex space-x-4 text-gray-300">
-                        <a href="https://www.facebook.com/staloysiuscollegemangaluru/" aria-label="Facebook" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/sacmangaluru?lang=en" aria-label="Twitter" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/staloysiusmangaluru/?hl=en" aria-label="Instagram" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-instagram"></i></a>
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors text-xl"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="mt-12 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
+            <div class="mt-12 pt-8 border-t border-gray-700 text-center text-sm">
                 <p>&copy; 2025 Soar Fest. All Rights Reserved.</p>
                 <p>Created By GUSSAL </p>
             </div>
@@ -735,6 +727,7 @@
         </div>
     </div>
 
+    <!-- GSAP and ScrollTrigger for Carousel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
 
@@ -861,13 +854,13 @@
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
+                slidesPerView: 'auto',
                 loop: true,
-                slidesPerView: 1, // Set default slides per view for mobile
                 coverflowEffect: {
                     rotate: 0,
-                    stretch: 80,
-                    depth: 150,
-                    modifier: 1,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2.5,
                     slideShadows: false,
                 },
                 navigation: {
@@ -875,17 +868,6 @@
                     prevEl: '#events .swiper-button-prev',
                 },
                 initialSlide: 1,
-                // FIX: Added breakpoints for responsive behavior
-                breakpoints: {
-                    // when window width is >= 768px (tablets)
-                    768: {
-                        slidesPerView: 2,
-                    },
-                    // when window width is >= 1024px (desktops)
-                    1024: {
-                        slidesPerView: 3,
-                    }
-                }
             });
             
             // --- Swiper Initialization for Team Slider ---
@@ -893,31 +875,20 @@
                 effect: 'coverflow',
                 grabCursor: true,
                 centeredSlides: true,
+                slidesPerView: 'auto',
                 loop: true,
-                slidesPerView: 1, // Set default slides per view for mobile
                 coverflowEffect: {
                     rotate: 0,
-                    stretch: 80,
-                    depth: 150,
-                    modifier: 1,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2.5,
                     slideShadows: false,
                 },
                 navigation: {
                     nextEl: '#team .swiper-button-next',
                     prevEl: '#team .swiper-button-prev',
                 },
-                initialSlide: 1,
-                // FIX: Added breakpoints for responsive behavior
-                breakpoints: {
-                    // when window width is >= 768px (tablets)
-                    768: {
-                        slidesPerView: 2,
-                    },
-                    // when window width is >= 1024px (desktops)
-                    1024: {
-                        slidesPerView: 3,
-                    }
-                }
+                initialSlide: 1, 
             });
             
             // --- Modal Handling ---
