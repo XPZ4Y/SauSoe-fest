@@ -214,7 +214,7 @@
             width: 340px;
             height: 400px;
             border-radius: 1.5rem;
-            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
             opacity: 0.4;
             transform: scale(0.85);
             background-color: rgba(23, 23, 23, 0.7);
@@ -225,9 +225,10 @@
             flex-direction: column;
             padding: 2rem;
         }
-        .events-slider .swiper-slide:hover {
+        .events-slider .swiper-slide:hover, .events-slider .swiper-slide.touched {
             box-shadow: 0 0 25px rgba(250, 204, 21, 0.3);
             border-color: var(--primary-yellow);
+            background-color: rgba(250, 204, 21, 0.1);
         }
 
         .events-slider .swiper-slide-active {
@@ -314,11 +315,12 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 0.5rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
-        .team-card-wrapper:hover .card-front {
+        .team-card-wrapper:hover .card-front, .card-front.touched {
             border-color: var(--primary-yellow);
             box-shadow: 0 0 25px rgba(250, 204, 21, 0.3);
+            background-color: rgba(250, 204, 21, 0.1);
         }
         .card-back {
             transform: rotateY(180deg);
@@ -728,7 +730,7 @@
             </div>
             <div class="mt-12 pt-8 border-t border-gray-700 text-center text-sm">
                 <p>&copy; 2025 Soar Fest. All Rights Reserved.</p>
-                <p>Created By GUSSAL </p>
+                <p>Created By SHAWN, CHRIS, AND FR.AARON </p>
             </div>
         </div>
     </footer>
@@ -1142,11 +1144,40 @@
                 document.querySelectorAll('.invalid-input').forEach(el => el.classList.remove('invalid-input'));
             }
 
-            // --- Team Card Flip Functionality ---
+            // --- Team Card Flip and Touch Functionality ---
             document.querySelectorAll('.team-card-wrapper').forEach(card => {
+                const cardFront = card.querySelector('.card-front');
+
+                // Click to flip
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('a')) return;
                     card.classList.toggle('is-flipped');
+                });
+
+                // Touch events for hover effect on mobile
+                card.addEventListener('touchstart', () => {
+                    if (cardFront) cardFront.classList.add('touched');
+                }, { passive: true });
+
+                card.addEventListener('touchend', () => {
+                    if (cardFront) setTimeout(() => cardFront.classList.remove('touched'), 150);
+                });
+                card.addEventListener('touchcancel', () => {
+                    if (cardFront) cardFront.classList.remove('touched');
+                });
+            });
+
+            // --- Event Card Touch Functionality ---
+            document.querySelectorAll('.events-slider .swiper-slide').forEach(card => {
+                card.addEventListener('touchstart', () => {
+                    card.classList.add('touched');
+                }, { passive: true });
+
+                card.addEventListener('touchend', () => {
+                    setTimeout(() => card.classList.remove('touched'), 150);
+                });
+                card.addEventListener('touchcancel', () => {
+                    card.classList.remove('touched');
                 });
             });
         });
