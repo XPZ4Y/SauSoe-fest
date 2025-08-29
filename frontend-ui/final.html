@@ -223,7 +223,7 @@
             opacity: 0.4;
             transform: scale(0.85);
             background-color: rgba(23, 23, 23, 0.7);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
             display: flex;
@@ -233,7 +233,7 @@
         .events-slider .swiper-slide:hover, .events-slider .swiper-slide.touched {
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); /* Matching glow */
             border-color: var(--primary-yellow);
-            background-color: rgba(245, 158, 11, 0.15); /* Matching background tint */
+            background-color: rgba(245, 158, 11, 0.55); /* Matching background tint */
         }
 
         .events-slider .swiper-slide-active {
@@ -319,13 +319,13 @@
             background-color: rgba(23, 23, 23, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
+            border-radius: 2.0rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
         .team-card-wrapper:hover .card-front, .card-front.touched {
             border-color: var(--primary-yellow);
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); /* Matching glow */
-            background-color: rgba(245, 158, 11, 0.15); /* Matching background tint */
+            background-color: rgba(245, 158, 11, 0.50); /* Matching background tint */
         }
         .card-back {
             transform: rotateY(180deg);
@@ -338,13 +338,14 @@
             height: 550px; 
             padding-top: 50px;
             padding-bottom: 50px;
+            backdrop-filter: blur(40px);
         }
 
         .team-slider .swiper-slide {
             width: 350px;
             height: 450px; 
             transition: transform 0.5s ease, opacity 0.5s ease;
-            opacity: 0.4;
+            opacity: 0.8;
             transform: scale(0.85);
         }
 
@@ -414,6 +415,7 @@
             display: none;
             z-index: 100;
         }
+        
 
     </style>
 </head>
@@ -517,7 +519,7 @@
             </div>
         </section>
         
-        <section id="events" class="py-20 lg:py-32 bg-transparent overflow-hidden">
+        <section id="events" class="py-20 lg:py-32 overflow-hidden">
             <div class="container mx-auto px-6 text-center">
                  <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">Flagship Events</h2>
             </div>
@@ -537,10 +539,10 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="mb-4 text-primary-yellow" id="event-icon-3"><svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.52 4.674c.3.921-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.52-4.674a1 1 0 00-.363-1.118L2.98 10.11c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg></div>
-                        <h3 class="text-2xl font-bold text-white mb-3">#Ctrl+Alt+Escape</h3>
+                        <h3 class="text-2xl font-bold text-white mb-3">#Ctrl+Alt+Esc</h3>
                         <p class="text-gray-300 flex-grow mb-6">Think.Solve.Escape.</p>
-                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline self-start" data-event="#Ctrl+Alt+Escape" data-icon="event-icon-3" data-details="A digital treasure hunt combined with an escape room challenge. Decipher clues, solve programming puzzles, and race against the clock. Test your problem-solving skills and teamwork to find the final key.">Learn More &rarr;</button>
-                    </div>
+                        <button class="open-dsemibold hover:underline self-start" data-event="#Ctrl+Alt+Escape" data-icon="event-icon-3" data-details="A digital treasure hunt combined with an escape room challenge. Decipher clues, solve programming puzzles, and race against the clock. Test your problem-solving skills and teamwork to find the final key.">Learn More &rarr;</button>
+                    </div>etails-modal text-primary-yellow font-
                     <div class="swiper-slide">
                         <div class="mb-4 text-primary-yellow" id="event-icon-4"><svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></div>
                         <h3 class="text-2xl font-bold text-white mb-3">ReelGear</h3>
@@ -595,8 +597,8 @@
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
                                     <img src="notaaron.jpg" alt="Profile picture of Aaron" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Aaron';">
-                                    <h3 class="text-2xl font-bold text-white mb-1">Aaron</h3>
-                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Creative Director</p>
+                                    <h3 class="text-2xl font-bold text-white mb-1">Website</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Aaron Dsouza</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
                                         <a href="#" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
                                         <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-twitter"></i></a>
@@ -604,12 +606,14 @@
                                     </div>
                                 </div>
                                 <div class="card-back p-8 flex flex-col">
-                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Aaron</h4>
-                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Aaron is a guitar and a piano player. Also a 10x programmer.</p>
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">The hub of our digital communication. The Website Committee is responsible for managing our online platform, ensuring all information is current, accessible, and clearly communicated. They are the guardians of our official online identity.</p>
                                     <ul class="text-left w-full space-y-2 text-sm">
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Brand Strategy</li>
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> UI/UX Design</li>
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Digital Art</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Aaron Dsouza (Lead)</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Shawn Britto</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Chris Fernandez</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Gautam</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Sidharth G</li>
                                     </ul>
                                 </div>
                             </div>
@@ -621,8 +625,8 @@
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
                                     <img src="chriss.jpg" alt="Profile picture of Chris" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Chris';">
-                                    <h3 class="text-2xl font-bold text-white mb-1">Chris</h3>
-                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Lead Developer</p>
+                                    <h3 class="text-2xl font-bold text-white mb-1">Registration</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Alwisha Sweedal</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
                                         <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="#" aria-label="GitHub" class="hover:text-primary-yellow transition-colors"><i class="fab fa-github"></i></a>
@@ -630,12 +634,17 @@
                                     </div>
                                 </div>
                                 <div class="card-back p-8 flex flex-col">
-                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">Expertise</h4>
-                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Chris is a cool tech guy.</p>
+                                    <h4 class="text-xl font-bold text-primary-red mb-4">ABOUT</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">The masters of organization and your gateway to the event. The Registration Committee manages the entire sign-up process, from online forms to on-site check-in, ensuring a smooth and efficient flow for every single participant.</p>
                                     <ul class="text-left w-full space-y-2 text-sm">
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> React & Node.js</li>
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Database Architecture</li>
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Cloud Deployment</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Alwisha Sweedal (lead)</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Sancia Sebastian</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Akarsh</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Chinmay</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Anujna</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Thrupthi</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Thanisha</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Sohan</li>
                                     </ul>
                                 </div>
                             </div>
@@ -647,8 +656,109 @@
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
                                     <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
-                                    <h3 class="text-2xl font-bold text-white mb-1">Shawn</h3>
-                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Project Manager</p>
+                                    <h3 class="text-2xl font-bold text-white mb-1">Publicity</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Fathima Suhana</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="erfe.com" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn is the CEO. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Finance</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Izhan</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="erfe.com" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn is the CEO. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Media</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Anush Koingodi</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="erfe.com" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn is the CEO. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Cultural</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Shreya Das</p>
+                                    <div class="flex space-x-5 text-gray-400 text-xl">
+                                        <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
+                                        <a href="erfe.com" aria-label="Facebook" class="hover:text-primary-yellow transition-colors"><i class="fab fa-facebook-f"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Shawn is the CEO. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Agile Methodologies</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Client Communication</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Strategic Planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Food & Hospitality</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Grace Dsouza</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
                                         <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="#" aria-label="Instagram" class="hover:text-primary-yellow transition-colors"><i class="fab fa-instagram"></i></a>
@@ -673,20 +783,20 @@
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
                                     <img src="https://placehold.co/128x128/ccc/000?text=Alex" alt="Profile picture of Alex" class="w-32 h-32 rounded-full object-cover border-4 border-gray-700 mb-4 shadow-md">
-                                    <h3 class="text-2xl font-bold text-white mb-1">Alex</h3>
-                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Marketing Head</p>
+                                    <h3 class="text-2xl font-bold text-white mb-1">Student Coordinator</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm mb-4">Thejas & Moksha</p>
                                     <div class="flex space-x-5 text-gray-400 text-xl">
                                         <a href="#" aria-label="LinkedIn" class="hover:text-primary-yellow transition-colors"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="#" aria-label="Twitter" class="hover:text-primary-yellow transition-colors"><i class="fab fa-twitter"></i></a>
                                     </div>
                                 </div>
                                 <div class="card-back p-8 flex flex-col">
-                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">Skills</h4>
-                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Alex is a marketing guru.</p>
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-gray-300 mb-5 text-left text-sm flex-grow">Introducing the architects of [Fest Name]! Our dedicated student coordinators are the backbone of the festival, meticulously planning every detail to ensure a seamless and spectacular experience for everyone.</p>
                                     <ul class="text-left w-full space-y-2 text-sm">
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Social Media</li>
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Content Strategy</li>
-                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> SEO Optimization</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Thejas Jagadeesh</li>
+                                        <li class="text-gray-300"><i class="fas fa-check text-primary-yellow mr-2"></i> Moksha</li>
+
                                     </ul>
                                 </div>
                             </div>
