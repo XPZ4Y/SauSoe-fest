@@ -236,15 +236,17 @@
             animation: blink 1s step-end infinite;
         }
 
-        /* --- Event Slider Section --- */
-        .events-slider {
+        /* --- Slider Sections --- */
+        .events-slider,
+        .soe-slider {
             width: 100%;
             height: 550px;
             padding-top: 50px;
             padding-bottom: 50px;
         }
 
-        .events-slider .swiper-slide {
+        .events-slider .swiper-slide,
+        .soe-slider .swiper-slide {
             width: 340px;
             height: 400px;
             border-radius: 1.5rem;
@@ -258,6 +260,8 @@
             display: flex;
             flex-direction: column;
             padding: 2rem;
+            text-align: center;
+            align-items: center;
         }
 
         .events-slider .swiper-slide:hover,
@@ -267,13 +271,23 @@
             background-color: rgba(247, 192, 43, 0.25);
         }
 
-        .events-slider .swiper-slide-active {
+        .soe-slider .swiper-slide:hover,
+        .soe-slider .swiper-slide.touched {
+            box-shadow: 0 0 25px rgba(101, 163, 218, 0.4);
+            border-color: var(--secondary-blue);
+            background-color: rgba(101, 163, 218, 0.25);
+        }
+
+        .events-slider .swiper-slide-active,
+        .soe-slider .swiper-slide-active {
             opacity: 1;
             transform: scale(1);
         }
 
         .events-slider .swiper-slide-next,
-        .events-slider .swiper-slide-prev {
+        .events-slider .swiper-slide-prev,
+        .soe-slider .swiper-slide-next,
+        .soe-slider .swiper-slide-prev {
             transform: scaleX(1.2) scaleY(0.95);
             opacity: 0.6;
         }
@@ -481,7 +495,8 @@
         @media (min-width: 1024px) {
 
             .events-slider .swiper-slide,
-            .team-slider .swiper-slide {
+            .team-slider .swiper-slide,
+            .soe-slider .swiper-slide {
                 opacity: 1;
                 transform: none;
             }
@@ -553,7 +568,6 @@
     <header id="header" class="sticky top-0 z-50 transition-all duration-300">
         <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
             <a href="#home" class="flex items-center">
-                <!-- NOTE: For best results, please use a cropped version of the logo image with transparent background. -->
                 <img src="St Aloysius Deemed to be University Header White.png" alt="St Aloysius University Logo"
                     class="h-14 w-auto" onerror="this.style.display='none';">
                 <span class="text-xl font-bold text-white hidden sm:inline-block ml-2">SOAR FEST</span>
@@ -563,6 +577,7 @@
                 <a href="#events" class="nav-link font-medium">Events</a>
                 <a href="#sponsors" class="nav-link font-medium">Sponsors</a>
                 <a href="#team" class="nav-link font-medium">Team</a>
+                <a href="#soe" class="nav-link font-medium">About SOE</a>
                 <a href="#contact" class="nav-link font-medium">Contact</a>
             </div>
 
@@ -578,6 +593,7 @@
             <a href="#events" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Events</a>
             <a href="#sponsors" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Sponsors</a>
             <a href="#team" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Team</a>
+            <a href="#soe" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About SOE</a>
             <a href="#contact" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Contact</a>
         </div>
     </header>
@@ -1109,6 +1125,53 @@
                 <div class="swiper-pagination"></div>
             </div>
         </section>
+
+        <section id="soe" class="py-20 lg:py-32 bg-transparent overflow-hidden">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">About <span
+                        class="text-primary-yellow">SOE</span></h2>
+                <p class="text-stone-300 max-w-2xl mx-auto mb-12">Discover the School of Engineering at St. Aloysius
+                    University, a hub of innovation and academic excellence.</p>
+            </div>
+            <div class="swiper soe-slider">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1: Vision & Mission -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-primary-yellow"><i class="fas fa-bullseye fa-3x"></i></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Our Vision</h3>
+                        <p class="text-stone-300 flex-grow mb-6">To be a premier institution in engineering education,
+                            research, and innovation, producing ethically grounded and socially responsible
+                            professionals.</p>
+                    </div>
+                    <!-- Slide 2: Departments -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue"><i class="fas fa-cogs fa-3x"></i></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Departments</h3>
+                        <p class="text-stone-300 flex-grow mb-6">Offering undergraduate and postgraduate programs in
+                            Computer Science, Electronics, Mechanical, and Civil Engineering.</p>
+                    </div>
+                    <!-- Slide 3: Research & Innovation -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-primary-yellow"><i class="fas fa-lightbulb fa-3x"></i></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Research & Innovation</h3>
+                        <p class="text-stone-300 flex-grow mb-6">Fostering a vibrant research culture with
+                            state-of-the-art labs and collaborations with industry leaders to solve real-world problems.
+                        </p>
+                    </div>
+                    <!-- Slide 4: Campus Life -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue"><i class="fas fa-users fa-3x"></i></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Student Life</h3>
+                        <p class="text-stone-300 flex-grow mb-6">A dynamic campus life with numerous technical clubs,
+                            cultural activities, and sports, ensuring holistic development of our students.</p>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
     </main>
 
     <footer id="contact" class="bg-zinc-900/80 backdrop-blur-sm text-stone-300">
@@ -1383,7 +1446,7 @@
             }
 
 
-            // --- Swiper Initialization for Events Slider ---
+            // --- Swiper Initialization ---
             var eventsSwiper = new Swiper('.events-slider', {
                 effect: 'coverflow',
                 grabCursor: true,
@@ -1422,7 +1485,6 @@
                 }
             });
 
-            // --- Swiper Initialization for Team Slider ---
             var teamSwiper = new Swiper('.team-slider', {
                 effect: 'coverflow',
                 grabCursor: true,
@@ -1443,6 +1505,44 @@
                 navigation: {
                     nextEl: '#team .swiper-button-next',
                     prevEl: '#team .swiper-button-prev',
+                },
+                initialSlide: 1,
+                breakpoints: {
+                    1024: {
+                        effect: 'slide',
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        centeredSlides: false,
+                    },
+                    1536: {
+                        effect: 'slide',
+                        slidesPerView: 4,
+                        spaceBetween: 30,
+                        centeredSlides: false,
+                    }
+                }
+            });
+
+            var soeSwiper = new Swiper('.soe-slider', {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: 'auto',
+                loop: true,
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2.5,
+                    slideShadows: false,
+                },
+                pagination: {
+                    el: '#soe .swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '#soe .swiper-button-next',
+                    prevEl: '#soe .swiper-button-prev',
                 },
                 initialSlide: 1,
                 breakpoints: {
@@ -1630,7 +1730,7 @@
             });
 
             // --- Event Card Touch Functionality ---
-            document.querySelectorAll('.events-slider .swiper-slide').forEach(card => {
+            document.querySelectorAll('.events-slider .swiper-slide, .soe-slider .swiper-slide').forEach(card => {
                 card.addEventListener('touchstart', () => {
                     card.classList.add('touched');
                 }, { passive: true });
@@ -1647,4 +1747,3 @@
 </body>
 
 </html>
-```eof
