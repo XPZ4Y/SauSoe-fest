@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-<!--welcome to developer, or someone just curious . You have made an amazing journey to this point and im proud of you . 
-This project is not just a simple website, it's a platform for you to explore and showcase your creativity. Embrace the journey ahead!
--->
 
 <head>
     <meta charset="UTF-8">
@@ -24,10 +21,12 @@ This project is not just a simple website, it's a platform for you to explore an
     <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=S" type="image/png">
 
     <style>
-        /* --- Base & Theme Styles (SAC Yellow & Charcoal) --- */
+        /* --- Base & Theme Styles (SAC Yellow, Blue & Charcoal) --- */
         :root {
             --primary-yellow: #f7c02b;
             /* SAC Logo Yellow */
+            --secondary-blue: #65a3da;
+            /* SAC Logo Blue */
             --dark-bg: #18181b;
             /* Charcoal (zinc-900) */
             --light-text: #e7e5e4;
@@ -43,9 +42,12 @@ This project is not just a simple website, it's a platform for you to explore an
             overscroll-behavior: none;
         }
 
-        /* Added for Hero Text color */
         .text-primary-yellow {
             color: var(--primary-yellow);
+        }
+
+        .text-secondary-blue {
+            color: var(--secondary-blue);
         }
 
         /* --- 3D Carousel Background Styles --- */
@@ -165,13 +167,13 @@ This project is not just a simple website, it's a platform for you to explore an
 
         .btn-secondary {
             background-color: transparent;
-            color: var(--primary-yellow);
-            border: 2px solid var(--primary-yellow);
+            color: var(--secondary-blue);
+            border: 2px solid var(--secondary-blue);
         }
 
         .btn-secondary:hover {
-            background-color: var(--primary-yellow);
-            color: var(--dark-text);
+            background-color: var(--secondary-blue);
+            color: var(--light-text);
         }
 
         .nav-link {
@@ -238,7 +240,6 @@ This project is not just a simple website, it's a platform for you to explore an
         .events-slider {
             width: 100%;
             height: 550px;
-            /* Increased height for pagination */
             padding-top: 50px;
             padding-bottom: 50px;
         }
@@ -251,7 +252,6 @@ This project is not just a simple website, it's a platform for you to explore an
             opacity: 0.4;
             transform: scale(0.85);
             background-color: rgba(39, 39, 42, 0.7);
-            /* Darker charcoal (zinc-800) */
             backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
@@ -263,10 +263,8 @@ This project is not just a simple website, it's a platform for you to explore an
         .events-slider .swiper-slide:hover,
         .events-slider .swiper-slide.touched {
             box-shadow: 0 0 25px rgba(247, 192, 43, 0.4);
-            /* SAC Yellow glow */
             border-color: var(--primary-yellow);
             background-color: rgba(247, 192, 43, 0.25);
-            /* SAC Yellow tint */
         }
 
         .events-slider .swiper-slide-active {
@@ -377,9 +375,7 @@ This project is not just a simple website, it's a platform for you to explore an
         .card-front.touched {
             border-color: var(--primary-yellow);
             box-shadow: 0 0 25px rgba(247, 192, 43, 0.4);
-            /* SAC Yellow glow */
             background-color: rgba(247, 192, 43, 0.25);
-            /* SAC Yellow tint */
         }
 
         .card-back {
@@ -391,7 +387,6 @@ This project is not just a simple website, it's a platform for you to explore an
         .team-slider {
             width: 100%;
             height: 600px;
-            /* Increased height for pagination */
             padding-top: 50px;
             padding-bottom: 50px;
         }
@@ -445,7 +440,6 @@ This project is not just a simple website, it's a platform for you to explore an
             background-color: var(--primary-yellow);
         }
 
-        /* Hide pagination on desktop and show on mobile */
         @media (min-width: 1024px) {
             .swiper-pagination {
                 display: none;
@@ -557,11 +551,12 @@ This project is not just a simple website, it's a platform for you to explore an
     <div id="gradient-overlay"></div>
 
     <header id="header" class="sticky top-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold flex items-center gap-2">
-                <span style="background-color: var(--primary-yellow); color: var(--dark-text);"
-                    class="rounded-md px-2 py-1 font-extrabold">S</span>
-                SOAR FEST
+        <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <a href="#home" class="flex items-center">
+                <!-- NOTE: For best results, please use a cropped version of the logo image with transparent background. -->
+                <img src="St Aloysius Deemed to be University Header White.png" alt="St Aloysius University Logo"
+                    class="h-14 w-auto" onerror="this.style.display='none';">
+                <span class="text-xl font-bold text-white hidden sm:inline-block ml-2">SOAR FEST</span>
             </a>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#about" class="nav-link font-medium">About</a>
@@ -659,7 +654,7 @@ This project is not just a simple website, it's a platform for you to explore an
                             More &rarr;</button>
                     </div>
                     <div class="swiper-slide">
-                        <div class="mb-4 text-primary-yellow" id="event-icon-2"><svg class="w-12 h-12" fill="none"
+                        <div class="mb-4 text-secondary-blue" id="event-icon-2"><svg class="w-12 h-12" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
@@ -686,7 +681,7 @@ This project is not just a simple website, it's a platform for you to explore an
                             More &rarr;</button>
                     </div>
                     <div class="swiper-slide">
-                        <div class="mb-4 text-primary-yellow" id="event-icon-4"><svg class="w-12 h-12" fill="none"
+                        <div class="mb-4 text-secondary-blue" id="event-icon-4"><svg class="w-12 h-12" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
@@ -1341,7 +1336,7 @@ This project is not just a simple website, it's a platform for you to explore an
                         let charIdx = 0;
                         const commandText = document.createElement('span');
                         commandText.className = 'text-white';
-                        terminalCode.innerHTML += `<span class="text-yellow-400">$ </span>`; // Changed to yellow
+                        terminalCode.innerHTML += `<span style="color: var(--secondary-blue);">$ </span>`;
                         terminalCode.appendChild(commandText);
                         const intervalId = setInterval(() => {
                             commandText.textContent += line.text[charIdx + 2];
@@ -1652,3 +1647,4 @@ This project is not just a simple website, it's a platform for you to explore an
 </body>
 
 </html>
+```eof
