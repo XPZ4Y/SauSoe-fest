@@ -251,9 +251,9 @@
             height: 400px;
             border-radius: 1.5rem;
             transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-            opacity: 1;
+            opacity: 0.4;
             transform: scale(0.85);
-            background-color: rgba(247, 192, 43, 0.7);
+            background-color: rgba(39, 39, 42, 0.7);
             backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
@@ -268,7 +268,7 @@
         .events-slider .swiper-slide.touched {
             box-shadow: 0 0 25px rgba(247, 192, 43, 0.4);
             border-color: var(--primary-yellow);
-            background-color: rgba(101, 163, 218,1);
+            background-color: rgba(247, 192, 43, 0.25);
         }
 
         .soe-slider .swiper-slide:hover,
@@ -289,7 +289,7 @@
         .soe-slider .swiper-slide-next,
         .soe-slider .swiper-slide-prev {
             transform: scaleX(1.2) scaleY(0.95);
-            opacity: 1;
+            opacity: 0.6;
         }
 
         /* --- Sponsors Marquee --- */
@@ -378,7 +378,7 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            background-color: rgba(247, 192, 43, 0.7);
+            background-color: rgba(39, 39, 42, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 2.0rem;
@@ -409,7 +409,7 @@
             width: 350px;
             height: 450px;
             transition: transform 0.5s ease, opacity 0.5s ease;
-            opacity: 1;
+            opacity: 0.8;
             transform: scale(0.85);
         }
 
@@ -422,7 +422,7 @@
         .swiper-button-next,
         .swiper-button-prev {
             color: var(--primary-yellow);
-            background-color: rgba(247, 192, 43, 1);
+            background-color: rgba(39, 39, 42, 0.5);
             border-radius: 9999px;
             width: 44px;
             height: 44px;
@@ -568,13 +568,23 @@
 
     <!-- Header -->
     <header id="header" class="sticky top-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
-            <a href="#home" class="flex-shrink-0 flex items-center">
-                <img src="aloylogo.png" alt="St Aloysius University Logo" class="h-14 w-auto"
-                    onerror="this.style.display='none';">
-                <span class="text-xl font-bold text-white ml-2">RESOENANCE</span>
+        <nav class="container mx-auto px-4 sm:px-6 py-2 flex justify-between items-center">
+            <!-- PERFECTED Logo Alignment -->
+            <a href="#home"
+                class="flex items-center gap-3 sm:gap-4 transition-transform duration-300 hover:scale-105">
+                <!-- St. Aloysius Logo -->
+                <img src="aloylogo.png" alt="St Aloysius University Logo" class="h-10 sm:h-12 w-auto"
+                    onerror="this.style.display='none'">
 
+                <!-- Vertical Separator -->
+                <div class="w-px h-10 sm:h-12 bg-zinc-600"></div>
+
+                <!-- Resonance 2025 Logo -->
+                <img src="reson.png" alt="Resoenance 2025 Logo" class="h-10 sm:h-12 w-auto"
+                    onerror="this.style.display='none'">
             </a>
+
+            <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#about" class="nav-link font-medium">About</a>
                 <a href="#events" class="nav-link font-medium">Events</a>
@@ -584,6 +594,7 @@
                 <a href="#contact" class="nav-link font-medium">Contact</a>
             </div>
 
+            <!-- Mobile Menu Button -->
             <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
@@ -591,6 +602,7 @@
                 </svg>
             </button>
         </nav>
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-zinc-900/90 backdrop-blur-sm border-t border-zinc-700">
             <a href="#about" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About</a>
             <a href="#events" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Events</a>
@@ -605,7 +617,7 @@
         <!-- Hero Section -->
         <section id="home" class="min-h-screen flex items-center justify-center bg-transparent">
             <div class="container mx-auto px-6 text-center relative z-10">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extold text-white leading-tight mb-4">
                     Not just a sound <span class="text-primary-yellow text-glow inline-block"><span
                             id="typewriter-text"></span><span id="typewriter-cursor">|</span></span>
                 </h1>
@@ -1739,3 +1751,4 @@
 </body>
 
 </html>
+
