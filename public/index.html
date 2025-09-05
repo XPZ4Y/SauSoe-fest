@@ -172,11 +172,12 @@
 
             update() {
                 if (isCollapsing) {
-                    this.z -= 15; // Accelerate during collapse
-                    this.x *= 0.98; // Move towards center X
-                    this.y *= 0.98; // Move towards center Y
+                    // Gracefully move towards the center
+                    this.x *= 0.98;
+                    this.y *= 0.98;
+                    this.z -= 0.5; // Slow down forward motion to emphasize collapse
                 } else {
-                    this.z -= 2; // Normal, slower speed
+                    this.z -= 2; // Normal "hyperspace" speed
                 }
 
                 if (this.z < 1) {
@@ -191,8 +192,15 @@
                 const sx = (this.x / this.z) * centerX + centerX;
                 const sy = (this.y / this.z) * centerY + centerY;
 
-                const r = Math.max(0, (1 - this.z / canvas.width) * 3);
+                let r = Math.max(0, (1 - this.z / canvas.width) * 3);
 
+                // Draw star head
+                ctx.beginPath();
+                ctx.arc(sx, sy, r, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+
+                // Draw trail
                 const px = (this.x / this.pz) * centerX + centerX;
                 const py = (this.y / this.pz) * centerY + centerY;
 
