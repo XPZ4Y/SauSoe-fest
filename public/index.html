@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>St. Aloysius University Fests</title>
+    <title>St. Aloysius University Fests | Choose Your Odyssey</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=SAC" type="image/png">
 
@@ -16,7 +16,8 @@
         :root {
             --primary-yellow: #f7c02b;
             --secondary-blue: #65a3da;
-            --dark-bg: #18181b;
+            /* Blue from SAC Logo */
+            --dark-bg: #0c0a09;
             --light-text: #e7e5e4;
         }
 
@@ -24,87 +25,229 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
             color: var(--light-text);
-            background-image: radial-gradient(circle at center, rgba(39, 39, 42, 0.5) 0%, var(--dark-bg) 70%);
+            overflow: hidden;
+            /* Prevent scrollbars from the animation */
         }
 
-        .fest-card {
-            background-color: rgba(39, 39, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        h1,
+        h2,
+        h3 {
+            font-family: 'Cinzel', serif;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        #page-vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 40%, var(--dark-bg) 80%);
+            z-index: -1;
+        }
+
+        /* Portal Card Styles */
+        .portal-card {
+            position: relative;
+            background-color: rgba(12, 10, 9, 0.7);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            transform: scale(1);
+            transform: translateY(0);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
-        .fest-card:hover {
-            transform: scale(1.05);
-            background-color: rgba(39, 39, 42, 0.9);
+        .portal-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(12, 10, 9, 0.9);
         }
 
+        /* Resoenance Card - Futuristic Hexagon */
         #resoenance-card:hover {
             border-color: var(--primary-yellow);
-            box-shadow: 0 0 30px rgba(247, 192, 43, 0.3);
+            box-shadow: 0 0 40px rgba(247, 192, 43, 0.3);
         }
 
+        /* Echelon Card - Baroque Frame */
         #echelon-card:hover {
             border-color: var(--secondary-blue);
-            box-shadow: 0 0 30px rgba(101, 163, 218, 0.3);
+            box-shadow: 0 0 40px rgba(101, 163, 218, 0.3);
         }
 
-        .text-glow-yellow {
-            text-shadow: 0 0 12px rgba(247, 192, 43, 0.7);
+        /* Singularity Animation */
+        #page-content-wrapper {
+            transition: transform 3s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 2.5s ease-out;
         }
 
-        .text-glow-blue {
-            text-shadow: 0 0 12px rgba(101, 163, 218, 0.7);
+        body.singularity-active #page-content-wrapper {
+            transform: scale(0) rotate(-360deg);
+            opacity: 0;
         }
     </style>
 </head>
 
 <body class="antialiased">
 
-    <div class="min-h-screen flex flex-col items-center justify-center p-6">
+    <canvas id="particle-canvas"></canvas>
+    <div id="page-vignette"></div>
 
-        <header class="text-center mb-10">
-            <img src="aloylogo.png" alt="St. Aloysius University Logo"
-                class="h-20 mx-auto mb-4" onerror="this.style.display='none';">
-            <h1 class="text-3xl md:text-5xl font-extrabold text-white">Welcome to the School of Engineering, Fests of
-                2025</h1>
-            <p class="text-stone-300 mt-2">Choose your destination.</p>
+    <div id="page-content-wrapper" class="min-h-screen flex flex-col items-center justify-center p-6 relative">
+
+        <header class="text-center mb-16 z-10">
+            <img src="https://i.ibb.co/0RZzn9Sf/St-Aloysius-Deemed-to-Be-University-Header-Whit.png"
+                alt="St. Aloysius University Logo" class="h-20 mx-auto mb-6 opacity-90">
+            <h1 class="text-4xl md:text-6xl text-white tracking-wider">Choose Your Odyssey</h1>
+            <p class="text-stone-300 mt-3 text-lg">Two journeys. Two destinies. One university.</p>
         </header>
 
-        <main class="w-full max-w-4xl">
-            <div class="grid md:grid-cols-2 gap-8">
+        <main class="w-full max-w-5xl z-10">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-20">
 
                 <!-- resoenance Card -->
-                <a href="./resoe.html" id="resoenance-card"
-                    class="fest-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
-                    <h2 class="text-4xl font-bold text-primary-yellow text-glow-yellow mb-2">resoenance</h2>
-                    <p class="text-stone-300 mb-4">The ultimate convergence of technology, creativity, and innovation.
-                    </p>
-                    <span class="font-bold text-primary-yellow">Enter Site &rarr;</span>
+                <a href="resoe.html" id="resoenance-card"
+                    class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
+                    <h2 class="text-4xl font-bold text-primary-yellow text-glow-yellow mb-3">resoenance</h2>
+                    <p class="text-stone-300 mb-6 flex-grow">Embark on a voyage into the heart of technology,
+                        creativity, and innovation.</p>
+                    <span
+                        class="font-bold text-primary-yellow group-hover:text-white transition-colors duration-300">Enter
+                        The Technoverse &rarr;</span>
                 </a>
 
-                <!-- Echelon Card (Placeholder for the second fest) -->
-                <a href="./fest.html" id="echelon-card"
-                    class="fest-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
-                    <h2 class="text-4xl font-bold text-secondary-blue text-glow-blue mb-2">Echelon</h2>
-                    <p class="text-stone-300 mb-4">Experience the pinnacle of management and strategic excellence.</p>
-                    <span class="font-bold text-secondary-blue">Enter Site &rarr;</span>
+                <!-- Echelon Card -->
+                <a href="fest.html" id="echelon-card"
+                    class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
+                    <h2 class="text-4xl font-bold text-secondary-blue mb-3">Echelon</h2>
+                    <p class="text-stone-300 mb-6 flex-grow">Ascend to the pinnacle of management and strategic
+                        excellence.</p>
+                    <span
+                        class="font-bold text-secondary-blue group-hover:text-white transition-colors duration-300">Enter
+                        The Athenaeum &rarr;</span>
                 </a>
-
             </div>
         </main>
 
-        <footer class="text-center mt-12 text-stone-500 text-sm">
+        <footer class="text-center mt-16 text-stone-500 text-sm z-10">
             <p>&copy; 2025 St. Aloysius (Deemed to be University). All Rights Reserved.</p>
-            <div class="mt-12 pt-8 border-t border-zinc-700 text-center text-sm">
-
-                <p>Created By SHAWN, CHRIS, AND AARON (TEAM KENBRISELLERIS)</p>
-            </div>
         </footer>
 
     </div>
 
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const numParticles = 800;
+        let isCollapsing = false;
+
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        setCanvasSize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+                const rand = Math.random();
+                if (rand < 0.05) { this.color = '#f7c02b'; } // 5% chance for yellow
+                else if (rand < 0.10) { this.color = '#65a3da'; } // 5% chance for blue
+                else { this.color = '#ffffff'; }
+            }
+
+            reset() {
+                this.z = Math.random() * canvas.width;
+                this.x = (Math.random() - 0.5) * canvas.width * 1.5;
+                this.y = (Math.random() - 0.5) * canvas.height * 1.5;
+                this.pz = this.z;
+            }
+
+            update() {
+                if (isCollapsing) {
+                    this.z -= 15; // Accelerate during collapse
+                    this.x *= 0.98; // Move towards center X
+                    this.y *= 0.98; // Move towards center Y
+                } else {
+                    this.z -= 2; // Normal, slower speed
+                }
+
+                if (this.z < 1) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+
+                const sx = (this.x / this.z) * centerX + centerX;
+                const sy = (this.y / this.z) * centerY + centerY;
+
+                const r = Math.max(0, (1 - this.z / canvas.width) * 3);
+
+                const px = (this.x / this.pz) * centerX + centerX;
+                const py = (this.y / this.pz) * centerY + centerY;
+
+                this.pz = this.z;
+
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(sx, sy);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = r;
+                ctx.stroke();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(12, 10, 9, 0.2)'; // Fading trail effect
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            setCanvasSize();
+            particles = [];
+            init();
+        });
+
+        // --- Singularity Click Handler ---
+        document.querySelectorAll('.portal-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const destination = e.currentTarget.href;
+
+                document.body.classList.add('singularity-active');
+                isCollapsing = true;
+
+                setTimeout(() => {
+                    window.location.href = destination;
+                }, 3000);
+            });
+        });
+    </script>
 </body>
 
 </html>
