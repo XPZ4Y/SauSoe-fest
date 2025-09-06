@@ -15,8 +15,7 @@
     <style>
         :root {
             --primary-yellow: #f7c02b;
-            --secondary-blue: #65a3da;
-            /* Blue from SAC Logo */
+            --secondary-blue: #65a3da; /* Blue from SAC Logo */
             --dark-bg: #0c0a09;
             --light-text: #e7e5e4;
         }
@@ -25,16 +24,13 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
             color: var(--light-text);
-            overflow-x: hidden;
-            /* Allow vertical scroll, prevent horizontal */
+            overflow-x: hidden; /* Allow vertical scroll, prevent horizontal */
         }
-
-        h1,
-        h2,
-        h3 {
+        
+        h1, h2, h3 {
             font-family: 'Cinzel', serif;
         }
-
+        
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -46,12 +42,32 @@
 
         #page-vignette {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(ellipse at center, transparent 40%, var(--dark-bg) 80%);
             z-index: -1;
+        }
+
+        /* Card Glow Animations */
+        @keyframes subtle-glow-yellow {
+            0%, 100% {
+                border-color: rgba(247, 192, 43, 0.4);
+                box-shadow: 0 0 15px rgba(247, 192, 43, 0.15);
+            }
+            50% {
+                border-color: rgba(247, 192, 43, 0.6);
+                box-shadow: 0 0 25px rgba(247, 192, 43, 0.25);
+            }
+        }
+
+        @keyframes subtle-glow-blue {
+             0%, 100% {
+                border-color: rgba(101, 163, 218, 0.4);
+                box-shadow: 0 0 15px rgba(101, 163, 218, 0.15);
+            }
+            50% {
+                border-color: rgba(101, 163, 218, 0.6);
+                box-shadow: 0 0 25px rgba(101, 163, 218, 0.25);
+            }
         }
 
         /* Portal Card Styles */
@@ -61,35 +77,41 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             transform: translateY(0);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
         }
-
         .portal-card:hover {
             transform: translateY(-10px);
             background-color: rgba(12, 10, 9, 0.9);
+            animation-play-state: paused; /* Pause subtle glow on hover for the intense one */
         }
-
-        /* Resoenance Card - Futuristic Hexagon */
+        
+        /* Resoenance Card */
+        #resoenance-card {
+            animation: subtle-glow-yellow 5s ease-in-out infinite;
+        }
         #resoenance-card:hover {
             border-color: var(--primary-yellow);
             box-shadow: 0 0 40px rgba(247, 192, 43, 0.3);
         }
 
-        /* Echelon Card - Baroque Frame */
+        /* Echelon Card */
+        #echelon-card {
+            animation: subtle-glow-blue 5s ease-in-out infinite;
+        }
         #echelon-card:hover {
             border-color: var(--secondary-blue);
             box-shadow: 0 0 40px rgba(101, 163, 218, 0.3);
         }
-
+        
         /* Singularity Animation */
         #page-content-wrapper {
             transition: transform 3s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 2.5s ease-out;
         }
-
         body.singularity-active #page-content-wrapper {
             transform: scale(0) rotate(-360deg);
             opacity: 0;
         }
+        
     </style>
 </head>
 
@@ -101,7 +123,8 @@
     <div id="page-content-wrapper" class="min-h-screen flex flex-col items-center justify-center p-6 relative">
 
         <header class="text-center mb-16 z-10">
-            <img src="aloylogo.png" alt="St. Aloysius University Logo" class="h-20 mx-auto mb-6 opacity-90">
+            <img src="https://i.ibb.co/0RZzn9Sf/St-Aloysius-Deemed-to-Be-University-Header-Whit.png" alt="St. Aloysius University Logo"
+                class="h-20 mx-auto mb-6 opacity-90">
             <h1 class="text-4xl md:text-6xl text-white tracking-wider">Choose Your Odyssey</h1>
             <p class="text-stone-300 mt-3 text-lg">Two journeys. Two destinies. One university.</p>
         </header>
@@ -110,29 +133,21 @@
             <div class="grid md:grid-cols-2 gap-12 md:gap-20">
 
                 <!-- resoenance Card -->
-                <a href="resoe.html" id="resoenance-card"
-                    class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
+                <a href="resoenance.html" id="resoenance-card" class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
                     <h2 class="text-4xl font-bold text-primary-yellow text-glow-yellow mb-3">resoenance</h2>
-                    <p class="text-stone-300 mb-6 flex-grow">Embark on a voyage into the heart of technology,
-                        creativity, and innovation.</p>
-                    <span
-                        class="font-bold text-primary-yellow group-hover:text-white transition-colors duration-300">Enter
-                        The Technoverse &rarr;</span>
+                    <p class="text-stone-300 mb-6 flex-grow">Embark on a voyage into the heart of technology, creativity, and innovation.</p>
+                    <span class="font-bold text-primary-yellow group-hover:text-white transition-colors duration-300">Enter The Technoverse &rarr;</span>
                 </a>
 
                 <!-- Echelon Card -->
-                <a href="fest.html" id="echelon-card"
-                    class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
+                <a href="echelon.html" id="echelon-card" class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
                     <h2 class="text-4xl font-bold text-secondary-blue mb-3">Echelon</h2>
-                    <p class="text-stone-300 mb-6 flex-grow">Ascend to the pinnacle of management and strategic
-                        excellence.</p>
-                    <span
-                        class="font-bold text-secondary-blue group-hover:text-white transition-colors duration-300">Enter
-                        The Athenaeum &rarr;</span>
+                    <p class="text-stone-300 mb-6 flex-grow">Ascend to the pinnacle of management and strategic excellence.</p>
+                    <span class="font-bold text-secondary-blue group-hover:text-white transition-colors duration-300">Enter The Athenaeum &rarr;</span>
                 </a>
             </div>
         </main>
-
+        
         <footer class="text-center mt-16 text-stone-500 text-sm z-10">
             <p>&copy; 2025 St. Aloysius (Deemed to be University). All Rights Reserved.</p>
         </footer>
@@ -179,7 +194,7 @@
                 } else {
                     this.z -= 2; // Normal "hyperspace" speed
                 }
-
+                
                 if (this.z < 1) {
                     this.reset();
                 }
@@ -188,12 +203,12 @@
             draw() {
                 const centerX = canvas.width / 2;
                 const centerY = canvas.height / 2;
-
+                
                 const sx = (this.x / this.z) * centerX + centerX;
                 const sy = (this.y / this.z) * centerY + centerY;
-
+                
                 let r = Math.max(0, (1 - this.z / canvas.width) * 3);
-
+                
                 // Draw star head
                 ctx.beginPath();
                 ctx.arc(sx, sy, r, 0, Math.PI * 2);
@@ -203,7 +218,7 @@
                 // Draw trail
                 const px = (this.x / this.pz) * centerX + centerX;
                 const py = (this.y / this.pz) * centerY + centerY;
-
+                
                 this.pz = this.z;
 
                 ctx.beginPath();
@@ -241,7 +256,7 @@
             setCanvasSize();
             init(); // Re-initialize particles on resize
         });
-
+        
         // --- Reset animation state on back navigation ---
         window.addEventListener('pageshow', (event) => {
             // This event fires when the page is loaded, including from the back-forward cache.
@@ -255,10 +270,10 @@
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const destination = e.currentTarget.href;
-
+                
                 document.body.classList.add('singularity-active');
                 isCollapsing = true;
-
+                
                 setTimeout(() => {
                     window.location.href = destination;
                 }, 3000);
@@ -266,5 +281,6 @@
         });
     </script>
 </body>
-
 </html>
+
+
