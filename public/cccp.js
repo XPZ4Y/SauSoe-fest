@@ -255,11 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const openRegisterFromDetailsBtn = document.querySelector('.open-register-modal-from-details');
             const allCloseButtons = document.querySelectorAll('.close-modal-btn');
 
-            const openModal = (modal) => {
+            const openModal = (modal, text) => {
                 if (!modal) return;
+                text ? valueX=text : valueX='eee';//a small fix that ensures that the code is only accessed if available
+                window.eee=modal.querySelector('#teamName') //only if the modal is form registraion
+                
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
-                setTimeout(() => modal.querySelector('.modal-content').classList.add('active'), 10);
+                setTimeout(() => {modal.querySelector('.modal-content').classList.add('active'); window.eee.value=valueX; window.eee.disabled=true;}, 10);
             };
 
             const closeModal = (modal) => {
@@ -295,14 +298,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            openRegisterButtons.forEach(button => {
-                button.addEventListener('click', () => openModal(registerModal));
+            openRegisterButtons.forEach(button => {//!? que, ^^&p over the top. don't touch
+                button.addEventListener('click', () => {
+                	//const parentElement = button.parentElement; // or button.parentElement
+        			//alert(parentElement)
+                	openModal(registerModal)
+                });
             });
 
             if (openRegisterFromDetailsBtn) {
                 openRegisterFromDetailsBtn.addEventListener('click', () => {
                     closeModal(detailsModal);
-                    setTimeout(() => openModal(registerModal), 300);
+                    myEventCode = detailsModal.querySelector('#modal-event-title')//isolation of the event code
+                    setTimeout(() => openModal(registerModal, myEventCode.textContent), 300);
                 });
             }
             allCloseButtons.forEach(button => button.addEventListener('click', () => closeModal(button.closest('.modal-backdrop'))));
