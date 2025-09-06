@@ -10,9 +10,10 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const PORT = process.env.PORT || 3000;
 
 // MongoDB connection setup
-const MONGODB_URI = process.env.MONGODB_URI || "nah, you ain't getting the API key, api_scraper_BOT";//my api key
+const MONGODB_URI = process.env.MONGODB_URI || "api_mongodb_6969_userid_sexy_chris_chinese_1_11231393138543521upx@33.mongodbapi.com";//my api key
 const DB_NAME = "registration_db";
 const COLLECTION_NAME = "registrations";
+const ECHELON_COLLECTION_NAME = "echelon-data"; // New collection for echelon posts
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(MONGODB_URI, {
@@ -24,7 +25,7 @@ const client = new MongoClient(MONGODB_URI, {
 });
 
 // Connect to MongoDB
-let db, registrationsCollection;
+let db, registrationsCollection, echelonCollection;
 
 async function connectToMongoDB() {
   try {
@@ -33,10 +34,9 @@ async function connectToMongoDB() {
     
     db = client.db(DB_NAME);
     registrationsCollection = db.collection(COLLECTION_NAME);
+    echelonCollection = db.collection(ECHELON_COLLECTION_NAME); // Initialize the new collection
     
-    // Create indexes for efficient duplicate checking
-    
-    // In connectToMongoDB()
+    // Create indexes for efficient duplicate checking for registrations
     // Enforce uniqueness at the database level. This is the strongest protection.
     await registrationsCollection.createIndex({ contactNumber: 1 }, { unique: true });
 
@@ -81,6 +81,21 @@ async function writeRegistration(registration) {
   }
 }
 
+// Helper function to write new echelon data
+async function writeEchelonData(echelonPost) {
+  try {
+    if (!echelonCollection) {
+      throw new Error('MongoDB connection not established for echelon-data');
+    }
+    const result = await echelonCollection.insertOne(echelonPost);
+    return result.acknowledged;
+  } catch (error) {
+    console.error('Error writing echelon data to MongoDB:', error);
+    return false;
+  }
+}
+
+
 // Check if contact number or email already exists
 async function isDuplicate(contactNumber, email) {
   try {
@@ -120,7 +135,7 @@ async function isDuplicate(contactNumber, email) {
   }
 }
 
-// Validate form data
+// Validate registration form data
 function validateFormData(formData) {
   const errors = [];
   
@@ -149,6 +164,18 @@ function validateFormData(formData) {
     errors.push('Please enter a valid guardian phone number');
   }
   
+  return errors;
+}
+
+// Validate echelon form data
+function validateEchelonData(formData) {
+  const errors = [];
+  const requiredFields = ['fullName', 'teamName', 'class', 'school'];
+  requiredFields.forEach(field => {
+    if (!formData[field] || formData[field].trim() === '') {
+      errors.push(`${field} is required`);
+    }
+  });
   return errors;
 }
 
@@ -273,6 +300,66 @@ const server = http.createServer(async (req, res) => {
         }));
       }
     });
+  } 
+  // Handle POST requests to /echelon-post
+  else if (req.method === 'POST' && req.url === '/echelon-post') {
+    let body = '';
+    
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    
+    req.on('end', async () => {
+      try {
+        const formData = querystring.parse(body);
+        
+        // Validate echelon form data
+        const validationErrors = validateEchelonData(formData);
+        if (validationErrors.length > 0) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            success: false, 
+            message: 'Validation failed',
+            errors: validationErrors 
+          }));
+          return;
+        }
+        
+        // Create the new post object
+        const newEchelonPost = {
+          id: Date.now().toString(),
+          timestamp: new Date().toISOString(),
+          fullName: formData.fullName.trim(),
+          teamName: formData.teamName.trim(),
+          class: formData.class.trim(),
+          school: formData.school.trim()
+        };
+        
+        // Write to MongoDB
+        if (await writeEchelonData(newEchelonPost)) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            success: true, 
+            message: 'Echelon post successful!',
+            data: newEchelonPost
+          }));
+        } else {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            success: false, 
+            message: 'Failed to save echelon post. Please try again.' 
+          }));
+        }
+        
+      } catch (error) {
+        console.error('Error processing echelon request:', error);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ 
+          success: false, 
+          message: 'Internal server error' 
+        }));
+      }
+    });
   } else {
     // Handle other routes
     res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -293,7 +380,7 @@ connectToMongoDB().then(success => {
     console.error('Failed to connect to MongoDB. Server not started.');
     process.exit(1);
   }
-});
+});//api key
 
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
