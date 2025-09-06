@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>resoenance 2025 | The Future is Now</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=R" type="image/png">
+
+    <style>
+        /* --- Base & Theme Styles (SAC Yellow, Blue & Charcoal) --- */
+        :root {
+            --primary-yellow: #f7c02b;
+            /* SAC Logo Yellow */
+            --secondary-blue: #65a3da;
+            /* SAC Logo Blue */
+            --dark-bg: #18181b;
+            /* Charcoal (zinc-900) */
+            --light-text: #e7e5e4;
+            /* Stone Text */
+            --dark-text: #111827;
+            /* Dark Text for buttons */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            overscroll-behavior: none;
+        }
+
+        .text-primary-yellow {
+            color: var(--primary-yellow);
+        }
+
+        .text-secondary-blue {
+            color: var(--secondary-blue);
+        }
+
+        /* --- 3D Carousel Background Styles --- */
+        #carousel-background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        [carousel="component"] {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel_track {
+            height: 500vh;
+        }
+
+        .carousel_sticky {
+            position: sticky;
+            top: 0px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        [carousel="wrap"] {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            will-change: contents;
+            --3d-carousel-item-width: 30vw;
+            --3d-carousel-gap: 30vw;
+            --3d-carousel-rotate: 0deg;
+            --3d-carousel-z: 0px;
+        }
+
+        @media screen and (max-width: 991px) {
+            [carousel="wrap"] {
+                --3d-carousel-item-width: 70vw;
+                --3d-carousel-gap: 40vw;
+            }
+        }
+
+        [carousel="wrap"]>div {
+            transform-style: preserve-3d;
+            transform: translate3d(0px, 0px, var(--3d-carousel-z)) rotateX(0deg) rotateY(var(--3d-carousel-rotate));
+        }
+
+        .carousel_list {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-d;
+        }
+
+        .carousel_item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: var(--3d-carousel-item-width);
+            height: auto;
+        }
+
+        .carousel_img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1rem;
+        }
+
+        #gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(24, 24, 27, 0.4), rgba(24, 24, 27, 0.9));
+            z-index: -1;
+        }
+
+        /* --- Typography & Helpers --- */
+        .text-glow {
+            text-shadow: 0 0 12px rgba(247, 192, 43, 0.7);
+            /* SAC Yellow glow */
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+            font-weight: 700;
+            border-radius: 9999px;
+            padding: 0.75rem 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-yellow);
+            color: var(--dark-text);
+        }
+
+        .btn-primary:hover {
+            background-color: #f8c950;
+            /* Lighter yellow for hover */
+            box-shadow: 0 4px 20px rgba(247, 192, 43, 0.5);
+            /* Matching glow */
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--secondary-blue);
+            border: 2px solid var(--secondary-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-blue);
+            color: var(--light-text);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.25s ease-out;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -6px;
+            left: 0;
+            background-color: var(--primary-yellow);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* --- Header Styles --- */
+        #header {
+            background-color: rgba(24, 24, 27, 0.5);
+            /* Charcoal background */
+            backdrop-filter: blur(8px);
+        }
+
+        #header.scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: rgba(24, 24, 27, 0.8);
+            /* Darker charcoal on scroll */
+        }
+
+        #header a,
+        #header svg {
+            color: #fff;
+        }
+
+        #header .nav-link {
+            color: var(--light-text);
+        }
+
+        #header .nav-link:hover {
+            color: #fff;
+        }
+
+        /* --- Hero Typewriter Animation --- */
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #typewriter-cursor {
+            animation: blink 1s step-end infinite;
+        }
+
+        /* --- Slider Sections --- */
+        .events-slider,
+        .soe-slider {
+            width: 100%;
+            height: 550px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .events-slider .swiper-slide,
+        .soe-slider .swiper-slide {
+            width: 340px;
+            height: 400px;
+            border-radius: 1.5rem;
+            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            opacity: 0.4;
+            transform: scale(0.85);
+            background-color: rgba(39, 39, 42, 0.7);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            text-align: center;
+            align-items: center;
+        }
+
+        .events-slider .swiper-slide:hover,
+        .events-slider .swiper-slide.touched {
+            box-shadow: 0 0 25px rgba(247, 192, 43, 0.4);
+            border-color: var(--primary-yellow);
+            background-color: rgba(247, 192, 43, 0.25);
+        }
+
+        .soe-slider .swiper-slide:hover,
+        .soe-slider .swiper-slide.touched {
+            box-shadow: 0 0 25px rgba(101, 163, 218, 0.4);
+            border-color: var(--secondary-blue);
+            background-color: rgba(101, 163, 218, 0.25);
+        }
+
+        .events-slider .swiper-slide-active,
+        .soe-slider .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .events-slider .swiper-slide-next,
+        .events-slider .swiper-slide-prev,
+        .soe-slider .swiper-slide-next,
+        .soe-slider .swiper-slide-prev {
+            transform: scaleX(1.2) scaleY(0.95);
+            opacity: 0.6;
+        }
+
+        /* --- Sponsors Marquee --- */
+        .rfm-marquee-container {
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: row;
+            position: relative;
+            width: 100%;
+        }
+
+        .rfm-marquee-container:hover .rfm-marquee {
+            animation-play-state: paused;
+        }
+
+        .rfm-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .rfm-overlay::before,
+        .rfm-overlay::after {
+            background: linear-gradient(to right, var(--dark-bg), rgba(24, 24, 27, 0));
+            content: "";
+            height: 100%;
+            position: absolute;
+            width: 6rem;
+            z-index: 2;
+        }
+
+        .rfm-overlay::after {
+            right: 0;
+            top: 0;
+            transform: rotateZ(180deg);
+        }
+
+        .rfm-overlay::before {
+            left: 0;
+            top: 0;
+        }
+
+        .rfm-marquee {
+            flex: 0 0 auto;
+            min-width: 100%;
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            animation: scroll 40s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* --- Team Section Styles --- */
+        .team-card-wrapper {
+            perspective: 1500px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .team-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .team-card-wrapper.is-flipped .team-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            background-color: rgba(39, 39, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2.0rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .team-card-wrapper:hover .card-front,
+        .card-front.touched {
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 25px rgba(247, 192, 43, 0.4);
+            background-color: rgba(247, 192, 43, 0.25);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            border-color: var(--primary-yellow);
+        }
+
+        /* --- Team Slider Styles --- */
+        .team-slider {
+            width: 100%;
+            height: 600px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .team-slider .swiper-slide {
+            width: 350px;
+            height: 450px;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 0.8;
+            transform: scale(0.85);
+        }
+
+        .team-slider .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Shared Swiper Navigation Styles */
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--primary-yellow);
+            background-color: rgba(39, 39, 42, 0.5);
+            border-radius: 9999px;
+            width: 44px;
+            height: 44px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background-color: rgba(39, 39, 42, 0.7);
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* --- Swiper Pagination Styles --- */
+        .swiper-pagination-bullet {
+            background-color: rgba(255, 255, 255, 0.5);
+            width: 10px;
+            height: 10px;
+            transition: background-color 0.3s ease;
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: var(--primary-yellow);
+        }
+
+        @media (min-width: 1024px) {
+            .swiper-pagination {
+                display: none;
+            }
+        }
+
+        /* --- Modal & Form Styles --- */
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(-20px) scale(0.95);
+            opacity: 0;
+        }
+
+        .modal-content.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .invalid-input {
+            border-color: #ef4444 !important;
+        }
+
+        .invalid-input:focus {
+            --tw-ring-color: #ef4444 !important;
+        }
+
+        /* --- PC Optimization Styles --- */
+        @media (min-width: 1024px) {
+
+            .events-slider .swiper-slide,
+            .team-slider .swiper-slide,
+            .soe-slider .swiper-slide {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <button id="back-to-top" class="btn btn-primary !p-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- Background Carousel -->
+    <div id="carousel-background-container">
+        <div carousel="component">
+            <div class="carousel_track">
+                <div class="carousel_sticky">
+                    <div carousel="wrap">
+                        <div class="carousel_list">
+                            <div class="carousel_item"><img alt="Carousel Image 1"
+                                    src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 2"
+                                    src="https://images.unsplash.com/photo-1550745165-9bc0b252726a?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 3"
+                                    src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 4"
+                                    src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 5"
+                                    src="https://images.unsplash.com/photo-1573495627361-ab2b808a68a8?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 6"
+                                    src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 7"
+                                    src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 8"
+                                    src="https://images.unsplash.com/photo-1605810230464-4712e0613526?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 9"
+                                    src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                            <div class="carousel_item"><img alt="Carousel Image 10"
+                                    src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1920&auto=format&fit=crop"
+                                    class="carousel_img"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="gradient-overlay"></div>
+
+    <!-- Header -->
+    <header id="header" class="sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 py-2 flex justify-between items-center">
+            <!-- PERFECTED Logo Alignment -->
+            <a href="#home"
+                class="flex items-center gap-3 sm:gap-4 transition-transform duration-300 hover:scale-105">
+                <!-- St. Aloysius Logo -->
+                <img src="aloylogo.png" alt="St Aloysius University Logo" class="h-12 sm:h-16 w-auto"
+                    onerror="this.style.display='none'">
+
+                <!-- Vertical Separator -->
+                <div class="w-px h-12 sm:h-16 bg-zinc-600"></div>
+
+                <!-- Resonance 2025 Logo -->
+                <img src="reson.png" alt="Resoenance 2025 Logo" class="h-12 sm:h-16 w-auto"
+                    onerror="this.style.display='none'">
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link font-medium">About</a>
+                <a href="#events" class="nav-link font-medium">Events</a>
+                <a href="#sponsors" class="nav-link font-medium">Sponsors</a>
+                <a href="#team" class="nav-link font-medium">Team</a>
+                <a href="#soe" class="nav-link font-medium">About SOE</a>
+                <a href="#contact" class="nav-link font-medium">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-zinc-900/90 backdrop-blur-sm border-t border-zinc-700">
+            <a href="#about" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About</a>
+            <a href="#events" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Events</a>
+            <a href="#sponsors" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Sponsors</a>
+            <a href="#team" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Team</a>
+            <a href="#soe" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About SOE</a>
+            <a href="#contact" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center bg-transparent">
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4">
+                    Not just a sound <span class="text-primary-yellow text-glow inline-block"><span
+                            id="typewriter-text"></span><span id="typewriter-cursor">|</span></span>
+                </h1>
+                <p class="text-lg md:text-xl text-stone-200 max-w-3xl mx-auto mb-10 leading-relaxed">
+                    An invitation to the crucible of brilliance. Across a series of high-stakes challenges, this
+                    festival is designed to forge talent, foster connection, and discover the ideas that will shape our
+                    world.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 lg:py-32 bg-transparent">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">About <span
+                                class="text-primary-yellow">resoenance</span></h2>
+                        <p class="text-stone-300 mb-4 leading-relaxed">
+                            Resoenance is more than a festival—it's an arena designed to test your limits and amplify your brilliance. This is your opportunity to compete against the brightest minds, push your skills to new heights, and discover your true potential.
+                        </p>
+                        <p class="text-stone-300 leading-relaxed">
+                            Whether your strength lies in sharp intellect, creative storytelling, rapid problem-solving,
+                            or game-changing innovation—this is where you come to prove it.
+                            Get ready for an experience that will test you, inspire you, and empower you to turn your
+                            potential into a powerful impact.
+                        </p>
+                    </div>
+                    <div id="animated-terminal"
+                        class="bg-zinc-800/80 backdrop-blur-sm border border-zinc-700 text-sm rounded-lg shadow-2xl font-mono min-h-[300px] w-full flex flex-col">
+                        <div class="flex items-center gap-1.5 bg-zinc-900/80 rounded-t-lg p-3">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="p-4 flex-grow text-white" id="terminal-code-container">
+                            <pre class="whitespace-pre-wrap"><code id="terminal-code"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="py-20 lg:py-32 overflow-hidden">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">THE ARENAS</h2>
+            </div>
+            <div class="swiper events-slider">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-primary-yellow" id="event-icon-1"><svg class="w-12 h-12" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M7.05 7.05l2.122 2.122m6.856 6.856l2.122 2.122m0-11.314l-2.122 2.122m-6.856 6.856l-2.122 2.122M12 12a5 5 0 110-10 5 5 0 010 10z">
+                                </path>
+                            </svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">IDEATHON</h3>
+                        </h3>
+                        <p class="text-stone-300 flex-grow mb-6">Where Ideas Take Flight.</p>
+                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
+                            data-event="IDEATHON" data-icon="event-icon-1"
+                            data-details="Ready to turn your thoughts into reality?  This isn't just a competition; it's a launchpad for the next big thing. Pitch your idea, perfect it, and power the future.">Learn
+                            More And Register&rarr;</button>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue" id="event-icon-2"><svg class="w-12 h-12" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            </svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">QUIZ</h3>
+                        <p class="text-stone-300 flex-grow mb-6">The Battle Of Wits.</p>
+                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
+                            data-event="QUIZ" data-icon="event-icon-2"
+                            data-details="Forget what you think you know and prove what you've mastered. The Quiz is the ultimate showdown for the sharpest minds.Knowledge is power. How powerful are you?">Learn
+                            More And Register&rarr;</button>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-primary-yellow" id="event-icon-3"><svg class="w-12 h-12" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.52 4.674c.3.921-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.52-4.674a1 1 0 00-.363-1.118L2.98 10.11c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                </path>
+                            </svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">ESCAPE ROOM * TREASURE HUNT</h3>
+                        <p class="text-stone-300 flex-grow mb-6">The Ultimate Quest.</p>
+                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
+                            data-event="ESCAPE ROOM * TREASURE HUNT" data-icon="event-icon-3"
+                            data-details="Think you can outsmart the clock and outwit the puzzles?This is a test of brains, teamwork, and speed.The Escape Room × Treasure Hunt is the ultimate adventure. Solve the puzzle. Find the prize.">Learn
+                            More And Register &rarr;</button>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue" id="event-icon-4"><svg class="w-12 h-12" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">REEL MAKING</h3>
+                        <p class="text-stone-300 flex-grow mb-6">Your Story, Your Reel</p>
+                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
+                            data-event="REEL MAKING" data-icon="event-icon-4"
+                            data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
+                            More And Register &rarr;</button>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!-- Sponsors Section -->
+        <section id="sponsors" class="py-20 lg:py-32 overflow-hidden bg-transparent">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Sponsors</h2>
+                <p class="text-stone-300 max-w-2xl mx-auto mb-12">Powering innovation with the support of industry
+                    leaders.</p>
+                <div class="rfm-marquee-container">
+                    <div class="rfm-overlay"></div>
+                    <div class="rfm-marquee">
+                        <div class="flex flex-shrink-0 justify-around items-center w-full">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=MicroHard" alt="Sponsor A Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=MomoCafe" alt="Sponsor B Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=Googol" alt="Sponsor C Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+D" alt="Sponsor D Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+E" alt="Sponsor E Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                        </div>
+                    </div>
+                    <div class="rfm-marquee">
+                        <div class="flex flex-shrink-0 justify-around items-center w-full">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=Bihar" alt="Sponsor A Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+B" alt="Sponsor B Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+C" alt="Sponsor C Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+D" alt="Sponsor D Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+E" alt="Sponsor E Logo"
+                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="py-20 lg:py-32 bg-transparent overflow-hidden">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Meet The Team</h2>
+                <p class="text-stone-300 max-w-2xl mx-auto mb-12">The brilliant minds behind resoenance. Click on a card
+                    to learn more.</p>
+            </div>
+
+            <div class="swiper team-slider">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="iconic/notaaron.jpg" alt="Profile picture of Aaron"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Aaron';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Website</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Shawn
+                                        Britto</p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">The hub
+                                        of our digital
+                                        communication. The Website Committee is responsible for managing our online
+                                        platform, ensuring all information is current, accessible, and clearly
+                                        communicated. They are the guardians of our official online identity.</p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Shawn Britto(Lead)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Aaron D'souza(Unemployed)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Chris Fernandes(Free labor)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Gautam</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sidharth G</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="chriss.jpg" alt="Profile picture of Chris"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Chris';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Registration</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">
+                                        Alwisha Sweedal</p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">The
+                                        masters of
+                                        organization and your gateway to the event. The Registration Committee manages
+                                        the entire sign-up process, from online forms to on-site check-in, ensuring a
+                                        smooth and efficient flow for every single participant.</p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Alwisha Sweedal (lead)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sancia Sebastian</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Akarsh</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Chinmay</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Anujna</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Thrupthi</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Thanisha</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sohan</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="iconic/chris.jpg" alt="Profile picture of Shawn"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Student coordinators</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Thejas
+                                        & Moksha</p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">
+                                        Introducing the
+                                        architects of resoenance! Our dedicated student coordinators are the backbone of
+                                        the festival, meticulously planning every detail to ensure a seamless and
+                                        spectacular experience for everyone. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Thejas Jagadeesh</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Moksha</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="iconic/hehe.jpg" alt="Profile picture of Shawn"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Finance</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Izhan
+                                    </p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">Shawn is
+                                        the CEO. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Agile Methodologies</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Client Communication</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Strategic Planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="iconic/aaron.jpg" alt="Profile picture of Shawn"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Media</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Anush
+                                        Koingodi</p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">About Shawn</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">Shawn is
+                                        extremly hot.
+                                    </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Agile Methodologies</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Client Communication</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Strategic Planning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Cultural</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Shreya
+                                        Das</p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">The
+                                        creative soul of our
+                                        community. The Cultural Committee is dedicated to curating the artistic
+                                        heartbeat of our events. They are the visionaries who bring the stage to life
+                                        with a vibrant spectrum of music, dance, drama, and fine arts, celebrating
+                                        talent in all its forms. </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Shreya Das (Lead)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Samrudh</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Savan</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Savan</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="shawn.jpg" alt="Profile picture of Shawn"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Food & Hospitality</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Grace
+                                        Dsouza</p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">The
+                                        cornerstone of the
+                                        guest experience. Our Food and Hospitality Committee expertly manages all
+                                        aspects of guest relations, accommodation, and catering. Their meticulous
+                                        planning ensures that every participant is well-fed, comfortable, and graciously
+                                        hosted.
+
+                                    </p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Grace Dsouza (Lead)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Srajana</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Neha</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sayeeda</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sanvi</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="team-card-wrapper cursor-pointer">
+                            <div class="team-card-inner">
+                                <div class="card-front p-8 flex flex-col items-center justify-center text-center">
+                                    <img src="https://placehold.co/128x128/ccc/000?text=Alex"
+                                        alt="Profile picture of Alex"
+                                        class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md">
+                                    <h3 class="text-2xl font-bold text-white mb-1">Publicity</h3>
+                                    <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Suhana
+                                    </p>
+                                </div>
+                                <div class="card-back p-8 flex flex-col">
+                                    <h4 class="text-xl font-bold text-primary-yellow mb-4">ABOUT</h4>
+                                    <p class="text-stone-300 mb-5 text-left text-sm flex-grow leading-relaxed">The
+                                        strategic voice of
+                                        our event. The Publicity Team crafts our brand identity and manages all
+                                        marketing and communication channels. Through strategic outreach and compelling
+                                        content, they connect with our audience and build a strong, recognizable
+                                        presence.</p>
+                                    <ul class="text-left w-full space-y-2 text-sm">
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Fathima Suhana (Lead)</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sameeha</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Fida</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Preemal</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Georgie</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Samanvi</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Sinchana</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Jiya</li>
+                                        <li class="text-stone-300"><i class="fas fa-check text-primary-yellow mr-2"></i>
+                                            Alwisha</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!-- About SOE Section -->
+        <section id="soe" class="py-20 lg:py-32 bg-transparent overflow-hidden">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">About <span
+                        class="text-primary-yellow">SOE</span></h2>
+                <p class="text-stone-300 max-w-2xl mx-auto mb-12">Discover the School of Engineering at St. Aloysius
+                    University, a hub of innovation and academic excellence.</p>
+            </div>
+            <div class="swiper soe-slider">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1: Vision & Mission -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-primary-yellow" id="soe-icon-1"><i class="fas fa-bullseye fa-3x"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Our Vision</h3>
+                        <p class="text-stone-300 flex-grow text-left">Our vision and mission is to emphasize excellence; we aim to create an environment that fosters innovation, criticalthinking, and personal growth......</p>
+                        <button
+                            class="open-soe-details-modal text-secondary-blue font-semibold hover:underline self-center mt-auto"
+                            data-title="Our Vision" data-icon="soe-icon-1"
+                            data-details='Our vision and mission is to emphasize excellence; we aim to create an environment that fosters innovation, critical thinking, and personal growth. We recognize that education is not just about learning in a vacuum; it should be closelytied to pressing the issues our communities are facing today. Here, we live by our motto, "Shine to Enkindle," for a brighter tomorrow.And we believe in, "Men and Women, for and with others".'>Learn
+                            More &rarr;</button>
+                    </div>
+                    <!-- Slide 2: About us -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue" id="soe-icon-2"><i class="fas fa-cogs fa-3x"></i></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">About Us</h3>
+                        <p class="text-stone-300 flex-grow text-left">We the School of Engineering at St.Aloysius (Deemed to be University), situated in the heart of the Mangaluru city,carrying a legacy......</p>
+                        <button
+                            class="open-soe-details-modal text-secondary-blue font-semibold hover:underline self-center mt-auto"
+                            data-title="About Us" data-icon="soe-icon-2"
+                            data-details="We the School of Engineering at St.Aloysius (Deemed to be University), situated in the heart of the Mangaluru city,carrying a legacy of more than 140 years of excellence. We have a vibrant campus, so that our students can build theirnetwork and be the best.">Learn
+                            More &rarr;</button>
+                    </div>
+                    <!-- Slide 3: Research & Innovation -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-primary-yellow" id="soe-icon-3"><i class="fas fa-lightbulb fa-3x"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Research & Innovation</h3>
+                        <p class="text-stone-300 flex-grow text-left">We provide the best faculty members deeply involved in the research like Computer Networks, Deep Learning, Artificial Intelligence.....</p>
+                        <button
+                            class="open-soe-details-modal text-secondary-blue font-semibold hover:underline self-center mt-auto"
+                            data-title="Research & Innovation" data-icon="soe-icon-3"
+                            data-details="We provide the best faculty members deeply involved in the research like Computer Networks, Deep Learning, Artificial Intelligence, Cloud Computing, and many more, ensuring that our students not only gain knowledge but also contribute inthe advancement that can shape the future.">Learn
+                            More &rarr;</button>
+                    </div>
+                    <!-- Slide 4: Campus Life -->
+                    <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue" id="soe-icon-4"><i class="fas fa-users fa-3x"></i></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Student Life</h3>
+                        <p class="text-stone-300 flex-grow text-left">We provide our students the best exposure to emerging sectors and real-world experiences, constantly updating ourcurriculum with industry experts and alumni......</p>
+                        <button
+                            class="open-soe-details-modal text-secondary-blue font-semibold hover:underline self-center mt-auto"
+                            data-title="Student Life" data-icon="soe-icon-4"
+                            data-details="We provide our students the best exposure to emerging sectors and real-world experiences, constantly updating our curriculum with industry experts and alumni to ensure that they have the exceptional abilities to make a revolution in theindustry — not just like an engineer but also as an enterpreneur. We offer an environment that connects our students with global professionals, supported by a powerful alumni network and a culture focused on holistic growth.">Learn
+                            More &rarr;</button>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-zinc-900/80 backdrop-blur-sm text-stone-300">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">resoenance</h3>
+                    <p class="text-sm">Not just a sound, it's an Impact.</p>
+                </div>
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul>
+                        <li class="mb-2"><a href="#about" class="hover:text-primary-yellow transition-colors">About
+                                Us</a></li>
+                        <li class="mb-2"><a href="#events" class="hover:text-primary-yellow transition-colors">All
+                                Events</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-primary-yellow transition-colors">Schedule</a>
+                        </li>
+                        <li class="mb-2"><a href="#sponsors"
+                                class="hover:text-primary-yellow transition-colors">Sponsorship</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Contact Us</h3>
+                    <p class="text-sm mb-2">St Aloysius (Deemed to be university)</p>
+                    <p class="text-sm mb-2">Mangalore</p>
+                    <p class="text-sm"><a href="mailto:contact@resoenance.com"
+                            class="hover:text-primary-yellow transition-colors">contact@resoenance.com</a></p>
+                </div>
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/staloysiuscollegemangaluru" aria-label="Facebook"
+                            class="hover:text-primary-yellow transition-colors text-xl"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/SACMangaluru" aria-label="Twitter"
+                            class="hover:text-primary-yellow transition-colors text-xl"><i
+                                class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/staloysiusmangaluru/?hl=en" aria-label="Instagram"
+                            class="hover:text-primary-yellow transition-colors text-xl"><i
+                                class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-zinc-700 text-center text-sm">
+                <p>&copy; 2025 resoenance. All Rights Reserved.</p>
+                <p>Created By SHAWN, CHRIS, AND AARON (TEAM KENBRISELLERIS)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Details Modal -->
+    <div id="details-modal"
+        class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+        <div
+            class="modal-content bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative">
+            <button
+                class="close-modal-btn absolute top-4 right-4 text-stone-400 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                <div id="modal-event-icon" class="flex-shrink-0"></div>
+                <div class="flex flex-col items-center sm:items-start">
+                    <h2 id="modal-event-title" class="text-3xl font-bold text-white mb-4">Event Title</h2>
+                    <p id="modal-event-details" class="text-stone-300 mb-6 leading-relaxed">Event details will go here.
+                    </p>
+                    <button class="open-register-modal-from-details btn btn-primary mt-auto">Register for this
+                        Event</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOE Details Modal -->
+    <div id="soe-details-modal"
+        class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+        <div
+            class="modal-content bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative">
+            <button
+                class="close-modal-btn absolute top-4 right-4 text-stone-400 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                <div id="modal-soe-icon" class="flex-shrink-0"></div>
+                <div>
+                    <h2 id="modal-soe-title" class="text-3xl font-bold text-white mb-4">SOE Details</h2>
+                    <p id="modal-soe-details" class="text-stone-300 leading-relaxed">Details will go here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="register-modal"
+        class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
+        <div
+            class="modal-content bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button
+                class="close-modal-btn absolute top-4 right-6 text-stone-500 hover:text-white text-3xl leading-none">&times;</button>
+            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">Register for resoenance</h1>
+            <form id="registrationForm" action="/register" method="post" novalidate>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-4">
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-stone-300 mb-1">Full name*</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Eg: Joseph Leonardo" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="fullNameError">Name is required</p>
+                    </div>
+                    <div>
+                        <label for="teamName" class="block text-sm font-medium text-stone-300 mb-1">Event code*</label>
+                        <input type="text" id="teamName" name="teamName" placeholder="follow xpz4y on X" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="teamNameError">Event code is required.</p>
+                    </div>
+                    <div>
+                        <label for="class" class="block text-sm font-medium text-stone-300 mb-1">Class*</label>
+                        <input type="text" id="class" name="class" placeholder="e.g., 11th" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="classError">Class is required.</p>
+                    </div>
+                    <div>
+                        <label for="school" class="block text-sm font-medium text-stone-300 mb-1">School or College
+                            name*</label>
+                        <input type="text" id="school" name="school" placeholder="Aaron's Middle School" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="schoolError">School/College is required.</p>
+                    </div>
+                    <div>
+                        <label for="contactNumber" class="block text-sm font-medium text-stone-300 mb-1">Contact
+                            Number*</label>
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="eg:1234567890" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="contactNumberError">Contact number is required.</p>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-stone-300 mb-1">Email ID
+                            (optional)</label>
+                        <input type="email" id="email" name="email" placeholder="Eg: You@gmail.com"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="emailError">Please enter a valid email.</p>
+                    </div>
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-stone-300 mb-1">Place you are coming
+                            from*</label>
+                        <input type="text" id="location" name="location" placeholder="Bajpe" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="locationError">Please specify your location.</p>
+                    </div>
+                    <div>
+                        <label for="guardianPhone" class="block text-sm font-medium text-stone-300 mb-1">Guardian's
+                            phone number*</label>
+                        <input type="tel" id="guardianPhone" name="guardianPhone" placeholder="Eg: 0987654321" required
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
+                        <p class="error-message" id="guardianPhoneError">Guardian's phone number is required.</p>
+                    </div>
+                </div>
+                <div id="form-message" class="hidden text-center p-3 rounded-lg mb-4"></div>
+                <div class="mt-6">
+                    <button type="submit"
+                        class="w-full btn btn-primary font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-800 focus:ring-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
+                        Submit Registration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+    <script src='scripts/resoenance.js'></script>
+    
+</body>
+
+</html>
+

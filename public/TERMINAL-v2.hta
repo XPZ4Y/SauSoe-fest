@@ -1,0 +1,130 @@
+<html>
+<head>
+    <title>TERMINAL.hta</title>
+    <hta:application id="TERMINAL" border="thin" scroll="no" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            text-align: center;
+        }
+        #chatContainer {
+            width: 1000px;
+            height: 200px;
+            overflow-y: auto;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #444;
+            background-color: #222;
+            text-align: left;
+        }
+        .user, .bot {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user {
+            background-color: #0078D7;
+            text-align: right;
+            margin-left: auto;
+        }
+        .bot {
+            background-color: #444;
+            text-align: left;
+        }
+        #inputBox {
+            width: 900px;
+            padding: 8px;
+            font-size: 40px;
+            text-color: white;
+            height:50px;
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+        }
+        #sendButton {
+            padding: 1px;
+            font-size: 40px;
+            cursor: pointer;
+            background: #000000;
+            color: white;
+            border: none;
+            height:50px;
+            width: 50px;
+            border-radius: 5px;
+        }
+    </style>
+    <script language="VBScript">
+        Sub sendMessage()
+            Dim userInput, response
+            userInput = Trim(document.getElementById("inputBox").value)
+            If userInput = "" Then Exit Sub
+            
+            ' Display user message
+            addMessage "user", userInput
+            
+            ' Check command
+            If Left(userInput, 1) = "." Then
+                Dim fileName
+                fileName = Mid(userInput, 2) ' Extract file name
+                If fileName <> "" Then
+                    CreateFile fileName
+                    response = ">>> File '" & fileName & "' has been created!"
+                Else
+                    response = ">>> Please provide a valid file name."
+                End If
+            Else
+                response = "I don't understand that command. Try 'create file abc.html'"
+            End If
+
+            ' Display bot response
+            addMessage "bot", response
+            document.getElementById("inputBox").value = ""
+        End Sub
+        
+        ' Function to create a file
+        Sub CreateFile(fileName)
+            Dim objFSO, objFile, fileContent
+            Set objFSO = CreateObject("Scripting.FileSystemObject")
+            Set objFile = objFSO.CreateTextFile(fileName, True)
+            If Right(fileName, 3) = "bat" Then fileContent="@echo off"
+            
+            objFile.WriteLine(fileContent)
+            objFile.Close
+        End Sub
+
+        ' Function to add messages to chat
+        Sub addMessage(cls, text)
+            Dim chatDiv, newMsg
+            Set chatDiv = document.getElementById("chatContainer")
+            newMsg = "<div class='" & cls & "'>" & text & "</div>"
+            chatDiv.innerHTML = "<h1>" & text & "</h1>"
+            chatDiv.scrollTop = chatDiv.scrollHeight ' Auto-scroll
+        End Sub
+        
+        Sub exclaim()
+        	Dim userinp, dune
+        	userinp=Trim(document.getElementById("inputBox").value)
+        	If Left(userinp, 1) = "." Then
+        		dune="file name:   " & Mid(userinp, 2) & " will be created"
+        	Else 
+        		dune="..."
+        	End If
+        	Set chatDiv = document.getElementById("chatContainer")
+        	chatDiv.innerHTML = "<h1>" & dune & "</h1>"
+        End Sub
+        
+        Sub return()
+        	Dim chris
+        End Sub
+        	
+    </script>
+</head>
+<body>
+    <div id="chatContainer"></div>
+    <input type="text" id="inputBox" placeholder="Type your command..." onkeypress="if window.event.keyCode = 13 Then sendMessage()" onkeyup="if window.event.keyCode = 13 Then return() Else exclaim() End If">
+    <button id="sendButton" onclick="sendMessage()">+</button>
+</body>
+</html>
