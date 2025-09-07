@@ -194,22 +194,30 @@ function validateEchelonData(formData) {
   return errors;
 }
 
-
+// A list of common bot probes. You can add more to this list.
+const FORBIDDEN_PATHS = [
+    '/wp-admin/setup-config.php',
+    '/wordpress/wp-admin/setup-config.php',
+    '/xmlrpc.php',
+    '/wp-login.php'
+];
 
 // Create HTTP server
 const server = http.createServer(async (req, res) => {
-  const requestDate = new Date();
   
-  const clientO = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-
-  oiia = {
-    timestamp: requestDate.toISOString(),
-    interkom: clientO,
-    method: req.method,
-    url: req.url
-  };
-  writeLoginData(oiia)//important. To collect data on bots
-
+  
+    const requestDate = new Date();
+    const clientO = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const formattedDate = requestDate.toLocaleDateString('en-US', options);
+    const formattedTime = requestDate.toLocaleTimeString('en-US', options);
+    oiia = {
+      timestamp: `${formattedDate} ${formattedTime}`,
+      interkom: clientO,
+      method: req.method,
+      url: req.url
+    };
+    writeLoginData(oiia)//important. To collect data on bots
+  
 
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -418,5 +426,6 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
+
 
 
