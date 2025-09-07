@@ -207,7 +207,8 @@ const options = {
   day: 'numeric',
   hour: '2-digit',
   minute: '2-digit',
-  second: '2-digit'
+  second: '2-digit',
+  timeZone: 'Asia/Kolkata' // Add this line for Kolkata time
 };
 // Create HTTP server
 const server = http.createServer(async (req, res) => {
@@ -215,10 +216,9 @@ const server = http.createServer(async (req, res) => {
   
     const requestDate = new Date();
     const clientO = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const formattedDate = requestDate.toLocaleDateString('en-US', options);
     const formattedTime = requestDate.toLocaleTimeString('en-US', options);
     oiia = {
-      timestamp: `${formattedDate} ${formattedTime}`,
+      timestamp: `${formattedTime}`,
       interkom: clientO,
       method: req.method,
       url: req.url
@@ -433,6 +433,7 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
+
 
 
 
