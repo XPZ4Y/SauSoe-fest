@@ -208,7 +208,7 @@ const server = http.createServer(async (req, res) => {
     method: req.method,
     url: req.url
   };
-  req.url=="/" ? writeLoginData(oiia) : console.log('eee');
+  writeLoginData(oiia)//important. To collect data on bots
 
 
   // Set CORS headers
@@ -418,4 +418,5 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
+
 
