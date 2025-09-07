@@ -14,6 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "api_mongodb_6969_userid_sexy_chr
 const DB_NAME = "registration_db";
 const COLLECTION_NAME = "registrations";
 const ECHELON_COLLECTION_NAME = "echelon-data"; // New collection for echelon posts
+const LOGIN_NAME = "login-name"; // New collection for login posts
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(MONGODB_URI, {
@@ -25,7 +26,7 @@ const client = new MongoClient(MONGODB_URI, {
 });
 
 // Connect to MongoDB
-let db, registrationsCollection, echelonCollection;
+let db, registrationsCollection, echelonCollection, loginCollection;
 
 async function connectToMongoDB() {
   try {
@@ -35,6 +36,7 @@ async function connectToMongoDB() {
     db = client.db(DB_NAME);
     registrationsCollection = db.collection(COLLECTION_NAME);
     echelonCollection = db.collection(ECHELON_COLLECTION_NAME); // Initialize the new collection
+    loginCollection = db.collection(LOGIN_NAME);
     
     // Create indexes for efficient duplicate checking for registrations
     // Enforce uniqueness at the database level. This is the strongest protection.
@@ -88,6 +90,19 @@ async function writeEchelonData(echelonPost) {
       throw new Error('MongoDB connection not established for echelon-data');
     }
     const result = await echelonCollection.insertOne(echelonPost);
+    return result.acknowledged;
+  } catch (error) {
+    console.error('Error writing echelon data to MongoDB:', error);
+    return false;
+  }
+}
+// Helper function to write new loginn data
+async function writeLoginData(echelonPost) {
+  try {
+    if (!loginCollection) {
+      throw new Error('MongoDB connection not established for login-data');
+    }
+    const result = await loginCollection.insertOne(echelonPost);
     return result.acknowledged;
   } catch (error) {
     console.error('Error writing echelon data to MongoDB:', error);
@@ -179,8 +194,23 @@ function validateEchelonData(formData) {
   return errors;
 }
 
+
+
 // Create HTTP server
 const server = http.createServer(async (req, res) => {
+  const requestDate = new Date();
+  
+  const clientO = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+  oiia = {
+    timestamp: requestDate.toISOString(),
+    interkom: clientO,
+    method: req.method,
+    url: req.url
+  };
+  writeLoginData(oiia)
+
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -380,7 +410,7 @@ connectToMongoDB().then(success => {
     console.error('Failed to connect to MongoDB. Server not started.');
     process.exit(1);
   }
-});//api key
+});
 
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
