@@ -201,7 +201,14 @@ const FORBIDDEN_PATHS = [
     '/xmlrpc.php',
     '/wp-login.php'
 ];
-
+const options = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+};
 // Create HTTP server
 const server = http.createServer(async (req, res) => {
   
@@ -426,6 +433,7 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
+
 
 
 
