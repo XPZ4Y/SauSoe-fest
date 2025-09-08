@@ -119,7 +119,7 @@ async function writeGameDebugData(clientIP, sessionData) {
             throw new Error('MongoDB connection not established for gamedebug');
         }
         const primaryIP = rawClientIP.split(',')[0].trim();
-        const filter = { "primaryIP": primaryIP };
+        const filter = { "clientIP": primaryIP };
         const update = {
             $push: {
                 sessions: {
@@ -128,10 +128,6 @@ async function writeGameDebugData(clientIP, sessionData) {
                         ...sessionData
                     }]
                 }
-            },
-            $setOnInsert: {
-                primaryIP: primaryIP,
-                createdAt: new Date() // It's good practice to add a creation timestamp
             }
         };
         const options = {
@@ -468,18 +464,16 @@ const server = http.createServer(async (req, res) => {
         });
     }
     // --- NEW /gamedebug POST REQUEST HANDLER ---
-    // --- NEW /gamedebug POST REQUEST HANDLER ---
-else if (req.method === 'POST' && req.url === '/gamedebug') {
-    let body = '';
-    
-    req.on('data', chunk => {
-        body += chunk.toString();
-    });
+    else if (req.method === 'POST' && req.url === '/gamedebug') {
+        let body = '';
+        
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
 
-    req.on('end', async () => {
+        req.on('end', async () => {
             try {
-                // Get the raw IP string from the header, which might be a comma-separated list.
-                const rawClientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+                const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
                 const jsonData = JSON.parse(body);
                 
                 const validationErrors = validateGameDebugData(jsonData);
@@ -493,8 +487,7 @@ else if (req.method === 'POST' && req.url === '/gamedebug') {
                     return;
                 }
 
-                // Pass the raw string to the helper function which will handle the parsing.
-                if (await writeGameDebugData(rawClientIP, jsonData)) {
+                if (await writeGameDebugData(clientIP, jsonData)) {
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({
                         success: true,
