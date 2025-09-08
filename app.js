@@ -217,13 +217,16 @@ const server = http.createServer(async (req, res) => {
     const requestDate = new Date();
     const clientO = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const formattedTime = requestDate.toLocaleTimeString('en-US', options);
-    oiia = {
+    const oiia = {
       timestamp: `${formattedTime}`,
       interkom: clientO,
       method: req.method,
       url: req.url
     };
-    writeLoginData(oiia)//important. To collect data on bots
+    //refer 0x0231.txt
+    if (!oiia.url.endsWith('.jpg') && !oiia.url.endsWith('.png')) {
+      writeLoginData(oiia);
+    }
   
 
   // Set CORS headers
@@ -433,6 +436,7 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
+
 
 
 
