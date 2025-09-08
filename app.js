@@ -118,8 +118,8 @@ async function writeGameDebugData(clientIP, sessionData) {
         if (!gamedebugCollection) {
             throw new Error('MongoDB connection not established for gamedebug');
         }
-
-        const filter = { "clientIP": clientIP };
+        const primaryIP = rawClientIP.split(',')[0].trim();
+        const filter = { "primaryIP": primaryIP };
         const update = {
             $push: {
                 sessions: {
@@ -473,7 +473,8 @@ const server = http.createServer(async (req, res) => {
 
         req.on('end', async () => {
             try {
-                const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+                // Get the raw IP string from the header, which might be a comma-separated list.
+                const rawClientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
                 const jsonData = JSON.parse(body);
                 
                 const validationErrors = validateGameDebugData(jsonData);
