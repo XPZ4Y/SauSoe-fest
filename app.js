@@ -128,6 +128,10 @@ async function writeGameDebugData(clientIP, sessionData) {
                         ...sessionData
                     }]
                 }
+            },
+            $setOnInsert: {
+                primaryIP: primaryIP,
+                createdAt: new Date() // It's good practice to add a creation timestamp
             }
         };
         const options = {
@@ -464,14 +468,15 @@ const server = http.createServer(async (req, res) => {
         });
     }
     // --- NEW /gamedebug POST REQUEST HANDLER ---
-    else if (req.method === 'POST' && req.url === '/gamedebug') {
-        let body = '';
-        
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
+    // --- NEW /gamedebug POST REQUEST HANDLER ---
+else if (req.method === 'POST' && req.url === '/gamedebug') {
+    let body = '';
+    
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
 
-        req.on('end', async () => {
+    req.on('end', async () => {
             try {
                 // Get the raw IP string from the header, which might be a comma-separated list.
                 const rawClientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
@@ -488,7 +493,8 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                if (await writeGameDebugData(clientIP, jsonData)) {
+                // Pass the raw string to the helper function which will handle the parsing.
+                if (await writeGameDebugData(rawClientIP, jsonData)) {
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({
                         success: true,
