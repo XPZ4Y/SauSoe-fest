@@ -118,8 +118,8 @@ async function writeGameDebugData(clientIP, sessionData) {
         if (!gamedebugCollection) {
             throw new Error('MongoDB connection not established for gamedebug');
         }
-        const primaryIP = rawClientIP.split(',')[0].trim();
-        const filter = { "clientIP": primaryIP };
+        const primaryIP = clientIP.split(',')[0].trim();
+        const filter = { "clientIP": clientIP };
         const update = {
             $push: {
                 sessions: {
