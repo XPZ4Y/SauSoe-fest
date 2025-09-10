@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Game Widget</title>
+    <style>
+        /* Base styles for the page */
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, p {
+            text-align: center;
+            color: #333;
+        }
+
+        /* --- STYLES FROM THE JAVASCRIPT WIDGET --- */
+        .game-widget-play-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff4757, #ff6348);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9998;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .game-widget-play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-widget-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .game-widget-container {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .game-widget-close-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 30px;
+            height: 30px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .game-widget-canvas {
+            display: block;
+            background-color: #2c2c2c;
+            image-rendering: pixelated; /* For crisp pixel art */
+        }
+        
+        /* Mobile Portrait Layout: screen ratio < 1 */
+        .game-widget-container.mobile-portrait {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+        }
+        
+        .game-widget-container.mobile-portrait #gameCanvas {
+            width: 100%;
+            height: 40vh; /* Landscape screen at the top */
+        }
+        
+        /* Desktop/Landscape Layout: screen ratio >= 1 */
+        .game-widget-container.desktop-mode {
+            width: 90vw;
+            height: 80vh;
+            max-width: 1200px;
+        }
+        
+        .game-widget-container.desktop-mode #gameCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .game-widget-controls {
+            display: none; /* Hidden by default */
+            flex-grow: 1;
+            background-color: #111;
+            padding: 20px;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none; /* Prevents browser from interpreting touch as scroll/zoom */
+        }
+        
+        .game-widget-container.mobile-portrait .game-widget-controls {
+            display: flex; /* Shown only in mobile portrait */
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-widget-dpad {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .game-widget-dpad-btn {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #444;
+            border: 2px solid #555;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+        }
+        .game-widget-dpad-btn.active {
+            background-color: #666;
+            border-color: #777;
+        }
+        
+        .dpad-up { top: 0; left: 50px; }
+        .dpad-down { bottom: 0; left: 50px; }
+        .dpad-left { top: 50px; left: 0; }
+        .dpad-right { top: 50px; right: 0; }
+
+        .game-widget-action-buttons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .game-widget-select-btn {
+            width: 80px;
+            height: 80px;
+            background-color: #e74c3c;
+            border: 2px solid #c0392b;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-widget-select-btn.active {
+            background-color: #c0392b;
+            border-color: #a52f22;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Self-Contained Game Widget Page</h1>
+    <p>This page contains a simple game widget. Click the "Play Game" button that appears at the bottom-right corner to start.</p>
+    <script src='modules/basicModule.js'></script>
+    <script>
+        
+        (function() {
+            // Prevents the script from running in non-browser environments or if it's already been loaded.
+            if (typeof window === 'undefined' || window.gameWidgetLoaded) {
+                return;
+            }
+            window.gameWidgetLoaded = true;
+
+            // --- GAME STATE & LOGIC ---
+            let canvas, ctx, player, camera, controls, gameLoopId;
+            
+
+            //official
+            var playerState = {
+                x: 250,
+                y: 250,
+                width: 48,
+                height: 48,
+                speed: 3,
+                color: '#3498db',
+                currentSpriteState: [0,0,48,48]
+            };
+            var bro = {
+                x: 350,
+                y: 250,
+                width: 48,
+                height: 48,
+                speed: 3,
+                color: '#3498db',
+                currentSpriteState: [144,0,48,48]
+            };
+            var cameraState = {
+                x: 0,
+                y: 0,
+            };
+            var controlState = {
+                up: false,
+                down: false,
+                left: false,
+                right: false,
+                select: false
+            };
+            var entities=[playerState, bro]
+
+            //controls--
+            function handleKeyDown(e) {
+                if (e.key === 'ArrowUp') controlState.up = true;
+                if (e.key === 'ArrowDown') controlState.down = true;
+                if (e.key === 'ArrowLeft') controlState.left = true;
+                if (e.key === 'ArrowRight') controlState.right = true;
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    controlState.select = true;
+                }
+            }
+            function handleKeyUp(e) {
+                if (e.key === 'ArrowUp') controlState.up = false;
+                if (e.key === 'ArrowDown') controlState.down = false;
+                if (e.key === 'ArrowLeft') controlState.left = false;
+                if (e.key === 'ArrowRight') controlState.right = false;
+            }
+            function handleControlButton(button, state) {
+                return (e) => {
+                    e.preventDefault();
+                    controlState[button] = state;
+                    e.currentTarget.classList.toggle('active', state);
+                };
+            }
+            //--controls
+
+            function handleResize() {
+                const container = document.querySelector('.game-widget-container');
+                if (!container || !canvas) return;
+
+                const isPortrait = window.innerHeight > window.innerWidth;
+
+                if (isPortrait && window.innerWidth < 768) { // Simple mobile check
+                    container.className = 'game-widget-container mobile-portrait';
+                } else {
+                    container.className = 'game-widget-container desktop-mode';
+                }
+                
+                // To maintain crisp pixels, we set the canvas internal resolution
+                // and let CSS handle the scaling. A fixed internal resolution can
+                // create a retro feel.
+                canvas.width = 480; 
+                canvas.height = 270;
+            }
+            function initializeGame() {
+                canvas = document.getElementById('gameCanvas');
+                ctx = canvas.getContext('2d');
+                const SPRITESHEET_PATH = 'assets/People1.png';
+                
+                handleResize(); // Set initial size and layout
+                ctx.imageSmoothingEnabled = false;
+
+
+                // --- ASSET LOADER (using the Promise function) ---
+                
+                // Add all event listeners
+                window.addEventListener('resize', handleResize);
+                document.addEventListener('keydown', handleKeyDown);
+                document.addEventListener('keyup', handleKeyUp);
+                
+                // On-screen controls
+                const dpadUp = document.querySelector('.dpad-up');
+                const dpadDown = document.querySelector('.dpad-down');
+                const dpadLeft = document.querySelector('.dpad-left');
+                const dpadRight = document.querySelector('.dpad-right');
+                const selectBtn = document.querySelector('.game-widget-select-btn');
+
+                if (dpadUp) {
+                    dpadUp.addEventListener('mousedown', handleControlButton('up', true));
+                    dpadUp.addEventListener('mouseup', handleControlButton('up', false));
+                    dpadUp.addEventListener('mouseleave', handleControlButton('up', false));
+                    dpadUp.addEventListener('touchstart', handleControlButton('up', true), { passive: false });
+                    dpadUp.addEventListener('touchend', handleControlButton('up', false));
+                    
+                    dpadDown.addEventListener('mousedown', handleControlButton('down', true));
+                    dpadDown.addEventListener('mouseup', handleControlButton('down', false));
+                    dpadDown.addEventListener('mouseleave', handleControlButton('down', false));
+                    dpadDown.addEventListener('touchstart', handleControlButton('down', true), { passive: false });
+                    dpadDown.addEventListener('touchend', handleControlButton('down', false));
+                    
+                    dpadLeft.addEventListener('mousedown', handleControlButton('left', true));
+                    dpadLeft.addEventListener('mouseup', handleControlButton('left', false));
+                    dpadLeft.addEventListener('mouseleave', handleControlButton('left', false));
+                    dpadLeft.addEventListener('touchstart', handleControlButton('left', true), { passive: false });
+                    dpadLeft.addEventListener('touchend', handleControlButton('left', false));
+                    
+                    dpadRight.addEventListener('mousedown', handleControlButton('right', true));
+                    dpadRight.addEventListener('mouseup', handleControlButton('right', false));
+                    dpadRight.addEventListener('mouseleave', handleControlButton('right', false));
+                    dpadRight.addEventListener('touchstart', handleControlButton('right', true), { passive: false });
+                    dpadRight.addEventListener('touchend', handleControlButton('right', false));
+
+                    // A simple handler for the release event that just affects UI
+                    const handleSelectRelease = (e) => {
+                        e.preventDefault();
+                        e.currentTarget.classList.remove('active');
+                    };
+                    
+                    selectBtn.addEventListener('mousedown', handleControlButton('select', true));
+                    selectBtn.addEventListener('mouseup', handleSelectRelease);
+                    selectBtn.addEventListener('mouseleave', handleSelectRelease);
+                    selectBtn.addEventListener('touchstart', handleControlButton('select', true), { passive: false });
+                    selectBtn.addEventListener('touchend', handleSelectRelease);
+                }
+                
+                // Start the game loop
+                loadImage(SPRITESHEET_PATH).then(spritesheetImage => {
+                    function gameLoop() {
+                        [controlState, playerState, cameraState]=update(canvas, controlState, playerState, cameraState);
+                        draw(ctx, canvas, entities, cameraState, spritesheetImage);
+
+                        gameLoopId = requestAnimationFrame(gameLoop);
+                    }
+                    gameLoop();
+
+                }).catch(error => {
+                    // FAILURE! This code runs if the image path was wrong or another error occurred.
+                    console.error(error);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'red';
+                    ctx.fillText("Error: Could not load assets. Check console.", 50, 50);
+                });
+            }
+            function closeGame() {
+                cancelAnimationFrame(gameLoopId);
+                
+                // Remove event listeners
+                window.removeEventListener('resize', handleResize);
+                document.removeEventListener('keydown', handleKeyDown);
+                document.removeEventListener('keyup', handleKeyUp);
+                
+                // Remove modal from DOM
+                const modal = document.querySelector('.game-widget-modal-overlay');
+                if (modal) {
+                    modal.remove();
+                }
+                
+                // Reset state
+                Object.keys(controlState).forEach(key => controlState[key] = false);
+            }
+            function createGameWindow() {
+                const modalOverlay = document.createElement('div');
+                modalOverlay.className = 'game-widget-modal-overlay';
+                modalOverlay.innerHTML = `
+                    <div class="game-widget-container">
+                        <button class="game-widget-close-button">&times;</button>
+                        <canvas id="gameCanvas" class="game-widget-canvas"></canvas>
+                        <div class="game-widget-controls">
+                            <div class="game-widget-dpad">
+                                <div class="game-widget-dpad-btn dpad-up">&#9650;</div>
+                                <div class="game-widget-dpad-btn dpad-down">&#9660;</div>
+                                <div class="game-widget-dpad-btn dpad-left">&#9664;</div>
+                                <div class="game-widget-dpad-btn dpad-right">&#9654;</div>
+                            </div>
+                            <div class="game-widget-action-buttons">
+                                <div class="game-widget-select-btn">SELECT</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modalOverlay);
+                modalOverlay.querySelector('.game-widget-close-button').addEventListener('click', closeGame);
+
+                initializeGame();
+            }
+            function createPlayButton() {
+                const playButton = document.createElement('button');
+                playButton.textContent = 'Play Game';
+                playButton.className = 'game-widget-play-button';
+                playButton.addEventListener('click', createGameWindow);
+                document.body.appendChild(playButton);
+            }
+
+            // --- SCRIPT ENTRY POINT ---
+            // Wait for the DOM to be fully loaded before adding the button.
+            document.addEventListener('DOMContentLoaded', () => {
+                createPlayButton();
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
