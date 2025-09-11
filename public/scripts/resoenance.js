@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const detailsModal = document.getElementById('details-modal');
             const soeDetailsModal = document.getElementById('soe-details-modal');
             const registerModal = document.getElementById('register-modal');
-            const openDetailsButtons = document.querySelectorAll('.open-details-modal');
+            const openDetailsButtons = document.querySelectorAll('.swiper-slide');
             const openSoeDetailsButtons = document.querySelectorAll('.open-soe-details-modal');
             const openRegisterButtons = document.querySelectorAll('.open-register-modal');
             const openRegisterFromDetailsBtn = document.querySelector('.open-register-modal-from-details');
@@ -276,9 +276,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             openDetailsButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const eventTitle = button.dataset.event;
-                    const eventDetails = button.dataset.details;
-                    const iconContainer = document.getElementById(button.dataset.icon);
+                    const eventTitle = button.children[3].dataset.event;
+                    const eventDetails = button.children[3].dataset.details;
+                    const iconContainer = document.getElementById(button.children[3].dataset.icon);
                     if (detailsModal) {
                         document.getElementById('modal-event-title').textContent = eventTitle;
                         document.getElementById('modal-event-details').textContent = eventDetails;
