@@ -1,708 +1,394 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>St. Aloysius University Fests | Choose Your Odyssey</title>
+    <title>Resoenance Fest - The Gateway</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;700&display=swap"
-        rel="stylesheet">
-    <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=SAC" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Sound Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
 
     <style>
         :root {
-            --primary-yellow: #f7c02b;
-            --secondary-blue: #65a3da;
-            /* Blue from SAC Logo */
-            --dark-bg: #0c0a09;
-            --light-text: #e7e5e4;
+            --primary-color: #f59e0b; /* Amber 500 */
+            --glow-color: rgba(245, 158, 11, 0.5);
         }
-
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--light-text);
-            overflow-x: hidden;
-            /* Allow vertical scroll, prevent horizontal */
+            background-color: #0a0a0a;
+            color: #e5e7eb;
+            overflow: hidden;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.7) 100%), url('https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?q=80&w=2070&auto=format&fit=crop');
+            background-size: 100%;
+            background-position: center;
+            animation: ken-burns 25s ease-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
         }
 
-        h1,
-        h2,
-        h3 {
-            font-family: 'Cinzel', serif;
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(245, 158, 11, 0.15), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .hero-section:hover::before {
+            opacity: 1;
         }
 
         #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; 
         }
-
-        #page-vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, transparent 40%, var(--dark-bg) 80%);
-            z-index: -1;
-        }
-
-        /* Card Glow Animations */
-        @keyframes subtle-glow-yellow {
-
-            0%,
-            100% {
-                border-color: rgba(247, 192, 43, 0.4);
-                box-shadow: 0 0 15px rgba(247, 192, 43, 0.15);
-            }
-
-            50% {
-                border-color: rgba(247, 192, 43, 0.6);
-                box-shadow: 0 0 25px rgba(247, 192, 43, 0.25);
-            }
-        }
-
-        @keyframes subtle-glow-blue {
-
-            0%,
-            100% {
-                border-color: rgba(101, 163, 218, 0.4);
-                box-shadow: 0 0 15px rgba(101, 163, 218, 0.15);
-            }
-
-            50% {
-                border-color: rgba(101, 163, 218, 0.6);
-                box-shadow: 0 0 25px rgba(101, 163, 218, 0.25);
-            }
-        }
-
-        /* Portal Card Styles */
-        .portal-card {
+        .content-container {
             position: relative;
-            background-color: rgba(12, 10, 9, 0.7);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            transform: translateY(0);
-            border: 2px solid transparent;
-        }
-
-        .portal-card:hover {
-            transform: translateY(-10px);
-            background-color: rgba(12, 10, 9, 0.9);
-            animation-play-state: paused;
-            /* Pause subtle glow on hover for the intense one */
-        }
-
-        /* Resoenance Card */
-        #resoenance-card {
-            animation: subtle-glow-yellow 5s ease-in-out infinite;
-        }
-
-        #resoenance-card:hover {
-            border-color: var(--primary-yellow);
-            box-shadow: 0 0 40px rgba(247, 192, 43, 0.3);
-        }
-
-        /* Echelon Card */
-        #echelon-card {
-            animation: subtle-glow-blue 5s ease-in-out infinite;
-        }
-
-        #echelon-card:hover {
-            border-color: var(--secondary-blue);
-            box-shadow: 0 0 40px rgba(101, 163, 218, 0.3);
-        }
-
-        /* Singularity Animation */
-        #page-content-wrapper {
-            transition: transform 3s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 2.5s ease-out;
-        }
-
-        body.singularity-active #page-content-wrapper {
-            transform: scale(0) rotate(-360deg);
+            z-index: 3;
+            animation: content-fade-in 1s 0.5s ease-out forwards;
             opacity: 0;
+            transition: transform 0.1s linear;
+            transform: perspective(1000px);
         }
-
-.game-widget-play-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            font-family: 'Arial', sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(45deg, #ff4757, #ff6348);
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 9998;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .cta-button {
+            position: relative; 
+            overflow: hidden; 
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 15px var(--glow-color), 0 0 30px var(--glow-color);
         }
-
-        .game-widget-play-button:hover {
+        .cta-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 25px var(--glow-color), 0 0 45px rgba(245, 158, 11, 0.4);
+        }
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.7s ease-in-out;
+        }
+        .cta-button:hover::before {
+            left: 150%;
         }
 
-        .game-widget-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+        .title-char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(-50px) scale(0.5);
+            animation: letter-reveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            text-shadow: 0 0 5px rgba(255,255,255,0.2);
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), color 0.2s;
+        }
+        #main-title.ready .title-char:hover {
+            transform: scale(1.2) translateY(-10px);
+            color: var(--primary-color);
         }
 
-        .game-widget-container {
-            background-color: #1a1a1a;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 blue;
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
         }
 
-        .game-widget-close-button {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 30px;
-            height: 30px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 18px;
-            line-height: 30px;
-            text-align: center;
-            cursor: pointer;
-            z-index: 10;
+        @keyframes ken-burns {
+            from { background-size: 100%; } to { background-size: 110%; }
         }
-        
-        .game-widget-canvas {
-            display: block;
-            background-color: #2c2c2c;
-            image-rendering: pixelated; /* For crisp pixel art */
+        @keyframes content-fade-in {
+            from { opacity: 0; transform: translateY(20px) perspective(1000px); }
+            to { opacity: 1; transform: translateY(0) perspective(1000px); }
         }
-        
-        /* Mobile Portrait Layout: screen ratio < 1 */
-        .game-widget-container.mobile-portrait {
-            width: 100vw;
-            height: 100vh;
-            border-radius: 0;
+        @keyframes letter-reveal {
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        
-        .game-widget-container.mobile-portrait #gameCanvas {
-            width: 100%;
-            height: 40vh; /* Landscape screen at the top */
+        @keyframes glitch-anim-1 {
+            0%, 100% { clip-path: inset(50% 0 30% 0); }
+            25% { clip-path: inset(20% 0 60% 0); }
+            50% { clip-path: inset(80% 0 5% 0); }
+            75% { clip-path: inset(40% 0 40% 0); }
         }
-        
-        /* Desktop/Landscape Layout: screen ratio >= 1 */
-        .game-widget-container.desktop-mode {
-            width: 90vw;
-            height: 80vh;
-            max-width: 1200px;
-        }
-        
-        .game-widget-container.desktop-mode #gameCanvas {
-            width: 100%;
-            height: 100%;
+        @keyframes glitch-anim-2 {
+            0%, 100% { clip-path: inset(70% 0 10% 0); }
+            25% { clip-path: inset(90% 0 1% 0); }
+            50% { clip-path: inset(30% 0 50% 0); }
+            75% { clip-path: inset(10% 0 80% 0); }
         }
 
-        .game-widget-controls {
-            display: none; /* Hidden by default */
-            flex-grow: 1;
-            background-color: #111;
-            padding: 20px;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none; /* Prevents browser from interpreting touch as scroll/zoom */
+        #transition-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #0a0a0a; z-index: 9999;
+            clip-path: circle(0% at 50% 50%);
+            transition: clip-path 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
+        #transition-overlay.active { clip-path: circle(150% at 50% 50%); }
+        .content-container.fade-out { animation: content-fade-out 0.5s ease-out forwards; }
+        @keyframes content-fade-out {
+            from { opacity: 1; transform: scale(1) perspective(1000px); }
+            to { opacity: 0; transform: scale(0.9) perspective(1000px); }
+        }
+        @keyframes pulse-custom {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px 0px var(--glow-color); }
+            50% { transform: scale(1.03); box-shadow: 0 0 25px 5px var(--glow-color); }
+        }
+        .animate-pulse-custom { animation: pulse-custom 2.5s infinite ease-in-out; }
         
-        .game-widget-container.mobile-portrait .game-widget-controls {
-            display: flex; /* Shown only in mobile portrait */
-            justify-content: space-between;
-            align-items: center;
+        /* --- Mobile Optimizations --- */
+        @media (max-width: 768px) {
+            .hero-section {
+                animation: none; /* Disable Ken Burns on mobile */
+                background-size: cover;
+            }
         }
 
-        .game-widget-dpad {
-            position: relative;
-            width: 150px;
-            height: 150px;
-        }
-
-        .game-widget-dpad-btn {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: #444;
-            border: 2px solid #555;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 20px;
-        }
-        .game-widget-dpad-btn.active {
-            background-color: #666;
-            border-color: #777;
-        }
-        
-        .dpad-up { top: 0; left: 50px; }
-        .dpad-down { bottom: 0; left: 50px; }
-        .dpad-left { top: 50px; left: 0; }
-        .dpad-right { top: 50px; right: 0; }
-
-        .game-widget-action-buttons {
-            display: flex;
-            align-items: center;
-        }
-        
-        .game-widget-select-btn {
-            width: 80px;
-            height: 80px;
-            background-color: #e74c3c;
-            border: 2px solid #c0392b;
-            border-radius: 50%;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .game-widget-select-btn.active {
-            background-color: #c0392b;
-            border-color: #a52f22;
-
-        }
     </style>
 </head>
+<body class="overflow-hidden">
+    
+    <div id="transition-overlay"></div>
 
-<body class="antialiased">
+    <main class="relative h-screen w-screen">
+        <section id="hero" class="hero-section h-full w-full flex items-center justify-center text-center p-6">
+            <canvas id="particle-canvas"></canvas>
 
-    <canvas id="particle-canvas"></canvas>
-    <div id="page-vignette"></div>
+            <div class="content-container max-w-4xl">
+<!-- LOGOS REPOSITIONED HERE -->
+                <div class="flex flex-col justify-center items-center gap-4 md:gap-6 mb-6 md:mb-8">
+                    <img src="aloylogo.png" alt="St. Aloysius College Logo" class="h-16 md:h-20 object-contain">
+                    <img src="reson.png" alt="Resoenance Fest Logo" class="h-40 md:h-48 object-contain rounded-lg">
+                </div>
 
-    <div id="page-content-wrapper" class="min-h-screen flex flex-col items-center justify-center p-6 relative">
-
-        <header class="text-center mb-16 z-10">
-            <img src="aloylogo.png" alt="St. Aloysius University Logo" class="h-20 mx-auto mb-6 opacity-90">
-            <h1 class="text-4xl md:text-6xl text-white tracking-wider">Choose Your Odyssey</h1>
-            <p class="text-stone-300 mt-3 text-lg">Two journeys. Two destinies. One university.</p>
-        </header>
-
-        <main class="w-full max-w-5xl z-10">
-            <div class="grid md:grid-cols-2 gap-12 md:gap-20">
-
-                <!-- resoenance Card -->
-                <a href="resoenance.html" id="resoenance-card"
-                    class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
-                    <h2 class="text-4xl font-bold text-primary-yellow text-glow-yellow mb-3">resoenance</h2>
-                    <p class="text-stone-300 mb-6 flex-grow">Embark on a voyage into the heart of technology,
-                        creativity, and innovation.</p>
-                    <span
-                        class="font-bold text-primary-yellow group-hover:text-white transition-colors duration-300">Enter
-                        The Technoverse &rarr;</span>
+                <a href="#" class="inline-block group sound-hover sound-click">
+                     <h1 id="main-title" data-text="RESOENANCE" class="text-5xl md:text-7xl lg:text-8xl font-black uppercase text-white tracking-tighter leading-tight transition-transform duration-300 group-hover:scale-105">
+                     </h1>
                 </a>
-
-                <!-- Echelon Card -->
-                <a href="fest.html" id="echelon-card"
-                    class="portal-card rounded-2xl p-8 text-center flex flex-col items-center justify-center">
-                    <h2 class="text-4xl font-bold text-secondary-blue mb-3">Echelon</h2>
-                    <p class="text-stone-300 mb-6 flex-grow">Ascend to the pinnacle of management and strategic
-                        excellence.</p>
-                    <span
-                        class="font-bold text-secondary-blue group-hover:text-white transition-colors duration-300">Enter
-                        The Athenaeum &rarr;</span>
-                </a>
+                <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+                   Your journey into sound begins here. Click the portal to enter.
+                </p>
+                <div class="mt-12">
+                    <a href="resoenance.html" id="enter-btn" class="cta-button inline-block bg-amber-500 text-black uppercase tracking-widest font-bold text-lg px-10 py-5 rounded-lg sound-hover sound-click">
+                        Enter Portal
+                    </a>
+                </div>
             </div>
-        </main>
+        </section>
 
-        <footer class="text-center mt-16 text-stone-500 text-sm z-10">
-            <p>&copy; 2025 St. Aloysius (Deemed to be University). All Rights Reserved.</p>
-            <p>bored? try this game
-            <ul>
-                <li><a href="game.html">Astra Rush</a></li>
-            </ul>
-            </p>
-        </footer>
+        <a href="game.html" id="play-game-btn" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 bg-gray-900/80 backdrop-blur-sm border border-amber-500/50 text-white p-3 rounded-full flex items-center space-x-3 hover:bg-gray-800 hover:border-amber-500 transition-all duration-300 shadow-lg animate-pulse-custom group sound-hover sound-click">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 h-6 w-6 group-hover:rotate-12 transition-transform duration-300"><path d="M2 12h3"/><path d="M19 12h3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M8.5 8.5 7 7"/><path d="M15.5 8.5 17 7"/><path d="M8.5 15.5 7 17"/><path d="M15.5 15.5 17 17"/><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4Z"/></svg>
+            <span class="hidden md:inline font-semibold tracking-wide pr-2">Bored? Play Game</span>
+        </a>
+    </main>
 
-    </div>
-    <script src='debugscript.js'></script>
-    <script src='basicModule.js'></script>
-    <script>
-        
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let particles = [];
-        // Optimize particle count for different screen sizes
-        const numParticles = window.innerWidth < 768 ? 300 : 800;
-        let isCollapsing = false;
-
-        function setCanvasSize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        setCanvasSize();
-
-        class Particle {
-            constructor() {
-                this.reset();
-                const rand = Math.random();
-                if (rand < 0.05) { this.color = '#f7c02b'; } // 5% chance for yellow
-                else if (rand < 0.10) { this.color = '#65a3da'; } // 5% chance for blue
-                else { this.color = '#ffffff'; }
-            }
-
-            reset() {
-                this.z = Math.random() * canvas.width;
-                this.x = (Math.random() - 0.5) * canvas.width * 1.5;
-                this.y = (Math.random() - 0.5) * canvas.height * 1.5;
-                this.pz = this.z;
-            }
-
-            update() {
-                if (isCollapsing) {
-                    // Gracefully move towards the center
-                    this.x *= 0.98;
-                    this.y *= 0.98;
-                    this.z -= 0.5; // Slow down forward motion to emphasize collapse
-                } else {
-                    this.z -= 2; // Normal "hyperspace" speed
-                }
-
-                if (this.z < 1) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-
-                const sx = (this.x / this.z) * centerX + centerX;
-                const sy = (this.y / this.z) * centerY + centerY;
-
-                let r = Math.max(0, (1 - this.z / canvas.width) * 3);
-
-                // Draw star head
-                ctx.beginPath();
-                ctx.arc(sx, sy, r, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-
-                // Draw trail
-                const px = (this.x / this.pz) * centerX + centerX;
-                const py = (this.y / this.pz) * centerY + centerY;
-
-                this.pz = this.z;
-
-                ctx.beginPath();
-                ctx.moveTo(px, py);
-                ctx.lineTo(sx, sy);
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = r;
-                ctx.stroke();
-            }
-        }
-
-        function init() {
-            particles = [];
-            const particleCount = window.innerWidth < 768 ? 300 : 800;
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.fillStyle = 'rgba(12, 10, 9, 0.2)'; // Fading trail effect
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-        }
-
-        init();
-        animate();
-
-        window.addEventListener('resize', () => {
-            setCanvasSize();
-            init(); // Re-initialize particles on resize
-        });
-
-        // --- Reset animation state on back navigation ---
-        window.addEventListener('pageshow', (event) => {
-            // This event fires when the page is loaded, including from the back-forward cache.
-            // We reset the state in case the user navigates back while the animation was running.
-            document.body.classList.remove('singularity-active');
-            isCollapsing = false;
-        });
-
-        // --- Singularity Click Handler ---
-        document.querySelectorAll('.portal-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
-                const destination = e.currentTarget.href;
-
-                document.body.classList.add('singularity-active');
-                isCollapsing = true;
-
-                setTimeout(() => {
-                    window.location.href = destination;
-                }, 3000);
-            });
-        });
-    </script>
+    <footer class="fixed bottom-0 left-0 w-full z-10 py-4">
+        <div class="container mx-auto px-6 text-center text-gray-400/50 text-sm">
+            <p>&copy; 2026 Resoenance Fest. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isMobile = window.innerWidth <= 768;
+            const hero = document.getElementById('hero');
+            const contentContainer = document.querySelector('.content-container');
+            const mainTitle = document.getElementById('main-title');
 
-        (function() {
-            // Prevents the script from running in non-browser environments or if it's already been loaded.
-            if (typeof window === 'undefined' || window.gameWidgetLoaded) {
-                return;
-            }
-            window.gameWidgetLoaded = true;
-
-            // --- GAME STATE & LOGIC ---
-            let canvas, ctx, player, camera, controls, gameLoopId;
-
-
-            //official
-            var playerState = {
-                x: 250,
-                y: 250,
-                width: 48,
-                height: 48,
-                speed: 3,
-                color: '#3498db',
-                currentSpriteState: [0,0,48,48]
-            };
-            var bro = {
-                x: 350,
-                y: 250,
-                width: 48,
-                height: 48,
-                speed: 3,
-                color: '#3498db',
-                currentSpriteState: [144,0,48,48]
-            };
-            var cameraState = {
-                x: 0,
-                y: 0,
-            };
-            var controlState = {
-                up: false,
-                down: false,
-                left: false,
-                right: false,
-                select: false
-            };
-            var entities=[playerState, bro]
-
-            //controls--
-            function handleKeyDown(e) {
-                if (e.key === 'ArrowUp') controlState.up = true;
-                if (e.key === 'ArrowDown') controlState.down = true;
-                if (e.key === 'ArrowLeft') controlState.left = true;
-                if (e.key === 'ArrowRight') controlState.right = true;
-                if (e.key === ' ' || e.key === 'Enter') {
-                    e.preventDefault();
-                    controlState.select = true;
-                }
-            }
-            function handleKeyUp(e) {
-                if (e.key === 'ArrowUp') controlState.up = false;
-                if (e.key === 'ArrowDown') controlState.down = false;
-                if (e.key === 'ArrowLeft') controlState.left = false;
-                if (e.key === 'ArrowRight') controlState.right = false;
-            }
-            function handleControlButton(button, state) {
-                return (e) => {
-                    e.preventDefault();
-                    controlState[button] = state;
-                    e.currentTarget.classList.toggle('active', state);
-                };
-            }
-            //--controls
+            // --- Sound Effects Engine ---
+            let soundsReady = false;
+            const hoverSynth = new Tone.MonoSynth({ oscillator: { type: 'sine' }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.2 } }).toDestination();
+            const clickSynth = new Tone.PluckSynth().toDestination();
             
+            function playHoverSound() { if (soundsReady && !isMobile) hoverSynth.triggerAttackRelease('C5', '8n'); }
+            function playClickSound() { if (soundsReady) clickSynth.triggerAttackRelease('G4', '8n'); }
 
-            function handleResize() {
-                const container = document.querySelector('.game-widget-container');
-                if (!container || !canvas) return;
+            document.body.addEventListener('mousedown', () => {
+                if (!soundsReady) Tone.start();
+                soundsReady = true;
+            }, { once: true });
 
-                const isPortrait = window.innerHeight > window.innerWidth;
-
-                if (isPortrait && window.innerWidth < 768) { // Simple mobile check
-                    container.className = 'game-widget-container mobile-portrait';
-                } else {
-                    container.className = 'game-widget-container desktop-mode';
-                }
-
-                // To maintain crisp pixels, we set the canvas internal resolution
-                // and let CSS handle the scaling. A fixed internal resolution can
-                // create a retro feel.
-                canvas.width = 480; 
-                canvas.height = 270;
-            }
-            function initializeGame() {
-                canvas = document.getElementById('gameCanvas');
-                ctx = canvas.getContext('2d');
-                const SPRITESHEET_PATH = 'assets/People1.png';
-
-                handleResize(); // Set initial size and layout
-                ctx.imageSmoothingEnabled = false;
+            document.querySelectorAll('.sound-hover').forEach(el => el.addEventListener('mouseenter', playHoverSound));
+            document.querySelectorAll('.sound-click').forEach(el => el.addEventListener('click', playClickSound));
 
 
-                // --- ASSET LOADER (using the Promise function) ---
-
-                // Add all event listeners
-                window.addEventListener('resize', handleResize);
-                document.addEventListener('keydown', handleKeyDown);
-                document.addEventListener('keyup', handleKeyUp);
-
-                // On-screen controls
-                const dpadUp = document.querySelector('.dpad-up');
-                const dpadDown = document.querySelector('.dpad-down');
-                const dpadLeft = document.querySelector('.dpad-left');
-                const dpadRight = document.querySelector('.dpad-right');
-                const selectBtn = document.querySelector('.game-widget-select-btn');
-
-                if (dpadUp) {
-                    dpadUp.addEventListener('mousedown', handleControlButton('up', true));
-                    dpadUp.addEventListener('mouseup', handleControlButton('up', false));
-                    dpadUp.addEventListener('mouseleave', handleControlButton('up', false));
-                    dpadUp.addEventListener('touchstart', handleControlButton('up', true), { passive: false });
-                    dpadUp.addEventListener('touchend', handleControlButton('up', false));
-
-                    dpadDown.addEventListener('mousedown', handleControlButton('down', true));
-                    dpadDown.addEventListener('mouseup', handleControlButton('down', false));
-                    dpadDown.addEventListener('mouseleave', handleControlButton('down', false));
-                    dpadDown.addEventListener('touchstart', handleControlButton('down', true), { passive: false });
-                    dpadDown.addEventListener('touchend', handleControlButton('down', false));
-
-                    dpadLeft.addEventListener('mousedown', handleControlButton('left', true));
-                    dpadLeft.addEventListener('mouseup', handleControlButton('left', false));
-                    dpadLeft.addEventListener('mouseleave', handleControlButton('left', false));
-                    dpadLeft.addEventListener('touchstart', handleControlButton('left', true), { passive: false });
-                    dpadLeft.addEventListener('touchend', handleControlButton('left', false));
-
-                    dpadRight.addEventListener('mousedown', handleControlButton('right', true));
-                    dpadRight.addEventListener('mouseup', handleControlButton('right', false));
-                    dpadRight.addEventListener('mouseleave', handleControlButton('right', false));
-                    dpadRight.addEventListener('touchstart', handleControlButton('right', true), { passive: false });
-                    dpadRight.addEventListener('touchend', handleControlButton('right', false));
-
-                    // A simple handler for the release event that just affects UI
-                    const handleSelectRelease = (e) => {
-                        e.preventDefault();
-                        e.currentTarget.classList.remove('active');
-                    };
-
-                    selectBtn.addEventListener('mousedown', handleControlButton('select', true));
-                    selectBtn.addEventListener('mouseup', handleSelectRelease);
-                    selectBtn.addEventListener('mouseleave', handleSelectRelease);
-                    selectBtn.addEventListener('touchstart', handleControlButton('select', true), { passive: false });
-                    selectBtn.addEventListener('touchend', handleSelectRelease);
-                }
-
-                // Start the game loop
-                loadImage(SPRITESHEET_PATH).then(spritesheetImage => {
-                    function gameLoop() {
-                        [controlState, playerState, cameraState]=update(canvas, controlState, playerState, cameraState);
-                        draw(ctx, canvas, entities, cameraState, spritesheetImage);
-
-                        gameLoopId = requestAnimationFrame(gameLoop);
-                    }
-                    gameLoop();
-
-                }).catch(error => {
-                    // FAILURE! This code runs if the image path was wrong or another error occurred.
-                    console.error(error);
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = 'red';
-                    ctx.fillText("Error: Could not load assets. Check console.", 50, 50);
+            // --- Aurora Mouse Light & 3D Tilt Effect (Desktop Only) ---
+            if (!isMobile) {
+                hero.addEventListener('mousemove', (e) => {
+                    const { clientX, clientY } = e;
+                    const { offsetWidth, offsetHeight } = hero;
+                    hero.style.setProperty('--mouse-x', `${(clientX / offsetWidth) * 100}%`);
+                    hero.style.setProperty('--mouse-y', `${(clientY / offsetHeight) * 100}%`);
+                    const x = (clientX - offsetWidth / 2) / (offsetWidth / 2);
+                    const y = (clientY - offsetHeight / 2) / (offsetHeight / 2);
+                    contentContainer.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) scale(1.05)`;
+                });
+                hero.addEventListener('mouseleave', () => {
+                    contentContainer.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
                 });
             }
-            function closeGame() {
-                cancelAnimationFrame(gameLoopId);
 
-                // Remove event listeners
-                window.removeEventListener('resize', handleResize);
-                document.removeEventListener('keydown', handleKeyDown);
-                document.removeEventListener('keyup', handleKeyUp);
-
-                // Remove modal from DOM
-                const modal = document.querySelector('.game-widget-modal-overlay');
-                if (modal) {
-                    modal.remove();
+            // --- Title Animation ---
+            const titleText = mainTitle.dataset.text;
+            mainTitle.innerHTML = titleText.split('').map((char, index) => {
+                let className = 'title-char';
+                // Highlight S, O, E
+                if (index === 2 || index === 3 || index === 4) {
+                    className = 'text-amber-400 group-hover:text-white transition-colors duration-300 title-char';
                 }
+                return `<span class="${className} sound-hover" style="animation-delay: ${index * 0.05}s">${char}</span>`;
+            }).join('');
+            setTimeout(() => mainTitle.classList.add('ready'), titleText.length * 50 + 800);
 
-                // Reset state
-                Object.keys(controlState).forEach(key => controlState[key] = false);
-            }
-            function createGameWindow() {
-                const modalOverlay = document.createElement('div');
-                modalOverlay.className = 'game-widget-modal-overlay';
-                modalOverlay.innerHTML = `
-                    <div class="game-widget-container">
-                        <button class="game-widget-close-button">&times;</button>
-                        <canvas id="gameCanvas" class="game-widget-canvas"></canvas>
-                        <div class="game-widget-controls">
-                            <div class="game-widget-dpad">
-                                <div class="game-widget-dpad-btn dpad-up">&#9650;</div>
-                                <div class="game-widget-dpad-btn dpad-down">&#9660;</div>
-                                <div class="game-widget-dpad-btn dpad-left">&#9664;</div>
-                                <div class="game-widget-dpad-btn dpad-right">&#9654;</div>
-                            </div>
-                            <div class="game-widget-action-buttons">
-                                <div class="game-widget-select-btn">SELECT</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+            // --- Title Glitch Effect ---
+            setInterval(() => {
+                mainTitle.classList.add('glitch');
+                setTimeout(() => mainTitle.classList.remove('glitch'), Math.random() * 300 + 100);
+            }, 5000);
 
-                document.body.appendChild(modalOverlay);
-                modalOverlay.querySelector('.game-widget-close-button').addEventListener('click', closeGame);
 
-                initializeGame();
-            }
-            function createPlayButton() {
-                const playButton = document.createElement('button');
-                playButton.textContent = 'Play Game';
-                playButton.className = 'game-widget-play-button';
-                playButton.addEventListener('click', createGameWindow);
-                document.body.appendChild(playButton);
-            }
-
-            // --- SCRIPT ENTRY POINT ---
-            // Wait for the DOM to be fully loaded before adding the button.
-            document.addEventListener('DOMContentLoaded', () => {
-                createPlayButton();
+            // --- Exit Animation ---
+            document.getElementById('enter-btn').addEventListener('click', function(event) {
+                event.preventDefault();
+                contentContainer.classList.add('fade-out');
+                document.getElementById('transition-overlay').classList.add('active');
+                setTimeout(() => window.location = this.href, 800);
             });
 
-        })();
+            // --- Particle Animation ---
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray;
+            const mouse = { x: null, y: null, radius: (canvas.height/100) * (canvas.width/100) }
+
+            window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+            
+            // Particle Click Ripple
+            window.addEventListener('click', e => {
+                if(soundsReady) clickSynth.triggerAttackRelease('C3', '4n');
+                const rippleRadius = 150;
+                const maxForce = 15;
+                for (let i = 0; i < particlesArray.length; i++) {
+                    const p = particlesArray[i];
+                    const distance = Math.hypot(p.x - e.clientX, p.y - e.clientY);
+                    if (distance < rippleRadius) {
+                        const angle = Math.atan2(p.y - e.clientY, p.x - e.clientX);
+                        const force = (rippleRadius - distance) / rippleRadius * maxForce;
+                        p.x += Math.cos(angle) * force;
+                        p.y += Math.sin(angle) * force;
+                    }
+                }
+            });
+
+            class Particle {
+                constructor(x, y, dirX, dirY, size, color) {
+                    this.x = x; this.y = y; this.baseX = x; this.baseY = y;
+                    this.directionX = dirX; this.directionY = dirY;
+                    this.size = size; this.color = color;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width + 5 || this.x < -5) this.directionX = -this.directionX;
+                    if (this.y > canvas.height + 5 || this.y < -5) this.directionY = -this.directionY;
+                    
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    if (distance < mouse.radius + this.size){
+                        if(mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
+                        if(mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+                        if(mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
+                        if(mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+                    }
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+            
+            function init() {
+                particlesArray = [];
+                // --- OPTIMIZATION: Reduce particle count on mobile ---
+                const particleDensity = isMobile ? 25000 : 9000;
+                let numberOfParticles = (canvas.height * canvas.width) / particleDensity;
+                const colors = ['rgba(245, 158, 11, 0.7)', 'rgba(255, 255, 255, 0.5)'];
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * (innerWidth - size * 4)) + size * 2;
+                    let y = (Math.random() * (innerHeight - size * 4)) + size * 2;
+                    let dirX = (Math.random() * 0.4) - 0.2;
+                    let dirY = (Math.random() * 0.4) - 0.2;
+                    let color = colors[Math.floor(Math.random() * colors.length)];
+                    particlesArray.push(new Particle(x, y, dirX, dirY, size, color));
+                }
+            }
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0,0,innerWidth, innerHeight);
+                particlesArray.forEach(p => p.update());
+                connect();
+            }
+            function connect(){
+                // --- OPTIMIZATION: Reduce connection distance on mobile ---
+                let connectDistance = isMobile ? 90 : 120;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);
+                        if (distance < connectDistance) { 
+                            let opacityValue = 1 - (distance/connectDistance);
+                            ctx.strokeStyle='rgba(245, 158, 11,' + opacityValue + ')';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                mouse.radius = (Math.min(canvas.width, canvas.height) / 10);
+                init();
+            });
+            window.addEventListener('mouseout', () => { mouse.x = undefined; mouse.y = undefined; });
+
+            init();
+            animate();
+        });
     </script>
 </body>
-
 </html>
+
+
+
