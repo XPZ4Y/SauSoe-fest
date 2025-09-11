@@ -1,4 +1,25 @@
-
+            function loadImage(path) {
+              return new Promise((resolve, reject) => {
+                // Create a new image element
+                const img = new Image();
+            
+                // Set up the event listener for a successful load
+                img.onload = () => {
+                  console.log(`Image loaded successfully from: ${path}`);
+                  resolve(img); // Fulfill the promise with the image object
+                };
+            
+                // Set up the event listener for a failure
+                img.onerror = () => {
+                  const errorMsg = `Failed to load image at: ${path}`;
+                  console.error(errorMsg);
+                  reject(new Error(errorMsg)); // Reject the promise with an error
+                };
+            
+                // Start loading the image by setting its source
+                img.src = path;
+              });
+            }
 
             function update(controlState, playerState, cameraState) {
                 if (controlState.up) playerState.y -= playerState.speed;
