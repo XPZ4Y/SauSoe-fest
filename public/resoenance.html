@@ -13,7 +13,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -52,6 +52,77 @@
 
         .text-secondary-blue {
             color: var(--secondary-blue);
+        }
+        
+        /* --- Hero Gallery Styles (Merged from scroll.html) --- */
+        .slider {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            /* A mask to create a soft fade-out effect on the edges */
+            -webkit-mask-image: linear-gradient(to right,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+            mask-image: linear-gradient(to right,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+        }
+
+        .slide-track {
+            display: flex;
+            height: 100%; /* Fill the vertical space of the hero section */
+            /* Animation: name, duration, timing-function, iteration-count */
+            animation: scroll 60s linear infinite;
+        }
+
+        /* Pause the animation on hover */
+        .slider:hover .slide-track {
+            animation-play-state: paused;
+        }
+
+        /* Define the scrolling keyframes */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /* Moves the track to the left by the width of the original slides */
+                transform: translateX(calc(-1 * var(--slide-width) * var(--original-slides)));
+            }
+        }
+
+        .slide {
+            /* Set slide width using a CSS variable */
+            width: var(--slide-width);
+            flex-shrink: 0;
+            padding: 0 1rem; /* Spacing between images */
+            box-sizing: border-box;
+            transition: transform 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* A subtle zoom effect on hover for individual images */
+        .slide:hover {
+            transform: scale(1.02);
+        }
+
+        .slide img {
+            width: 100%;
+            height: 80%; /* Control the height of the images within the slide */
+            object-fit: cover; /* Cover the area, cropping as needed */
+            border-radius: 0.75rem; /* Softer corners */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* --- Three.js Background Styles --- */
@@ -275,10 +346,10 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            animation: scroll 40s linear infinite;
+            animation: scroll-sponsors 40s linear infinite;
         }
 
-        @keyframes scroll {
+        @keyframes scroll-sponsors {
             0% {
                 transform: translateX(0%);
             }
@@ -437,26 +508,25 @@
                 transform: none;
             }
         }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 100;
+        }
     </style>
 </head>
 
 <body class="antialiased">
 
-    <!-- Floating Action Buttons -->
-    <div class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3">
-        <!-- Game Button -->
-        <a href="game.html" title="Play Astra Rush" class="btn btn-primary !p-3 flex items-center justify-center w-12 h-12 shadow-lg transform transition-transform hover:scale-110">
-            <i class="fas fa-gamepad text-xl"></i>
-        </a>
-        <!-- Events Button -->
-        <a href="#events" title="Go to Events" class="btn btn-primary !p-3 flex items-center justify-center w-12 h-12 shadow-lg transform transition-transform hover:scale-110">
-             <i class="fas fa-calendar-alt text-xl"></i>
-        </a>
-        <!-- Back to top button -->
-        <button id="back-to-top" class="btn btn-primary !p-3 w-12 h-12 hidden flex justify-center items-center shadow-lg transform transition-transform hover:scale-110">
-            <i class="fas fa-arrow-up text-xl"></i>
-        </button>
-    </div>
+    <button id="back-to-top" class="btn btn-primary !p-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
 
     <!-- Three.js Background -->
     <canvas id="threejs-background"></canvas>
@@ -510,7 +580,26 @@
 
     <main>
         <!-- Hero Section -->
-        <section id="home" class="min-h-screen flex items-center justify-center bg-transparent">
+        <section id="home" class="min-h-screen relative flex items-center justify-center bg-transparent overflow-hidden">
+             <!-- Slider Container from scroll.html -->
+            <div class="slider">
+                <!-- The track that holds and animates the slides -->
+                <div class="slide-track" id="slide-track">
+                    <!-- High-quality, artistic images -->
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop" alt="Misty mountains" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+1';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop" alt="Green hills" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+2';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?q=80&w=2070&auto=format&fit=crop" alt="Wooden pier on a lake" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+3';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop" alt="Italian lakeside village" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+4';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2070&auto=format&fit=crop" alt="Cabin by a lake" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+5';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=2070&auto=format&fit=crop" alt="Forest path" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+6';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2072&auto=format&fit=crop" alt="Mountain landscape with flowers" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+7';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1974&auto=format&fit=crop" alt="Waterfall" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+8';"></div>
+                    <!-- Cloned slides will be added here by JavaScript -->
+                </div>
+            </div>
+            <!-- Overlay to ensure text is readable -->
+            <div class="absolute inset-0 bg-black/70 z-5"></div>
+
             <div class="container mx-auto px-6 text-center relative z-10">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4">
                     Not just a sound <span class="text-primary-yellow text-glow inline-block"><span
@@ -614,6 +703,35 @@
                             data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
                             More And Register &rarr;</button>
                     </div>
+                       <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue" id="event-icon-4"><svg class="w-12 h-12" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">REEL MAKING</h3>
+                        <p class="text-stone-300 flex-grow mb-6">Your Story, Your Reel</p>
+                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
+                            data-event="REEL MAKING" data-icon="event-icon-4"
+                            data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
+                            More And Register &rarr;</button>
+                    </div>
+                       <div class="swiper-slide">
+                        <div class="mb-4 text-secondary-blue" id="event-icon-4"><svg class="w-12 h-12" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg></div>
+                        <h3 class="text-2xl font-bold text-white mb-3">REEL MAKING</h3>
+                        <p class="text-stone-300 flex-grow mb-6">Your Story, Your Reel</p>
+                        <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
+                            data-event="REEL MAKING" data-icon="event-icon-4"
+                            data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
+                            More And Register &rarr;</button>
+                    </div>
+                    
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
@@ -1281,32 +1399,55 @@
                 camera.updateProjectionMatrix();
             });
         });
-
     </script>
+    
+    <!-- Gallery Slider Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.getElementById('slide-track');
+            if (track) { 
+                const slides = Array.from(track.children);
+                const root = document.documentElement;
+
+                // --- Clone slides for the infinite loop effect ---
+                slides.forEach(slide => {
+                    const clone = slide.cloneNode(true);
+                    track.appendChild(clone);
+                });
+
+                // --- Make the slider responsive ---
+                const setSlideWidth = () => {
+                    let slidesVisible = 4; // Default for large desktops
+                    if (window.innerWidth < 1280) {
+                        slidesVisible = 3; // Desktops & large tablets
+                    }
+                    if (window.innerWidth < 768) { 
+                        slidesVisible = 2; // Tablets
+                    }
+                    if (window.innerWidth < 640) { 
+                        slidesVisible = 1.2; // Mobile, showing a peek of the next slide
+                    }
+                    
+                    const slideWidth = 100 / slidesVisible;
+                    const originalSlidesCount = slides.length;
+
+                    // Set CSS variables used for animation and sizing
+                    root.style.setProperty('--slide-width', `${slideWidth}vw`);
+                    root.style.setProperty('--original-slides', String(originalSlidesCount));
+                };
+
+                // Set initial width and add listener for window resize
+                setSlideWidth();
+                window.addEventListener('resize', setSlideWidth);
+            }
+        });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
-    
-    <script>
-        // --- Floating Action Button Logic ---
-        const backToTopButton = document.getElementById('back-to-top');
-        if (backToTopButton) {
-            window.addEventListener('scroll', () => {
-                if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                    backToTopButton.classList.remove('hidden');
-                } else {
-                    backToTopButton.classList.add('hidden');
-                }
-            });
-            backToTopButton.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
-    </script>
-    
     <script src='scripts/resoenance.js'></script>
     <script src='debugscript.js'></script>
 
 </body>
 
 </html>
-
