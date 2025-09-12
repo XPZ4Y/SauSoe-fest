@@ -94,6 +94,13 @@
             color: var(--primary-color);
         }
 
+        /* --- UPDATED: Responsive title style --- */
+        #main-title {
+            font-size: clamp(3rem, 15vw, 8rem);
+            line-height: 1;
+            white-space: nowrap; /* Ensures text stays on a single line */
+        }
+
         /* Glitch Effect */
         .glitch {
             position: relative;
@@ -172,22 +179,23 @@
     <div id="transition-overlay"></div>
 
     <main class="relative h-screen w-screen">
-        <section id="hero" class="hero-section h-full w-full flex items-center justify-center text-center p-6">
+        <!-- UPDATED: Added pb-24 to shift content up from the center -->
+        <section id="hero" class="hero-section h-full w-full flex items-center justify-center text-center p-6 pb-24">
             <canvas id="particle-canvas"></canvas>
 
             <div class="content-container max-w-4xl">
-<!-- LOGOS REPOSITIONED HERE -->
                 <div class="flex flex-col justify-center items-center gap-4 md:gap-6 mb-6 md:mb-8">
-                    <img src="aloylogo.png" alt="St. Aloysius College Logo" class="h-16 md:h-20 object-contain">
-                    <img src="reson.png" alt="Resoenance Fest Logo" class="h-40 md:h-48 object-contain rounded-lg">
+                    <img src="aloylogo.png" alt="St. Aloysius College Logo" class="h-16 md:h-20 object-contain"  onerror="this.onerror=null;this.src='https://placehold.co/200x80/0a0a0a/f59e0b?text=Aloy+Logo';">
+                    <img src="reson.png" alt="Resoenance Fest Logo" class="h-40 md:h-48 object-contain rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400/0a0a0a/f59e0b?text=Resoenance';">
                 </div>
 
                 <a href="#" class="inline-block group sound-hover sound-click">
-                     <h1 id="main-title" data-text="RESOENANCE" class="text-5xl md:text-7xl lg:text-8xl font-black uppercase text-white tracking-tighter leading-tight transition-transform duration-300 group-hover:scale-105">
+                     <!-- UPDATED: Removed responsive text size classes -->
+                     <h1 id="main-title" data-text="RESOENANCE" class="font-black uppercase text-white tracking-tighter transition-transform duration-300 group-hover:scale-105">
                      </h1>
                 </a>
                 <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-                   Your journey into sound begins here. Click the portal to enter.
+                    Your journey into sound begins here. Click the portal to enter.
                 </p>
                 <div class="mt-12">
                     <a href="resoenance.html" id="enter-btn" class="cta-button inline-block bg-amber-500 text-black uppercase tracking-widest font-bold text-lg px-10 py-5 rounded-lg sound-hover sound-click">
@@ -208,7 +216,6 @@
             <p>&copy; 2026 Resoenance Fest. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src='jimmyscript.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const isMobile = window.innerWidth <= 768;
@@ -389,6 +396,3 @@
     </script>
 </body>
 </html>
-
-
-
