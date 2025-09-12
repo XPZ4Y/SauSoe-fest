@@ -25,12 +25,18 @@
 
 
     <style>
+        /* --- Base & Theme Styles (SAC Yellow, Blue & Charcoal) --- */
         :root {
             --primary-yellow: #f7c02b;
+            /* SAC Logo Yellow */
             --secondary-blue: #65a3da;
+            /* SAC Logo Blue */
             --dark-bg: #18181b;
+            /* Charcoal (zinc-900) */
             --light-text: #e7e5e4;
+            /* Stone Text */
             --dark-text: #111827;
+            /* Dark Text for buttons */
         }
 
         body {
@@ -71,14 +77,63 @@
             );
         }
 
-        #particles-js {
-            position: fixed;
+        .slide-track {
+            display: flex;
+            height: 100%; /* Fill the vertical space of the hero section */
+            /* Animation: name, duration, timing-function, iteration-count */
+            animation: scroll 60s linear infinite;
+        }
+
+        /* Pause the animation on hover */
+        .slider:hover .slide-track {
+            animation-play-state: paused;
+        }
+
+        /* Define the scrolling keyframes */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /* Moves the track to the left by the width of the original slides */
+                transform: translateX(calc(-1 * var(--slide-width) * var(--original-slides)));
+            }
+        }
+
+        .slide {
+            /* Set slide width using a CSS variable */
+            width: var(--slide-width);
+            flex-shrink: 0;
+            padding: 0 1rem; /* Spacing between images */
+            box-sizing: border-box;
+            transition: transform 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* A subtle zoom effect on hover for individual images */
+        .slide:hover {
+            transform: scale(1.02);
+        }
+
+        .slide img {
             width: 100%;
-            height: 100%;
+            height: 80%; /* Control the height of the images within the slide */
+            object-fit: cover; /* Cover the area, cropping as needed */
+            border-radius: 0.75rem; /* Softer corners */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- Three.js Background Styles --- */
+        #threejs-background {
+            position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -2;
-            background-color: var(--dark-bg);
+            overflow: hidden;
         }
 
         #gradient-overlay {
@@ -91,8 +146,10 @@
             z-index: -1;
         }
 
+        /* --- Typography & Helpers --- */
         .text-glow {
             text-shadow: 0 0 12px rgba(247, 192, 43, 0.7);
+            /* SAC Yellow glow */
         }
 
         .btn {
@@ -109,7 +166,9 @@
 
         .btn-primary:hover {
             background-color: #f8c950;
+            /* Lighter yellow for hover */
             box-shadow: 0 4px 20px rgba(247, 192, 43, 0.5);
+            /* Matching glow */
             transform: translateY(-3px);
         }
 
@@ -147,14 +206,17 @@
             transform-origin: bottom left;
         }
 
+        /* --- Header Styles --- */
         #header {
             background-color: rgba(24, 24, 27, 0.5);
+            /* Charcoal background */
             backdrop-filter: blur(8px);
         }
 
         #header.scrolled {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             background-color: rgba(24, 24, 27, 0.8);
+            /* Darker charcoal on scroll */
         }
 
         #header a,
@@ -170,6 +232,7 @@
             color: #fff;
         }
 
+        /* --- Hero Typewriter Animation --- */
         @keyframes blink {
             50% {
                 opacity: 0;
@@ -180,6 +243,7 @@
             animation: blink 1s step-end infinite;
         }
 
+        /* --- Slider Sections --- */
         .events-slider,
         .soe-slider {
             width: 100%;
@@ -235,6 +299,7 @@
             opacity: 0.6;
         }
 
+        /* --- Sponsors Marquee --- */
         .rfm-marquee-container {
             overflow-x: hidden;
             display: flex;
@@ -294,6 +359,7 @@
             }
         }
 
+        /* --- Team Section Styles --- */
         .team-card-wrapper {
             perspective: 1500px;
             width: 100%;
@@ -338,6 +404,7 @@
             border-color: var(--primary-yellow);
         }
 
+        /* --- Team Slider Styles --- */
         .team-slider {
             width: 100%;
             height: 600px;
@@ -358,6 +425,7 @@
             transform: scale(1);
         }
 
+        /* Shared Swiper Navigation Styles */
         .swiper-button-next,
         .swiper-button-prev {
             color: var(--primary-yellow);
@@ -380,6 +448,7 @@
             font-weight: 800;
         }
 
+        /* --- Swiper Pagination Styles --- */
         .swiper-pagination-bullet {
             background-color: rgba(255, 255, 255, 0.5);
             width: 10px;
@@ -398,6 +467,7 @@
             }
         }
 
+        /* --- Modal & Form Styles --- */
         .modal-backdrop {
             transition: opacity 0.3s ease;
         }
@@ -428,6 +498,7 @@
             --tw-ring-color: #ef4444 !important;
         }
 
+        /* --- PC Optimization Styles --- */
         @media (min-width: 1024px) {
 
             .events-slider .swiper-slide,
@@ -438,6 +509,7 @@
             }
         }
 
+        /* Back to top button */
         #back-to-top {
             position: fixed;
             bottom: 20px;
@@ -455,19 +527,29 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
         </svg>
     </button>
-    
-    <div id="particles-js"></div>
+
+    <!-- Three.js Background -->
+    <canvas id="threejs-background"></canvas>
     <div id="gradient-overlay"></div>
 
+    <!-- Header -->
     <header id="header" class="sticky top-0 z-50 transition-all duration-300">
         <nav class="container mx-auto px-4 sm:px-6 py-2 flex justify-between items-center">
+            <!-- PERFECTED Logo Alignment -->
             <a href="#home" class="flex items-center gap-3 sm:gap-4 transition-transform duration-300 hover:scale-105">
+                <!-- St. Aloysius Logo -->
                 <img src="aloylogo.png" alt="St Aloysius University Logo" class="h-12 sm:h-16 w-auto"
                     onerror="this.style.display='none'">
+
+                <!-- Vertical Separator -->
                 <div class="w-px h-12 sm:h-16 bg-zinc-600"></div>
+
+                <!-- Resonance 2025 Logo -->
                 <img src="reson.png" alt="Resoenance 2025 Logo" class="h-12 sm:h-16 w-auto"
                     onerror="this.style.display='none'">
             </a>
+
+            <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#about" class="nav-link font-medium">About</a>
                 <a href="#events" class="nav-link font-medium">Events</a>
@@ -476,6 +558,8 @@
                 <a href="#soe" class="nav-link font-medium">About SOE</a>
                 <a href="#contact" class="nav-link font-medium">Contact</a>
             </div>
+
+            <!-- Mobile Menu Button -->
             <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
@@ -483,6 +567,7 @@
                 </svg>
             </button>
         </nav>
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-zinc-900/90 backdrop-blur-sm border-t border-zinc-700">
             <a href="#about" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About</a>
             <a href="#events" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Events</a>
@@ -494,7 +579,27 @@
     </header>
 
     <main>
-        <section id="home" class="min-h-screen flex items-center justify-center bg-transparent">
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen relative flex items-center justify-center bg-transparent overflow-hidden">
+             <!-- Slider Container from scroll.html -->
+            <div class="slider">
+                <!-- The track that holds and animates the slides -->
+                <div class="slide-track" id="slide-track">
+                    <!-- High-quality, artistic images -->
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop" alt="Misty mountains" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+1';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop" alt="Green hills" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+2';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?q=80&w=2070&auto=format&fit=crop" alt="Wooden pier on a lake" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+3';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop" alt="Italian lakeside village" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+4';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2070&auto=format&fit=crop" alt="Cabin by a lake" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+5';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=2070&auto=format&fit=crop" alt="Forest path" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+6';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2072&auto=format&fit=crop" alt="Mountain landscape with flowers" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+7';"></div>
+                    <div class="slide"><img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1974&auto=format&fit=crop" alt="Waterfall" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+8';"></div>
+                    <!-- Cloned slides will be added here by JavaScript -->
+                </div>
+            </div>
+            <!-- Overlay to ensure text is readable -->
+            <div class="absolute inset-0 bg-black/70 z-5"></div>
+
             <div class="container mx-auto px-6 text-center relative z-10">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4">
                     Not just a sound <span class="text-primary-yellow text-glow inline-block"><span
@@ -511,6 +616,7 @@
             </div>
         </section>
 
+        <!-- About Section -->
         <section id="about" class="py-20 lg:py-32 bg-transparent">
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -534,6 +640,7 @@
             </div>
         </section>
 
+        <!-- Events Section -->
         <section id="events" class="py-20 lg:py-32 overflow-hidden">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">THE ARENAS</h2>
@@ -632,6 +739,7 @@
             </div>
         </section>
 
+        <!-- Sponsors Section -->
         <section id="sponsors" class="py-20 lg:py-32 overflow-hidden bg-transparent">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Sponsors</h2>
@@ -671,6 +779,7 @@
             </div>
         </section>
 
+        <!-- Team Section -->
         <section id="team" class="py-20 lg:py-32 bg-transparent overflow-hidden">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Meet The Team</h2>
@@ -964,6 +1073,7 @@
             </div>
         </section>
 
+        <!-- About SOE Section -->
         <section id="soe" class="py-20 lg:py-32 bg-transparent overflow-hidden">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">About <span
@@ -973,6 +1083,7 @@
             </div>
             <div class="swiper soe-slider">
                 <div class="swiper-wrapper">
+                    <!-- Slide 1: Vision & Mission -->
                     <div class="swiper-slide">
                         <div class="mb-4 text-primary-yellow" id="soe-icon-1"><i class="fas fa-bullseye fa-3x"></i>
                         </div>
@@ -986,6 +1097,7 @@
                             data-details='Our vision and mission is to emphasize excellence; we aim to create an environment that fosters innovation, critical thinking, and personal growth. We recognize that education is not just about learning in a vacuum; it should be closelytied to pressing the issues our communities are facing today. Here, we live by our motto, "Shine to Enkindle," for a brighter tomorrow.And we believe in, "Men and Women, for and with others".'>Learn
                             More &rarr;</button>
                     </div>
+                    <!-- Slide 2: About us -->
                     <div class="swiper-slide">
                         <div class="mb-4 text-secondary-blue" id="soe-icon-2"><i class="fas fa-cogs fa-3x"></i></div>
                         <h3 class="text-2xl font-bold text-white mb-3">About Us</h3>
@@ -998,6 +1110,7 @@
                             data-details="We the School of Engineering at St.Aloysius (Deemed to be University), situated in the heart of the Mangaluru city,carrying a legacy of more than 140 years of excellence. We have a vibrant campus, so that our students can build theirnetwork and be the best.">Learn
                             More &rarr;</button>
                     </div>
+                    <!-- Slide 3: Research & Innovation -->
                     <div class="swiper-slide">
                         <div class="mb-4 text-primary-yellow" id="soe-icon-3"><i class="fas fa-lightbulb fa-3x"></i>
                         </div>
@@ -1011,6 +1124,7 @@
                             data-details="We provide the best faculty members deeply involved in the research like Computer Networks, Deep Learning, Artificial Intelligence, Cloud Computing, and many more, ensuring that our students not only gain knowledge but also contribute inthe advancement that can shape the future.">Learn
                             More &rarr;</button>
                     </div>
+                    <!-- Slide 4: Campus Life -->
                     <div class="swiper-slide">
                         <div class="mb-4 text-secondary-blue" id="soe-icon-4"><i class="fas fa-users fa-3x"></i></div>
                         <h3 class="text-2xl font-bold text-white mb-3">Student Life</h3>
@@ -1032,6 +1146,7 @@
 
     </main>
 
+    <!-- Footer -->
     <footer id="contact" class="bg-zinc-900/80 backdrop-blur-sm text-stone-300">
         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -1088,6 +1203,7 @@
         </center>
     </footer>
 
+    <!-- Details Modal -->
     <div id="details-modal"
         class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
         <div
@@ -1107,6 +1223,7 @@
         </div>
     </div>
 
+    <!-- SOE Details Modal -->
     <div id="soe-details-modal"
         class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
         <div
@@ -1123,6 +1240,7 @@
         </div>
     </div>
 
+    <!-- Registration Modal -->
     <div id="register-modal"
         class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div
@@ -1197,307 +1315,138 @@
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
     <script>
+        // --- Three.js Background Animation ---
         document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('threejs-background');
+            if (!canvas) return;
 
-            particlesJS('particles-js', {
-                "particles": {
-                    "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
-                    "color": { "value": "#f7c02b" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.5, "random": true },
-                    "size": { "value": 3, "random": true },
-                    "line_linked": { "enable": true, "distance": 150, "color": "#f7c02b", "opacity": 0.2, "width": 1 },
-                    "move": { "enable": true, "speed": 1, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                    "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
-                },
-                "retina_detect": true
-            });
+            // Scene
+            const scene = new THREE.Scene();
 
-            const typewriterText = document.getElementById('typewriter-text');
-            if (typewriterText) {
-                const words = ["it's an impact.", "it's a challenge.", "it's the future."];
-                let wordIndex = 0;
-                let charIndex = 0;
-                let isDeleting = false;
-                function type() {
-                    const currentWord = words[wordIndex];
-                    if (isDeleting) {
-                        typewriterText.textContent = currentWord.substring(0, charIndex - 1);
-                        charIndex--;
-                    } else {
-                        typewriterText.textContent = currentWord.substring(0, charIndex + 1);
-                        charIndex++;
-                    }
-                    if (!isDeleting && charIndex === currentWord.length) {
-                        setTimeout(() => isDeleting = true, 2000);
-                    } else if (isDeleting && charIndex === 0) {
-                        isDeleting = false;
-                        wordIndex = (wordIndex + 1) % words.length;
-                    }
-                    const typingSpeed = isDeleting ? 75 : 150;
-                    setTimeout(type, typingSpeed);
-                }
-                type();
+            // Camera
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+
+            // Particles
+            const particlesGeometry = new THREE.BufferGeometry;
+            const particlesCount = 600;
+            const posArray = new Float32Array(particlesCount * 3);
+            const colors = new Float32Array(particlesCount * 3);
+
+            for(let i=0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+                colors[i] = Math.random();
             }
 
-            const terminalCode = document.getElementById('terminal-code');
-            if(terminalCode) {
-                const terminalLines = [
-                    { text: '$ resonance connect', isCommand: true, delayAfter: 500 },
-                    { text: 'Connecting to Resonance 2025...', isCommand: false, delayAfter: 1000 },
-                    { text: 'Connection successful. ✅', isCommand: false, delayAfter: 1000 },
-                    { text: '$ register --event "IDEATHON" --team "Innovators"', isCommand: true, delayAfter: 500 },
-                    { text: 'Building team...', isCommand: false },
-                    { text: 'Deploying registration... Done! 🚀', isCommand: false, delayAfter: 1000 },
-                    { text: 'Your spot is secured. Welcome to the crucible!', isCommand: false, cursor: true }
-                ];
-                let lineIndex = 0;
-                function typeTerminalLine() {
-                    if (lineIndex >= terminalLines.length) return;
-                    const line = terminalLines[lineIndex];
-                    const container = document.getElementById('terminal-code-container');
-                    if (line.isCommand) {
-                        let charIdx = 0;
-                        const commandText = document.createElement('span');
-                        commandText.className = 'text-white';
-                        terminalCode.innerHTML += `<span class="text-yellow-400">$ </span>`;
-                        terminalCode.appendChild(commandText);
-                        const intervalId = setInterval(() => {
-                            commandText.textContent += line.text[charIdx+2];
-                            charIdx++;
-                            if (charIdx === line.text.length - 2) {
-                                clearInterval(intervalId);
-                                terminalCode.innerHTML += '\n';
-                                lineIndex++;
-                                setTimeout(typeTerminalLine, line.delayAfter);
-                            }
-                            container.scrollTop = container.scrollHeight;
-                        }, 50);
-                    } else {
-                        terminalCode.innerHTML += `<span class="text-stone-300">${line.text}</span>\n`;
-                        lineIndex++;
-                        if(line.cursor) terminalCode.innerHTML += '<span class="animate-pulse">█</span>';
-                        setTimeout(typeTerminalLine, line.delayAfter);
-                    }
-                    container.scrollTop = container.scrollHeight;
-                }
-                typeTerminalLine();
-            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
-
-            const header = document.getElementById('header');
-            const backToTopBtn = document.getElementById('back-to-top');
-            
-            const handleScroll = () => {
-                const scrollY = window.scrollY;
-                header.classList.toggle('scrolled', scrollY > 50);
-                if (backToTopBtn) {
-                    backToTopBtn.style.display = scrollY > 300 ? 'block' : 'none';
-                }
-            };
-            window.addEventListener('scroll', handleScroll);
-            if(backToTopBtn) {
-                backToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            var eventsSwiper = new Swiper('.events-slider', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                loop: true,
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
-                    slideShadows: false,
-                },
-                navigation: {
-                    nextEl: '#events .swiper-button-next',
-                    prevEl: '#events .swiper-button-prev',
-                },
-                pagination: {
-                    el: '#events .swiper-pagination',
-                    clickable: true,
-                },
-                initialSlide: 1,
-                breakpoints: {
-                    1024: {
-                        effect: 'slide',
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                        centeredSlides: false,
-                    }
-                }
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.255,
+                vertexColors: true
             });
 
-            var soeSwiper = new Swiper('.soe-slider', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                loop: true,
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
-                    slideShadows: false,
-                },
-                navigation: {
-                    nextEl: '#soe .swiper-button-next',
-                    prevEl: '#soe .swiper-button-prev',
-                },
-                pagination: {
-                    el: '#soe .swiper-pagination',
-                    clickable: true,
-                },
-                initialSlide: 1,
-                breakpoints: {
-                    1024: {
-                        effect: 'slide',
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                        centeredSlides: false,
-                    }
-                }
-            });
-            
-            var teamSwiper = new Swiper('.team-slider', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                loop: true,
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
-                    slideShadows: false,
-                },
-                navigation: {
-                    nextEl: '#team .swiper-button-next',
-                    prevEl: '#team .swiper-button-prev',
-                },
-                pagination: {
-                    el: '#team .swiper-pagination',
-                    clickable: true,
-                },
-                initialSlide: 1, 
-                breakpoints: {
-                    1024: {
-                        effect: 'slide',
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                        centeredSlides: false,
-                    }
-                }
-            });
-            
-            const detailsModal = document.getElementById('details-modal');
-            const registerModal = document.getElementById('register-modal');
-            const soeDetailsModal = document.getElementById('soe-details-modal');
-            
-            const openDetailsButtons = document.querySelectorAll('.open-details-modal');
-            const openSoeDetailsButtons = document.querySelectorAll('.open-soe-details-modal');
-            const openRegisterButtons = document.querySelectorAll('.open-register-modal');
-            const openRegisterFromDetailsBtn = document.querySelector('.open-register-modal-from-details');
-            const allCloseButtons = document.querySelectorAll('.close-modal-btn');
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
 
-            const openModal = (modal) => {
-                if (!modal) return;
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-                setTimeout(() => modal.querySelector('.modal-content').classList.add('active'), 10);
+            // Mouse tracking
+            const mouse = new THREE.Vector2();
+            window.addEventListener('mousemove', (event) => {
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // Animation
+            const clock = new THREE.Clock();
+
+            const animate = () => {
+                const elapsedTime = clock.getElapsedTime();
+
+                // Update particles
+                particlesMesh.rotation.y = .1 * elapsedTime;
+                particlesMesh.rotation.x = .1 * elapsedTime;
+                
+                // Parallax effect
+                camera.position.x += (mouse.x * 0.1 - camera.position.x) * 0.02;
+                camera.position.y += (mouse.y * 0.1 - camera.position.y) * 0.02;
+                camera.lookAt(scene.position);
+
+
+                // Render
+                renderer.render(scene, camera);
+
+                // Call animate again on the next frame
+                window.requestAnimationFrame(animate);
             };
 
-            const closeModal = (modal) => {
-                if (!modal) return;
-                modal.querySelector('.modal-content').classList.remove('active');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            };
+            animate();
 
-            openDetailsButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const eventTitle = button.dataset.event;
-                    const eventDetails = button.dataset.details;
-                    const iconContainer = document.getElementById(button.dataset.icon);
-                    document.getElementById('modal-event-title').textContent = eventTitle;
-                    document.getElementById('modal-event-details').textContent = eventDetails;
-                    document.getElementById('modal-event-icon').innerHTML = iconContainer ? iconContainer.innerHTML : '';
-                    openModal(detailsModal);
-                });
-            });
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                // Update sizes
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            openSoeDetailsButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const soeTitle = button.dataset.title;
-                    const soeDetails = button.dataset.details;
-                    const iconContainer = document.getElementById(button.dataset.icon);
-                    document.getElementById('modal-soe-title').textContent = soeTitle;
-                    document.getElementById('modal-soe-details').textContent = soeDetails;
-                    document.getElementById('modal-soe-icon').innerHTML = iconContainer ? iconContainer.innerHTML : '';
-                    openModal(soeDetailsModal);
-                });
-            });
-
-            if(openRegisterFromDetailsBtn) {
-                openRegisterFromDetailsBtn.addEventListener('click', () => {
-                    closeModal(detailsModal);
-                    setTimeout(() => openModal(registerModal), 300);
-                });
-            }
-            allCloseButtons.forEach(button => button.addEventListener('click', () => closeModal(button.closest('.modal-backdrop'))));
-            document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.addEventListener('click', (e) => {
-                if (e.target === backdrop) closeModal(backdrop);
-            }));
-
-            const form = document.getElementById('registrationForm');
-            const formMessage = document.getElementById('form-message');
-            if (form) {
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    // ... form validation and submission logic here ...
-                });
-            }
-
-            document.querySelectorAll('.team-card-wrapper').forEach(card => {
-                const cardFront = card.querySelector('.card-front');
-                card.addEventListener('click', (e) => {
-                    if (e.target.closest('a')) return;
-                    card.classList.toggle('is-flipped');
-                });
-                card.addEventListener('touchstart', () => { if (cardFront) cardFront.classList.add('touched'); }, { passive: true });
-                card.addEventListener('touchend', () => { if (cardFront) setTimeout(() => cardFront.classList.remove('touched'), 150); });
-                card.addEventListener('touchcancel', () => { if (cardFront) cardFront.classList.remove('touched'); });
-            });
-
-            document.querySelectorAll('.events-slider .swiper-slide, .soe-slider .swiper-slide').forEach(card => {
-                card.addEventListener('touchstart', () => { card.classList.add('touched'); }, { passive: true });
-                card.addEventListener('touchend', () => { setTimeout(() => card.classList.remove('touched'), 150); });
-                card.addEventListener('touchcancel', () => { card.classList.remove('touched'); });
+                // Update camera
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
             });
         });
     </script>
+    
+    <!-- Gallery Slider Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.getElementById('slide-track');
+            if (track) { 
+                const slides = Array.from(track.children);
+                const root = document.documentElement;
+
+                // --- Clone slides for the infinite loop effect ---
+                slides.forEach(slide => {
+                    const clone = slide.cloneNode(true);
+                    track.appendChild(clone);
+                });
+
+                // --- Make the slider responsive ---
+                const setSlideWidth = () => {
+                    let slidesVisible = 4; // Default for large desktops
+                    if (window.innerWidth < 1280) {
+                        slidesVisible = 3; // Desktops & large tablets
+                    }
+                    if (window.innerWidth < 768) { 
+                        slidesVisible = 2; // Tablets
+                    }
+                    if (window.innerWidth < 640) { 
+                        slidesVisible = 1.2; // Mobile, showing a peek of the next slide
+                    }
+                    
+                    const slideWidth = 100 / slidesVisible;
+                    const originalSlidesCount = slides.length;
+
+                    // Set CSS variables used for animation and sizing
+                    root.style.setProperty('--slide-width', `${slideWidth}vw`);
+                    root.style.setProperty('--original-slides', String(originalSlidesCount));
+                };
+
+                // Set initial width and add listener for window resize
+                setSlideWidth();
+                window.addEventListener('resize', setSlideWidth);
+            }
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+    <script src='scripts/resoenance.js'></script>
+    <script src='debugscript.js'></script>
 
 </body>
 
