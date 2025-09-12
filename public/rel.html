@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resoenance 2025 | Release Sequence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@900&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=R" type="image/png">
+    <style>
+        :root {
+            --primary-yellow: #f7c02b;
+            --secondary-blue: #65a3da;
+            --dark-bg: #18181b;
+            --glow-color: rgba(247, 192, 43, 0.75);
+            --glow-spread: 15px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e7e5e4;
+            overflow: hidden; /* Prevent scrollbars during animation */
+        }
+        
+        #particle-canvas, #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        #particle-canvas {
+             opacity: 0.5;
+        }
+        
+        #confetti-canvas {
+            z-index: 6;
+        }
+
+        #release-container {
+            transition: opacity 0.5s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- The Button --- */
+        #release-button {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: var(--primary-yellow);
+            background-color: transparent;
+            border: 4px solid var(--primary-yellow);
+            padding: 1.5rem 4rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            text-shadow: 0 0 10px var(--glow-color);
+            box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color);
+            transition: all 0.3s ease;
+            animation: pulse 2.5s infinite;
+        }
+
+        #release-button:hover {
+            transform: scale(1.05);
+            background-color: rgba(247, 192, 43, 0.1);
+        }
+        
+        #release-button.clicked {
+            animation: button-click-anim 0.5s forwards;
+        }
+        
+        @keyframes button-click-anim {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(20); opacity: 0; }
+        }
+
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color); }
+            50% { transform: scale(1.02); box-shadow: 0 0 25px 5px var(--glow-color), inset 0 0 25px 5px var(--glow-color); }
+            100% { transform: scale(1); box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color); }
+        }
+
+        /* --- Animation Elements --- */
+        #animation-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+        
+        /* --- Server Log --- */
+        #server-log-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            height: 400px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--primary-yellow);
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            color: #4ade80; /* green-400 */
+            padding: 1rem;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #server-log-container.visible {
+            opacity: 1;
+        }
+        
+        .log-line {
+            white-space: nowrap;
+        }
+        .log-line .highlight {
+            color: var(--primary-yellow);
+        }
+
+        #logo-container {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        #logo-container.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        #logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 6rem);
+            font-weight: 900;
+            color: var(--primary-yellow);
+            text-shadow: 0 0 20px var(--glow-color);
+        }
+        
+        #logo-text .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(-50px) scale(0.5);
+            animation: char-appear 0.5s forwards;
+        }
+
+        @keyframes char-appear {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        #status-text {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5rem;
+            color: #a1a1aa; /* zinc-400 */
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        #status-text.visible {
+            opacity: 1;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.5rem;
+            background-color: #a1a1aa;
+            animation: blink 1s steps(1) infinite;
+            margin-left: 8px;
+        }
+        
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        #flash-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: var(--primary-yellow);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        #flash-overlay.active { opacity: 1; }
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <canvas id="particle-canvas"></canvas>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="release-container" class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">RESOENANCE 2025</h1>
+        <p class="text-zinc-400 text-lg md:text-xl mb-12">Awaiting Presidential Launch Sequence</p>
+        <button id="release-button">RELEASE</button>
+    </div>
+
+    <div id="animation-container">
+        <div id="server-log-container"></div>
+        <div id="logo-container" class="text-center">
+             <h1 id="logo-text" class="uppercase">Resoenance</h1>
+             <p id="status-text" class="mt-4">
+                <span id="typed-status"></span><span class="cursor"></span>
+             </p>
+        </div>
+    </div>
+    
+    <div id="flash-overlay"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const releaseButton = document.getElementById('release-button');
+            const releaseContainer = document.getElementById('release-container');
+            const animationContainer = document.getElementById('animation-container');
+            const serverLogContainer = document.getElementById('server-log-container');
+            const logoContainer = document.getElementById('logo-container');
+            const logoText = document.getElementById('logo-text');
+            const statusTextContainer = document.getElementById('typed-status');
+            const statusTextEl = document.getElementById('status-text');
+            const flashOverlay = document.getElementById('flash-overlay');
+            const pCanvas = document.getElementById('particle-canvas');
+            const cCanvas = document.getElementById('confetti-canvas');
+
+            // --- Particle background effect ---
+            const pCtx = pCanvas.getContext('2d');
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
+            let particlesArray;
+
+            class Particle { /* ... Particle class remains the same ... */ 
+                 constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
+                    this.size = size; this.color = color;
+                }
+                draw() {
+                    pCtx.beginPath(); pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    pCtx.fillStyle = 'rgba(247, 192, 43, 0.5)'; pCtx.fill();
+                }
+                update() {
+                    if (this.x > pCanvas.width || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > pCanvas.height || this.y < 0) this.directionY = -this.directionY;
+                    this.x += this.directionX; this.y += this.directionY;
+                    this.draw();
+                }
+            }
+            function initParticles() { /* ... initParticles function remains the same ... */
+                 particlesArray = [];
+                let numberOfParticles = (pCanvas.height * pCanvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * .4) - .2;
+                    let directionY = (Math.random() * .4) - .2;
+                    let color = '#f7c02b';
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+             }
+            function animateParticles() { /* ... animateParticles function remains the same ... */ 
+                requestAnimationFrame(animateParticles);
+                pCtx.clearRect(0,0,innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+            }
+            initParticles(); animateParticles();
+
+            // --- Confetti Effect ---
+            const cCtx = cCanvas.getContext('2d');
+            cCanvas.width = window.innerWidth;
+            cCanvas.height = window.innerHeight;
+            let confettiArray = [];
+            const confettiColors = ['#f7c02b', '#65a3da', '#ffffff', '#f472b6', '#818cf8'];
+
+            class Confetti {
+                constructor() {
+                    this.x = cCanvas.width / 2;
+                    this.y = cCanvas.height / 2;
+                    this.size = Math.random() * 10 + 5;
+                    this.speedX = Math.random() * 20 - 10;
+                    this.speedY = Math.random() * -15 - 5;
+                    this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    this.rotation = Math.random() * 360;
+                    this.opacity = 1;
+                    this.fadeRate = Math.random() * 0.01 + 0.005;
+                }
+                update() {
+                    this.speedY += 0.2; // Gravity
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.rotation += this.speedX * 0.5;
+                    if (this.y > cCanvas.height) {
+                         this.opacity = 0;
+                    }
+                    if (this.opacity > 0) {
+                        this.opacity -= this.fadeRate;
+                    }
+                }
+                draw() {
+                    cCtx.save();
+                    cCtx.globalAlpha = this.opacity;
+                    cCtx.translate(this.x, this.y);
+                    cCtx.rotate(this.rotation * Math.PI / 180);
+                    cCtx.fillStyle = this.color;
+                    cCtx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 2);
+                    cCtx.restore();
+                }
+            }
+            function animateConfetti() {
+                cCtx.clearRect(0,0, cCanvas.width, cCanvas.height);
+                confettiArray = confettiArray.filter(c => c.opacity > 0);
+                confettiArray.forEach(c => { c.update(); c.draw(); });
+                if(confettiArray.length > 0) {
+                    requestAnimationFrame(animateConfetti);
+                }
+            }
+
+            window.addEventListener('resize', () => {
+                pCanvas.width = innerWidth; pCanvas.height = innerHeight;
+                cCanvas.width = innerWidth; cCanvas.height = innerHeight;
+                initParticles();
+            });
+
+
+            // --- Launch Sequence ---
+            releaseButton.addEventListener('click', () => {
+                releaseButton.classList.add('clicked');
+                releaseContainer.style.opacity = '0';
+                
+                setTimeout(() => {
+                    releaseContainer.style.display = 'none';
+                    runServerLogAnimation();
+                }, 500);
+            });
+
+            function runServerLogAnimation() {
+                serverLogContainer.classList.add('visible');
+                const logLines = [
+                    'Booting Resoenance Mainframe...',
+                    'Initializing connection to <span class="highlight">Mangaluru Central Hub</span>...',
+                    'Auth Signal: <span class="highlight">PRESIDENTIAL_GO</span>',
+                    'Loading particle matrix... [OK]',
+                    'Compiling celebration protocols... [OK]',
+                    'Calibrating resonance frequency... <span class="highlight">98.7%</span>',
+                    'Unlocking creative archives...',
+                    'All systems nominal.',
+                    '<span class="highlight">RESOENANCE PROTOCOL ENGAGED.</span>'
+                ];
+                let lineIndex = 0;
+                const interval = setInterval(() => {
+                    if(lineIndex < logLines.length) {
+                        const line = document.createElement('div');
+                        line.className = 'log-line';
+                        line.innerHTML = `> ${logLines[lineIndex]}`;
+                        serverLogContainer.appendChild(line);
+                        serverLogContainer.scrollTop = serverLogContainer.scrollHeight;
+                        lineIndex++;
+                    } else {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                             serverLogContainer.style.opacity = 0;
+                             revealLogo();
+                        }, 1000);
+                    }
+                }, 250);
+            }
+            
+            function revealLogo() {
+                logoContainer.classList.add('visible');
+                const text = logoText.textContent;
+                logoText.textContent = '';
+                text.split('').forEach((char, index) => {
+                    const span = document.createElement('span');
+                    span.className = 'char';
+                    span.textContent = char;
+                    span.style.animationDelay = `${index * 0.05}s`;
+                    logoText.appendChild(span);
+                });
+                
+                // Trigger Confetti
+                confettiArray = [];
+                for(let i=0; i<300; i++) confettiArray.push(new Confetti());
+                animateConfetti();
+
+
+                setTimeout(() => {
+                    statusTextEl.classList.add('visible');
+                    typeWriter("SYSTEM ONLINE // WE ARE LIVE", statusTextContainer, 80);
+                }, 500);
+
+                setTimeout(() => { flashOverlay.classList.add('active'); }, 3500);
+                setTimeout(() => { window.location.href = 'resoenance.html'; }, 3800);
+            }
+            
+            function typeWriter(txt, element, speed) { /* ... typeWriter function remains the same ... */
+                 let i = 0;
+                function type() {
+                    if (i < txt.length) {
+                        element.innerHTML += txt.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                type();
+             }
+        });
+    </script>
+
+</body>
+</html>
+
