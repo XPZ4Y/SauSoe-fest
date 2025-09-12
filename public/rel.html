@@ -98,6 +98,39 @@
             z-index: 5;
         }
         
+        /* --- Countdown Timer --- */
+        #countdown-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 7; /* Above confetti canvas */
+        }
+
+        #countdown-container.visible {
+            opacity: 1;
+        }
+
+        #countdown-timer {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15vw;
+            font-weight: 900;
+            color: var(--primary-yellow);
+            text-shadow: 0 0 25px var(--glow-color);
+        }
+
+        #countdown-timer.tick {
+            animation: tick-anim 0.2s ease-out;
+        }
+
+        @keyframes tick-anim {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
         /* --- Server Log --- */
         #server-log-container {
             position: absolute;
@@ -207,6 +240,9 @@
     </div>
 
     <div id="animation-container">
+        <div id="countdown-container">
+            <span id="countdown-timer"></span>
+        </div>
         <div id="server-log-container"></div>
         <div id="logo-container" class="text-center">
              <h1 id="logo-text" class="uppercase">Resoenance</h1>
@@ -224,6 +260,8 @@
             const releaseContainer = document.getElementById('release-container');
             const animationContainer = document.getElementById('animation-container');
             const serverLogContainer = document.getElementById('server-log-container');
+            const countdownContainer = document.getElementById('countdown-container');
+            const countdownTimer = document.getElementById('countdown-timer');
             const logoContainer = document.getElementById('logo-container');
             const logoText = document.getElementById('logo-text');
             const statusTextContainer = document.getElementById('typed-status');
@@ -340,9 +378,32 @@
                 
                 setTimeout(() => {
                     releaseContainer.style.display = 'none';
-                    runServerLogAnimation();
+                    startCountdown();
                 }, 500);
             });
+
+            function startCountdown() {
+                countdownContainer.classList.add('visible');
+                let count = 5;
+                countdownTimer.textContent = count;
+
+                const interval = setInterval(() => {
+                    count--;
+                    if (count > 0) {
+                        countdownTimer.textContent = count;
+                        countdownTimer.classList.add('tick');
+                        setTimeout(() => countdownTimer.classList.remove('tick'), 200);
+                    } else {
+                        countdownTimer.textContent = '0';
+                        countdownTimer.classList.add('tick');
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            countdownContainer.classList.remove('visible');
+                            runServerLogAnimation();
+                        }, 500);
+                    }
+                }, 1000);
+            }
 
             function runServerLogAnimation() {
                 serverLogContainer.classList.add('visible');
