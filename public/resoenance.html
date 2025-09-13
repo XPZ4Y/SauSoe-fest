@@ -1217,12 +1217,9 @@
                 <p>bored? try this game
                 <ul>
                     <li><a href="game.html">Astra Rush</a></li>
-                    <li><a href="rel.html">release</a></li>
                 </ul>
                 </p>
         </div>
-
-
         </center>
     </footer>
 
@@ -1500,95 +1497,114 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // FAB Container and Buttons
+            // --- Elements ---
             const fabContainer = document.getElementById('fab-container');
             const backToTopBtn = document.getElementById('back-to-top-btn');
             const eventsFab = document.getElementById('events-fab');
-
-            // Modals
             const allModals = document.querySelectorAll('.modal-backdrop');
             const closeModalBtns = document.querySelectorAll('.close-modal-btn');
+            const detailsModal = document.getElementById('details-modal');
+            const soeModal = document.getElementById('soe-details-modal');
+            const registerModal = document.getElementById('register-modal');
 
-            // --- FAB Visibility on Scroll ---
+            // --- FAB Visibility & Actions ---
             if (fabContainer) {
                 window.addEventListener('scroll', () => {
-                    if (window.scrollY > 300) {
-                        fabContainer.style.display = 'flex';
-                    } else {
-                        fabContainer.style.display = 'none';
-                    }
+                    fabContainer.style.display = window.scrollY > 300 ? 'flex' : 'none';
                 });
             }
-
-            // --- Back to Top Functionality ---
             if (backToTopBtn) {
-                backToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
+                backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
             }
-
-            // --- Events FAB click ---
             if (eventsFab) {
-                eventsFab.addEventListener('click', () => {
-                    document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' });
-                });
+                eventsFab.addEventListener('click', () => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' }));
             }
 
             // --- Modal Control Functions ---
             const openModal = (modal) => {
                 if (!modal) return;
-                const modalContent = modal.querySelector('.modal-content');
                 modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                setTimeout(() => {
-                    if (modalContent) modalContent.classList.add('active');
-                }, 10);
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => modal.querySelector('.modal-content')?.classList.add('active'), 10);
             };
 
             const closeModal = (modal) => {
                 if (!modal) return;
-                const modalContent = modal.querySelector('.modal-content');
-                if (modalContent) modalContent.classList.remove('active');
-
+                modal.querySelector('.modal-content')?.classList.remove('active');
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    // Check if any other modal is open before restoring scroll
-                    const isAnyModalOpen = ![...allModals].every(m => m.classList.contains('hidden'));
-                    if (!isAnyModalOpen) {
+                    if ([...allModals].every(m => m.classList.contains('hidden'))) {
                         document.body.style.overflow = '';
                     }
-                }, 300); // Wait for CSS transition
+                }, 300);
             };
 
             // --- Generic Close Modal Listeners ---
             closeModalBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const modalToClose = btn.closest('.modal-backdrop');
-                    closeModal(modalToClose);
-                });
+                btn.addEventListener('click', () => closeModal(btn.closest('.modal-backdrop')));
             });
-
             allModals.forEach(modal => {
                 modal.addEventListener('click', (e) => {
-                    // Close if click is on the backdrop itself, not a child element
-                    if (e.target === modal) {
-                        closeModal(modal);
-                    }
+                    if (e.target === modal) closeModal(modal);
                 });
             });
-
-            // --- Close modal on 'Escape' key press ---
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     allModals.forEach(modal => {
-                        if (!modal.classList.contains('hidden')) {
-                            closeModal(modal);
-                        }
+                        if (!modal.classList.contains('hidden')) closeModal(modal);
                     });
                 }
+            });
+
+            // --- Specific Modal Openers ---
+
+            // For "THE ARENAS" (Events) section
+            document.querySelectorAll('.open-details-modal').forEach(button => {
+                button.addEventListener('click', function () {
+                    const modalEventIcon = document.getElementById('modal-event-icon');
+                    const modalEventTitle = document.getElementById('modal-event-title');
+                    const modalEventDetails = document.getElementById('modal-event-details');
+
+                    const eventName = this.dataset.event;
+                    const iconId = this.dataset.icon;
+                    const details = this.dataset.details;
+                    const iconHtml = document.getElementById(iconId)?.innerHTML;
+
+                    if (modalEventTitle) modalEventTitle.textContent = eventName;
+                    if (modalEventDetails) modalEventDetails.textContent = details;
+                    if (modalEventIcon && iconHtml) modalEventIcon.innerHTML = iconHtml;
+
+                    openModal(detailsModal);
+                });
+            });
+
+            // For the "Register for this Event" button inside the event details modal
+            document.querySelector('.open-register-modal-from-details')?.addEventListener('click', () => {
+                if (detailsModal) closeModal(detailsModal);
+                if (registerModal) openModal(registerModal);
+            });
+
+            // For "About SOE" section. Attaching in capture phase to run first,
+            // and stopping propagation to prevent other listeners from opening the wrong modal.
+            document.querySelectorAll('.open-soe-details-modal').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopImmediatePropagation();
+
+                    const modalSoeIcon = document.getElementById('modal-soe-icon');
+                    const modalSoeTitle = document.getElementById('modal-soe-title');
+                    const modalSoeDetails = document.getElementById('modal-soe-details');
+
+                    const title = this.dataset.title;
+                    const iconId = this.dataset.icon;
+                    const details = this.dataset.details;
+                    const iconHtml = document.getElementById(iconId)?.innerHTML;
+
+                    if (modalSoeTitle) modalSoeTitle.textContent = title;
+                    if (modalSoeDetails) modalSoeDetails.textContent = details;
+                    if (modalSoeIcon && iconHtml) modalSoeIcon.innerHTML = iconHtml;
+
+                    openModal(soeModal);
+                }, true); // Use capture phase (true)
             });
         });
     </script>
