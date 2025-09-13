@@ -13,13 +13,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=R" type="image/png">
-    
+
     <!-- Added Three.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -53,7 +54,7 @@
         .text-secondary-blue {
             color: var(--secondary-blue);
         }
-        
+
         /* --- Hero Gallery Styles (Merged from scroll.html) --- */
         .slider {
             width: 100%;
@@ -64,22 +65,21 @@
             z-index: 0;
             /* A mask to create a soft fade-out effect on the edges */
             -webkit-mask-image: linear-gradient(to right,
-                transparent 0%,
-                black 10%,
-                black 90%,
-                transparent 100%
-            );
+                    transparent 0%,
+                    black 10%,
+                    black 90%,
+                    transparent 100%);
             mask-image: linear-gradient(to right,
-                transparent 0%,
-                black 10%,
-                black 90%,
-                transparent 100%
-            );
+                    transparent 0%,
+                    black 10%,
+                    black 90%,
+                    transparent 100%);
         }
 
         .slide-track {
             display: flex;
-            height: 100%; /* Fill the vertical space of the hero section */
+            height: 100%;
+            /* Fill the vertical space of the hero section */
             /* Animation: name, duration, timing-function, iteration-count */
             animation: scroll 60s linear infinite;
         }
@@ -94,6 +94,7 @@
             0% {
                 transform: translateX(0);
             }
+
             100% {
                 /* Moves the track to the left by the width of the original slides */
                 transform: translateX(calc(-1 * var(--slide-width) * var(--original-slides)));
@@ -104,14 +105,15 @@
             /* Set slide width using a CSS variable */
             width: var(--slide-width);
             flex-shrink: 0;
-            padding: 0 1rem; /* Spacing between images */
+            padding: 0 1rem;
+            /* Spacing between images */
             box-sizing: border-box;
             transition: transform 0.4s ease-in-out;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        
+
         /* A subtle zoom effect on hover for individual images */
         .slide:hover {
             transform: scale(1.02);
@@ -119,10 +121,13 @@
 
         .slide img {
             width: 100%;
-            height: 80%; /* Control the height of the images within the slide */
-            object-fit: cover; /* Cover the area, cropping as needed */
-            border-radius: 0.75rem; /* Softer corners */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            height: 80%;
+            /* Control the height of the images within the slide */
+            object-fit: cover;
+            /* Cover the area, cropping as needed */
+            border-radius: 0.75rem;
+            /* Softer corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         /* --- Three.js Background Styles --- */
@@ -538,14 +543,14 @@
             <!-- PERFECTED Logo Alignment -->
             <a href="#home" class="flex items-center gap-3 sm:gap-4 transition-transform duration-300 hover:scale-105">
                 <!-- St. Aloysius Logo -->
-                <img src="aloylogo.png" alt="St Aloysius University Logo" class="h-12 sm:h-16 w-auto"
+                <img src="aloylogo.png" alt="St Aloysius University Logo" class="h-8 sm:h-10 w-auto"
                     onerror="this.style.display='none'">
 
                 <!-- Vertical Separator -->
-                <div class="w-px h-12 sm:h-16 bg-zinc-600"></div>
+                <div class="w-px h-8 sm:h-10 bg-zinc-600"></div>
 
                 <!-- Resonance 2025 Logo -->
-                <img src="reson.png" alt="Resoenance 2025 Logo" class="h-24 sm:h-24 w-auto"
+                <img src="reson.png" alt="Resoenance 2025 Logo" class="h-12 sm:h-14 w-auto"
                     onerror="this.style.display='none'">
             </a>
 
@@ -580,20 +585,47 @@
 
     <main>
         <!-- Hero Section -->
-        <section id="home" class="min-h-screen relative flex items-wcenter justify-center bg-transparent overflow-hidden">
-             <!-- Slider Container from scroll.html -->
+        <section id="home"
+            class="min-h-screen relative flex items-wcenter justify-center bg-transparent overflow-hidden">
+            <!-- Slider Container from scroll.html -->
             <div class="slider">
                 <!-- The track that holds and animates the slides -->
                 <div class="slide-track" id="slide-track">
                     <!-- High-quality, artistic images -->
-                    <div class="slide"><img src="aloo.jpg" alt="Misty mountains" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+1';"></div>
-                    <div class="slide"><img src="aloo1.jpg" alt="Green hills" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+2';"></div>
-                    <div class="slide"><img src="aloo3.jpg" alt="Wooden pier on a lake" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+3';"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop" alt="Italian lakeside village" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+4';"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2070&auto=format&fit=crop" alt="Cabin by a lake" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+5';"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=2070&auto=format&fit=crop" alt="Forest path" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+6';"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2072&auto=format&fit=crop" alt="Mountain landscape with flowers" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+7';"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1974&auto=format&fit=crop" alt="Waterfall" onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+8';"></div>
+                    <div class="slide"><img src="aloo.jpg" alt="Misty mountains"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+1';">
+                    </div>
+                    <div class="slide"><img src="aloo1.jpg" alt="Green hills"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+2';">
+                    </div>
+                    <div class="slide"><img src="aloo3.jpg" alt="Wooden pier on a lake"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+3';">
+                    </div>
+                    <div class="slide"><img
+                            src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop"
+                            alt="Italian lakeside village"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+4';">
+                    </div>
+                    <div class="slide"><img
+                            src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2070&auto=format&fit=crop"
+                            alt="Cabin by a lake"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+5';">
+                    </div>
+                    <div class="slide"><img
+                            src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=2070&auto=format&fit=crop"
+                            alt="Forest path"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+6';">
+                    </div>
+                    <div class="slide"><img
+                            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2072&auto=format&fit=crop"
+                            alt="Mountain landscape with flowers"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+7';">
+                    </div>
+                    <div class="slide"><img
+                            src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1974&auto=format&fit=crop"
+                            alt="Waterfall"
+                            onerror="this.onerror=null;this.src='https://placehold.co/400x600/000000/ffffff?text=Image+8';">
+                    </div>
                     <!-- Cloned slides will be added here by JavaScript -->
                 </div>
             </div>
@@ -606,7 +638,8 @@
                             id="typewriter-text"></span><span id="typewriter-cursor">|</span></span>
                 </h1>
                 <p class="text-lg md:text-xl text-stone-200 max-w-3xl mx-auto mb-10 leading-relaxed">
-                    RESOENANCE is more than a fest—it’s where ideas ignite, talent amplifies, and brilliance resonates beyond boundaries.
+                    RESOENANCE is more than a fest—it’s where ideas ignite, talent amplifies, and brilliance resonates
+                    beyond boundaries.
                 </p>
                 <div class="flex justify-center gap-4">
                     <a href="#about" class="btn btn-secondary">Learn More</a>
@@ -618,18 +651,27 @@
             <div class="container mx-auto px-6">
                 <div class="grid md:">
                     <div>
-                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Welcome to  <span class="text-primary-yellow">RESOENANCE</span></h2>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Welcome to <span
+                                class="text-primary-yellow">RESOENANCE</span></h2>
                         <p class="text-gray-300 mb-4">
-                            Step into the ultimate arena where talent is not just showcased, but amplified; where ideas are not just shared, but ignited into reality."RESOENANCE" is more than afest, it's a meticulously engineered crucible designed to challenge the conventions, push you beyond your limits, and let your brilliance resonate with a force that cannot be ignored.
+                            Step into the ultimate arena where talent is not just showcased, but amplified; where ideas
+                            are not just shared, but ignited into reality."RESOENANCE" is more than afest, it's a
+                            meticulously engineered crucible designed to challenge the conventions, push you beyond your
+                            limits, and let your brilliance resonate with a force that cannot be ignored.
                         </p>
-<p class="text-gray-300 mb-4"> This is your definitive opportunity to gain unparalleled exposure. Compete with and learn from the brightest minds, forging connections that lasta lifetime. Here, you won't just push your skills to the sky’s limit also you'll build the launchpad to go even further,discovering a depth of capability you never knew you possessed.
-</p>
+                        <p class="text-gray-300 mb-4"> This is your definitive opportunity to gain unparalleled
+                            exposure. Compete with and learn from the brightest minds, forging connections that lasta
+                            lifetime. Here, you won't just push your skills to the sky’s limit also you'll build the
+                            launchpad to go even further,discovering a depth of capability you never knew you possessed.
+                        </p>
                         <p class="text-gray-300">
-                            Get ready for an electrifying experience that will test your intellect,inspire your creativity, and empoweryou to transform raw potential intoa powerful, tangible impact. The challenge is issued. The stage is set.  
-"Turn up your frequency, Let yourbrilliance be heard."
+                            Get ready for an electrifying experience that will test your intellect,inspire your
+                            creativity, and empoweryou to transform raw potential intoa powerful, tangible impact. The
+                            challenge is issued. The stage is set.
+                            "Turn up your frequency, Let yourbrilliance be heard."
                         </p>
                     </div>
-                    
+
                 </div>
             </div>
         </section>
@@ -697,7 +739,7 @@
                             data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
                             More And Register &rarr;</button>
                     </div>
-                       <div class="swiper-slide">
+                    <div class="swiper-slide">
                         <div class="mb-4 text-secondary-blue" id="event-icon-4"><svg class="w-12 h-12" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -711,7 +753,7 @@
                             data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
                             More And Register &rarr;</button>
                     </div>
-                       <div class="swiper-slide">
+                    <div class="swiper-slide">
                         <div class="mb-4 text-secondary-blue" id="event-icon-4"><svg class="w-12 h-12" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -725,7 +767,7 @@
                             data-details="See the world through a creative lens? The Reel Making competition is your chance to tell a story in a short, powerful video. Create a reel, capture the moment, and makeyour mark.">Learn
                             More And Register &rarr;</button>
                     </div>
-                    
+
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
@@ -1122,7 +1164,8 @@
                     <div class="swiper-slide">
                         <div class="mb-4 text-secondary-blue" id="soe-icon-4"><i class="fas fa-users fa-3x"></i></div>
                         <h3 class="text-2xl font-bold text-white mb-3">Campus Life</h3>
-                        <p class="text-stone-300 flex-grow text-left">Campus life at St. Aloysius is avibrant tapestry of diverse activitiesand opportunities.......</p>
+                        <p class="text-stone-300 flex-grow text-left">Campus life at St. Aloysius is avibrant tapestry
+                            of diverse activitiesand opportunities.......</p>
                         <button
                             class="open-soe-details-modal text-secondary-blue font-semibold hover:underline self-center mt-auto"
                             data-title="Student Life" data-icon="soe-icon-4"
@@ -1306,7 +1349,7 @@
             </form>
         </div>
     </div>
-    
+
     <script>
         // --- Three.js Background Animation ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -1332,7 +1375,7 @@
             const posArray = new Float32Array(particlesCount * 3);
             const colors = new Float32Array(particlesCount * 3);
 
-            for(let i=0; i < particlesCount * 3; i++) {
+            for (let i = 0; i < particlesCount * 3; i++) {
                 posArray[i] = (Math.random() - 0.5) * 10;
                 colors[i] = Math.random();
             }
@@ -1364,7 +1407,7 @@
                 // Update particles
                 particlesMesh.rotation.y = .1 * elapsedTime;
                 particlesMesh.rotation.x = .1 * elapsedTime;
-                
+
                 // Parallax effect
                 camera.position.x += (mouse.x * 0.1 - camera.position.x) * 0.02;
                 camera.position.y += (mouse.y * 0.1 - camera.position.y) * 0.02;
@@ -1392,12 +1435,12 @@
             });
         });
     </script>
-    
+
     <!-- Gallery Slider Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const track = document.getElementById('slide-track');
-            if (track) { 
+            if (track) {
                 const slides = Array.from(track.children);
                 const root = document.documentElement;
 
@@ -1413,13 +1456,13 @@
                     if (window.innerWidth < 1280) {
                         slidesVisible = 3; // Desktops & large tablets
                     }
-                    if (window.innerWidth < 768) { 
+                    if (window.innerWidth < 768) {
                         slidesVisible = 2; // Tablets
                     }
-                    if (window.innerWidth < 640) { 
+                    if (window.innerWidth < 640) {
                         slidesVisible = 1.2; // Mobile, showing a peek of the next slide
                     }
-                    
+
                     const slideWidth = 100 / slidesVisible;
                     const originalSlidesCount = slides.length;
 
