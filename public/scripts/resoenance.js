@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- Hero Section Typewriter Animation ---
             const typewriterText = document.getElementById('typewriter-text');
-            const words = ["it's an IMPACT."];
+            const words = [" vibe. ", " impact. ", " revolution. ", " future. ", " change. "
+                
+            ];
             let wordIndex = 0;
             let charIndex = 0;
             let isDeleting = false;
