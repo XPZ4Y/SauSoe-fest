@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resoenance 2025 | Release Sequence</title>
+    <title>Resonance 2025 | Release Sequence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@900&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@900&family=Roboto+Mono:wght@400&display=swap"
+        rel="stylesheet">
     <link rel="icon" href="https://placehold.co/32x32/f7c02b/18181b?text=R" type="image/png">
     <style>
         :root {
@@ -22,10 +25,11 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
             color: #e7e5e4;
-            overflow: hidden; /* Prevent scrollbars during animation */
+            overflow: hidden;
         }
-        
-        #particle-canvas, #confetti-canvas {
+
+        #particle-canvas,
+        #shockwave-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -34,12 +38,12 @@
             z-index: 0;
             pointer-events: none;
         }
-        
+
         #particle-canvas {
-             opacity: 0.5;
+            opacity: 0.5;
         }
-        
-        #confetti-canvas {
+
+        #shockwave-canvas {
             z-index: 6;
         }
 
@@ -70,22 +74,41 @@
             transform: scale(1.05);
             background-color: rgba(247, 192, 43, 0.1);
         }
-        
+
         #release-button.clicked {
             animation: button-click-anim 0.5s forwards;
         }
-        
+
         @keyframes button-click-anim {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.9); }
-            100% { transform: scale(20); opacity: 0; }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
         }
 
-
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color); }
-            50% { transform: scale(1.02); box-shadow: 0 0 25px 5px var(--glow-color), inset 0 0 25px 5px var(--glow-color); }
-            100% { transform: scale(1); box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color); }
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color);
+            }
+
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 25px 5px var(--glow-color), inset 0 0 25px 5px var(--glow-color);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 var(--glow-spread) 0 var(--glow-color), inset 0 0 var(--glow-spread) 0 var(--glow-color);
+            }
         }
 
         /* --- Animation Elements --- */
@@ -97,7 +120,7 @@
             align-items: center;
             z-index: 5;
         }
-        
+
         /* --- Countdown Timer --- */
         #countdown-container {
             position: absolute;
@@ -106,7 +129,7 @@
             transform: translate(-50%, -50%);
             opacity: 0;
             transition: opacity 0.5s ease;
-            z-index: 7; /* Above confetti canvas */
+            z-index: 7;
         }
 
         #countdown-container.visible {
@@ -126,9 +149,17 @@
         }
 
         @keyframes tick-anim {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         /* --- Server Log --- */
@@ -140,11 +171,12 @@
             width: 90%;
             max-width: 600px;
             height: 400px;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--primary-yellow);
             border-radius: 8px;
             font-family: 'Roboto Mono', monospace;
-            color: #4ade80; /* green-400 */
+            color: #4ade80;
+            /* green-400 */
             padding: 1rem;
             overflow: hidden;
             opacity: 0;
@@ -154,10 +186,11 @@
         #server-log-container.visible {
             opacity: 1;
         }
-        
+
         .log-line {
             white-space: nowrap;
         }
+
         .log-line .highlight {
             color: var(--primary-yellow);
         }
@@ -167,43 +200,139 @@
             transform: scale(0.8);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
-        
+
         #logo-container.visible {
             opacity: 1;
             transform: scale(1);
         }
-        
+
         #logo-text {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(2.5rem, 10vw, 6rem);
             font-weight: 900;
             color: var(--primary-yellow);
             text-shadow: 0 0 20px var(--glow-color);
-        }
-        
-        #logo-text .char {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(-50px) scale(0.5);
-            animation: char-appear 0.5s forwards;
+            display: flex;
+            position: relative;
+            /* For glitch effect */
         }
 
-        @keyframes char-appear {
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .glitch-char-inner {
+            display: inline-block;
+            animation: text-flicker 0.1s infinite;
         }
+
+        @keyframes text-flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        /* --- Post-Reveal Glitch Effect --- */
+        #logo-text.glitch-active::before,
+        #logo-text.glitch-active::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            overflow: hidden;
+        }
+
+        #logo-text.glitch-active::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--secondary-blue);
+            animation: glitch-skew 3s infinite linear alternate-reverse;
+        }
+
+        #logo-text.glitch-active::after {
+            left: -2px;
+            text-shadow: -2px 0 #f472b6, 2px 2px var(--secondary-blue);
+            /* pink and blue */
+            animation: glitch-skew 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-skew {
+            0% {
+                clip-path: inset(45% 0 50% 0);
+                transform: skew(0.5deg);
+            }
+
+            10% {
+                clip-path: inset(20% 0 10% 0);
+                transform: skew(0.8deg);
+            }
+
+            20% {
+                clip-path: inset(80% 0 5% 0);
+                transform: skew(0.2deg);
+            }
+
+            30% {
+                clip-path: inset(40% 0 45% 0);
+                transform: skew(0.1deg);
+            }
+
+            40% {
+                clip-path: inset(15% 0 70% 0);
+                transform: skew(0.6deg);
+            }
+
+            50% {
+                clip-path: inset(90% 0 2% 0);
+                transform: skew(0.3deg);
+            }
+
+            60% {
+                clip-path: inset(30% 0 60% 0);
+                transform: skew(0.7deg);
+            }
+
+            70% {
+                clip-path: inset(55% 0 20% 0);
+                transform: skew(0.2deg);
+            }
+
+            80% {
+                clip-path: inset(5% 0 85% 0);
+                transform: skew(0.9deg);
+            }
+
+            90% {
+                clip-path: inset(70% 0 15% 0);
+                transform: skew(0.4deg);
+            }
+
+            100% {
+                clip-path: inset(45% 0 50% 0);
+                transform: skew(0.5deg);
+            }
+        }
+
 
         #status-text {
             font-family: 'Roboto Mono', monospace;
             font-size: 1.5rem;
-            color: #a1a1aa; /* zinc-400 */
+            color: #a1a1aa;
+            /* zinc-400 */
             opacity: 0;
             transition: opacity 0.5s ease;
         }
-        
+
         #status-text.visible {
             opacity: 1;
         }
-        
+
         .cursor {
             display: inline-block;
             width: 10px;
@@ -212,9 +341,13 @@
             animation: blink 1s steps(1) infinite;
             margin-left: 8px;
         }
-        
-        @keyframes blink { 50% { opacity: 0; } }
-        
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
         #flash-overlay {
             position: fixed;
             inset: 0;
@@ -224,17 +357,46 @@
             z-index: 999;
             transition: opacity 0.2s ease-in-out;
         }
-        
-        #flash-overlay.active { opacity: 1; }
 
+        #flash-overlay.active {
+            opacity: 1;
+        }
+
+        /* --- Scanline Effect --- */
+        #scanline-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0) 0,
+                    rgba(0, 0, 0, 0) 2px,
+                    rgba(255, 255, 255, 0.05) 3px,
+                    rgba(255, 255, 255, 0.05) 4px);
+            background-size: 100% 4px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            animation: scanline-anim 10s linear infinite;
+        }
+
+        @keyframes scanline-anim {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 0 -40px;
+            }
+        }
     </style>
 </head>
+
 <body class="flex items-center justify-center min-h-screen">
     <canvas id="particle-canvas"></canvas>
-    <canvas id="confetti-canvas"></canvas>
+    <canvas id="shockwave-canvas"></canvas>
 
     <div id="release-container" class="text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">RESOENANCE 2025</h1>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">RESONANCE 2025</h1>
         <p class="text-zinc-400 text-lg md:text-xl mb-12">Awaiting Presidential Launch Sequence</p>
         <button id="release-button">RELEASE</button>
     </div>
@@ -245,14 +407,15 @@
         </div>
         <div id="server-log-container"></div>
         <div id="logo-container" class="text-center">
-             <h1 id="logo-text" class="uppercase">Resoenance</h1>
-             <p id="status-text" class="mt-4">
+            <h1 id="logo-text" class="uppercase" data-text=""></h1>
+            <p id="status-text" class="mt-4">
                 <span id="typed-status"></span><span class="cursor"></span>
-             </p>
+            </p>
         </div>
     </div>
-    
+
     <div id="flash-overlay"></div>
+    <div id="scanline-overlay"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -267,8 +430,9 @@
             const statusTextContainer = document.getElementById('typed-status');
             const statusTextEl = document.getElementById('status-text');
             const flashOverlay = document.getElementById('flash-overlay');
+            const scanlineOverlay = document.getElementById('scanline-overlay');
             const pCanvas = document.getElementById('particle-canvas');
-            const cCanvas = document.getElementById('confetti-canvas');
+            const shockwaveCanvas = document.getElementById('shockwave-canvas');
 
             // --- Particle background effect ---
             const pCtx = pCanvas.getContext('2d');
@@ -276,8 +440,8 @@
             pCanvas.height = window.innerHeight;
             let particlesArray;
 
-            class Particle { /* ... Particle class remains the same ... */ 
-                 constructor(x, y, directionX, directionY, size, color) {
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
                     this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
                     this.size = size; this.color = color;
                 }
@@ -292,8 +456,8 @@
                     this.draw();
                 }
             }
-            function initParticles() { /* ... initParticles function remains the same ... */
-                 particlesArray = [];
+            function initParticles() {
+                particlesArray = [];
                 let numberOfParticles = (pCanvas.height * pCanvas.width) / 9000;
                 for (let i = 0; i < numberOfParticles; i++) {
                     let size = (Math.random() * 2) + 1;
@@ -304,69 +468,81 @@
                     let color = '#f7c02b';
                     particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
                 }
-             }
-            function animateParticles() { /* ... animateParticles function remains the same ... */ 
+            }
+            function animateParticles() {
                 requestAnimationFrame(animateParticles);
-                pCtx.clearRect(0,0,innerWidth, innerHeight);
+                pCtx.clearRect(0, 0, innerWidth, innerHeight);
                 for (let i = 0; i < particlesArray.length; i++) {
                     particlesArray[i].update();
                 }
             }
             initParticles(); animateParticles();
 
-            // --- Confetti Effect ---
-            const cCtx = cCanvas.getContext('2d');
-            cCanvas.width = window.innerWidth;
-            cCanvas.height = window.innerHeight;
-            let confettiArray = [];
-            const confettiColors = ['#f7c02b', '#65a3da', '#ffffff', '#f472b6', '#818cf8'];
+            // --- Shockwave Effect ---
+            const sCtx = shockwaveCanvas.getContext('2d');
+            shockwaveCanvas.width = window.innerWidth;
+            shockwaveCanvas.height = window.innerHeight;
+            let shockwaves = [];
 
-            class Confetti {
-                constructor() {
-                    this.x = cCanvas.width / 2;
-                    this.y = cCanvas.height / 2;
-                    this.size = Math.random() * 10 + 5;
-                    this.speedX = Math.random() * 20 - 10;
-                    this.speedY = Math.random() * -15 - 5;
-                    this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                    this.rotation = Math.random() * 360;
-                    this.opacity = 1;
-                    this.fadeRate = Math.random() * 0.01 + 0.005;
+            class Shockwave {
+                constructor(x, y, color, speed, lineWidth) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = 1;
+                    this.maxRadius = Math.max(shockwaveCanvas.width, shockwaveCanvas.height) * 0.75;
+                    this.speed = speed;
+                    this.lineWidth = lineWidth;
+                    this.color = color;
                 }
+
                 update() {
-                    this.speedY += 0.2; // Gravity
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.rotation += this.speedX * 0.5;
-                    if (this.y > cCanvas.height) {
-                         this.opacity = 0;
-                    }
-                    if (this.opacity > 0) {
-                        this.opacity -= this.fadeRate;
+                    this.radius += this.speed;
+                    this.speed *= 0.98;
+                    if (this.lineWidth > 0.1) {
+                        this.lineWidth -= 0.3;
                     }
                 }
-                draw() {
-                    cCtx.save();
-                    cCtx.globalAlpha = this.opacity;
-                    cCtx.translate(this.x, this.y);
-                    cCtx.rotate(this.rotation * Math.PI / 180);
-                    cCtx.fillStyle = this.color;
-                    cCtx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 2);
-                    cCtx.restore();
+
+                draw(ctx) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = this.lineWidth;
+                    ctx.stroke();
                 }
             }
-            function animateConfetti() {
-                cCtx.clearRect(0,0, cCanvas.width, cCanvas.height);
-                confettiArray = confettiArray.filter(c => c.opacity > 0);
-                confettiArray.forEach(c => { c.update(); c.draw(); });
-                if(confettiArray.length > 0) {
-                    requestAnimationFrame(animateConfetti);
+
+            function animateShockwave() {
+                sCtx.clearRect(0, 0, shockwaveCanvas.width, shockwaveCanvas.height);
+                shockwaves = shockwaves.filter(s => s.radius < s.maxRadius && s.lineWidth > 0.1);
+                shockwaves.forEach(s => {
+                    s.update();
+                    s.draw(sCtx);
+                });
+                if (shockwaves.length > 0) {
+                    requestAnimationFrame(animateShockwave);
                 }
             }
+
+            function triggerShockwave() {
+                const centerX = shockwaveCanvas.width / 2;
+                const centerY = shockwaveCanvas.height / 2;
+
+                shockwaves.push(new Shockwave(centerX, centerY, 'rgba(247, 192, 43, 0.8)', 15, 20));
+                setTimeout(() => {
+                    shockwaves.push(new Shockwave(centerX, centerY, 'rgba(255, 255, 255, 0.6)', 12, 10));
+                }, 150);
+                setTimeout(() => {
+                    shockwaves.push(new Shockwave(centerX, centerY, 'rgba(101, 163, 218, 0.5)', 20, 15));
+                }, 250);
+
+                if (shockwaves.length > 0) animateShockwave();
+            }
+
 
             window.addEventListener('resize', () => {
                 pCanvas.width = innerWidth; pCanvas.height = innerHeight;
-                cCanvas.width = innerWidth; cCanvas.height = innerHeight;
+                shockwaveCanvas.width = innerWidth; shockwaveCanvas.height = innerHeight;
                 initParticles();
             });
 
@@ -375,7 +551,7 @@
             releaseButton.addEventListener('click', () => {
                 releaseButton.classList.add('clicked');
                 releaseContainer.style.opacity = '0';
-                
+
                 setTimeout(() => {
                     releaseContainer.style.display = 'none';
                     startCountdown();
@@ -405,10 +581,26 @@
                 }, 1000);
             }
 
-            function runServerLogAnimation() {
+            async function typeLogLine(element, text, speed = 30) {
+                return new Promise(resolve => {
+                    let i = 0;
+                    function type() {
+                        if (i < text.length) {
+                            element.innerHTML += text.charAt(i);
+                            i++;
+                            setTimeout(type, speed);
+                        } else {
+                            resolve();
+                        }
+                    }
+                    type();
+                });
+            }
+
+            async function runServerLogAnimation() {
                 serverLogContainer.classList.add('visible');
                 const logLines = [
-                    'Booting Resoenance Mainframe...',
+                    'Booting Resonance Mainframe...',
                     'Initializing connection to <span class="highlight">Mangaluru Central Hub</span>...',
                     'Auth Signal: <span class="highlight">PRESIDENTIAL_GO</span>',
                     'Loading particle matrix... [OK]',
@@ -416,56 +608,66 @@
                     'Calibrating resonance frequency... <span class="highlight">98.7%</span>',
                     'Unlocking creative archives...',
                     'All systems nominal.',
-                    '<span class="highlight">RESOENANCE PROTOCOL ENGAGED.</span>'
+                    '<span class="highlight">RESONANCE PROTOCOL ENGAGED.</span>'
                 ];
-                let lineIndex = 0;
-                const interval = setInterval(() => {
-                    if(lineIndex < logLines.length) {
-                        const line = document.createElement('div');
-                        line.className = 'log-line';
-                        line.innerHTML = `> ${logLines[lineIndex]}`;
-                        serverLogContainer.appendChild(line);
-                        serverLogContainer.scrollTop = serverLogContainer.scrollHeight;
-                        lineIndex++;
-                    } else {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                             serverLogContainer.style.opacity = 0;
-                             revealLogo();
-                        }, 1000);
-                    }
-                }, 250);
-            }
-            
-            function revealLogo() {
-                logoContainer.classList.add('visible');
-                const text = logoText.textContent;
-                logoText.textContent = '';
-                text.split('').forEach((char, index) => {
-                    const span = document.createElement('span');
-                    span.className = 'char';
-                    span.textContent = char;
-                    span.style.animationDelay = `${index * 0.05}s`;
-                    logoText.appendChild(span);
-                });
-                
-                // Trigger Confetti
-                confettiArray = [];
-                for(let i=0; i<300; i++) confettiArray.push(new Confetti());
-                animateConfetti();
 
+                for (const logText of logLines) {
+                    const line = document.createElement('div');
+                    line.className = 'log-line';
+                    line.innerHTML = '> ';
+                    serverLogContainer.appendChild(line);
+                    const textSpan = document.createElement('span');
+                    line.appendChild(textSpan);
+                    await typeLogLine(textSpan, logText, 10);
+                    serverLogContainer.scrollTop = serverLogContainer.scrollHeight;
+                }
 
                 setTimeout(() => {
-                    statusTextEl.classList.add('visible');
-                    typeWriter("SYSTEM ONLINE // WE ARE LIVE", statusTextContainer, 80);
-                }, 500);
-
-                setTimeout(() => { flashOverlay.classList.add('active'); }, 3500);
-                setTimeout(() => { window.location.href = 'resoenance.html'; }, 3800);
+                    serverLogContainer.style.opacity = 0;
+                    revealLogo();
+                }, 1000);
             }
-            
-            function typeWriter(txt, element, speed) { /* ... typeWriter function remains the same ... */
-                 let i = 0;
+
+            function revealLogo() {
+                logoContainer.classList.add('visible');
+                const targetText = "RESONANCE";
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*&^%$#@!";
+
+                logoText.setAttribute('data-text', targetText);
+
+                for (let i = 0; i < targetText.length; i++) {
+                    const charContainer = document.createElement('span');
+                    logoText.appendChild(charContainer);
+
+                    let revealCount = 0;
+                    const interval = setInterval(() => {
+                        charContainer.textContent = chars[Math.floor(Math.random() * chars.length)];
+                        revealCount++;
+                        if (revealCount > 10 + i * 5) {
+                            clearInterval(interval);
+                            charContainer.textContent = targetText[i];
+                            charContainer.classList.add('glitch-char-inner');
+
+                            if (i === targetText.length - 1) {
+                                logoText.classList.add('glitch-active');
+                                scanlineOverlay.style.opacity = '1';
+                                triggerShockwave();
+
+                                setTimeout(() => {
+                                    statusTextEl.classList.add('visible');
+                                    typeWriter("SYSTEM ONLINE // WE ARE LIVE", statusTextContainer, 80);
+                                }, 500);
+
+                                setTimeout(() => { flashOverlay.classList.add('active'); }, 2500);
+                                setTimeout(() => { window.location.href = 'https://www.soefest.com/resoenance.html'; }, 2800);
+                            }
+                        }
+                    }, 50);
+                }
+            }
+
+            function typeWriter(txt, element, speed) {
+                let i = 0;
                 function type() {
                     if (i < txt.length) {
                         element.innerHTML += txt.charAt(i);
@@ -474,10 +676,10 @@
                     }
                 }
                 type();
-             }
+            }
         });
     </script>
 
 </body>
-</html>
 
+</html>
