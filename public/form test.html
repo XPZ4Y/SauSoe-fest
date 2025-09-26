@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resonance 2025 Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Headers */
+        h1, h2 {
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 1.1em;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 40px;
+        }
+        
+        h3 {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            font-weight: 500;
+        }
+
+        /* Form Elements Styling */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box; /* Important for padding and width */
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+        }
+        
+        /* Event Card Styling - Replaces the old table */
+        .event-card {
+            background-color: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .event-card h4 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        
+        .event-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 600px) {
+            .event-inputs {
+                grid-template-columns: 1fr; /* Stack inputs vertically */
+            }
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>RESONANCE 2025</h1>
+    <h2>(Engineering a new vibe)</h2>
+
+    <form id="registrationForm">
+        <h3>College Information</h3>
+        <div class="form-group">
+            <label for="collegeName">College Name</label>
+            <input type="text" id="collegeName" name="collegeName" required>
+        </div>
+        <div class="form-group">
+            <label for="collegeAddress">College Address</label>
+            <input type="text" id="collegeAddress" name="collegeAddress" required>
+        </div>
+        <div class="form-group">
+            <label for="collegeContact">College Contact No.</label>
+            <input type="text" id="collegeContact" name="collegeContact" required>
+        </div>
+
+        <h3>Event Registration</h3>
+        
+        <div class="event-card">
+            <h4>Brain wave (Quiz)</h4>
+            <div class="event-inputs">
+                <div class="form-group">
+                    <label for="brainwaveParticipants">Participants (BLOCK letters)</label>
+                    <input type="text" id="brainwaveParticipants" name="brainwaveParticipants" placeholder="e.g., JOHN DOE, JANE DOE">
+                </div>
+                <div class="form-group">
+                    <label for="brainwaveContact">Contact No.</label>
+                    <input type="text" id="brainwaveContact" name="brainwaveContact">
+                </div>
+            </div>
+        </div>
+
+        <div class="event-card">
+            <h4>Kartkraft (Build a Car)</h4>
+            <div class="event-inputs">
+                <div class="form-group">
+                    <label for="kartkraftParticipants">Participants (BLOCK letters)</label>
+                    <input type="text" id="kartkraftParticipants" name="kartkraftParticipants">
+                </div>
+                <div class="form-group">
+                    <label for="kartkraftContact">Contact No.</label>
+                    <input type="text" id="kartkraftContact" name="kartkraftContact">
+                </div>
+            </div>
+        </div>
+        
+        <div class="event-card">
+            <h4>ReelGear</h4>
+            <div class="event-inputs">
+                <div class="form-group">
+                    <label for="reelgearParticipants">Participants (BLOCK letters)</label>
+                    <input type="text" id="reelgearParticipants" name="reelgearParticipants">
+                </div>
+                <div class="form-group">
+                    <label for="reelgearContact">Contact No.</label>
+                    <input type="text" id="reelgearContact" name="reelgearContact">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Registration</button>
+    </form>
+</div>
+
+<script>
+    // The JavaScript remains the same as it correctly captures all form data by 'name' attribute.
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            // Only include fields that have a value
+            if (value.trim() !== '') {
+                jsonData[key] = value;
+            }
+        });
+        console.log("Form Submission JSON:", JSON.stringify(jsonData, null, 2));
+        alert('Thank you for registering! Check the console for the JSON data.');
+    });
+</script>
+
+</body>
+</html>

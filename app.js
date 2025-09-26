@@ -214,17 +214,7 @@ function validateFormData(formData) {
     return errors;
 }
 
-// Validate echelon form data
-function validateEchelonData(formData) {
-    const errors = [];
-    const requiredFields = ['fullName', 'teamName', 'class', 'school'];
-    requiredFields.forEach(field => {
-        if (!formData[field] || formData[field].trim() === '') {
-            errors.push(`${field} is required`);
-        }
-    });
-    return errors;
-}
+
 
 // --- NEW VALIDATION FUNCTION ---
 function validateGameDebugData(data) {

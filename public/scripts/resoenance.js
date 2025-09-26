@@ -370,6 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const formData = new FormData(form);
                 const body = new URLSearchParams(formData).toString();
+                console.log(body)
 
                 fetch('/register', {
                     method: 'POST',
