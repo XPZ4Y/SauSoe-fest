@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI || "api_mongodb_6969_userid_sexy_chris_chinese_1_11231393138543521upx@33.mongodbapi.com";//my api key
 const DB_NAME = "registration_db";
 const COLLECTION_NAME = "registrations";
-const ECHELON_COLLECTION_NAME = "echelon-data"; // New collection for echelon posts
 const LOGIN_NAME = "login-name"; // New collection for login posts
 const GAMEDEBUG_COLLECTION_NAME = "gamedebug"; // New collection for game debug data
 
@@ -27,7 +26,7 @@ const client = new MongoClient(MONGODB_URI, {
 });
 
 // Connect to MongoDB
-let db, registrationsCollection, echelonCollection, loginCollection, gamedebugCollection;
+let db, registrationsCollection, loginCollection, gamedebugCollection;
 
 async function connectToMongoDB() {
     try {
@@ -36,7 +35,6 @@ async function connectToMongoDB() {
         
         db = client.db(DB_NAME);
         registrationsCollection = db.collection(COLLECTION_NAME);
-        echelonCollection = db.collection(ECHELON_COLLECTION_NAME); // Initialize the new collection
         loginCollection = db.collection(LOGIN_NAME);
         gamedebugCollection = db.collection(GAMEDEBUG_COLLECTION_NAME); // Initialize the new collection
         
@@ -61,7 +59,6 @@ async function readRegistrations() {
         if (!registrationsCollection) {
             throw new Error('MongoDB connection not established');
         }
-        
         const registrations = await registrationsCollection.find({}).toArray();
         return registrations;
     } catch (error) {
@@ -85,29 +82,16 @@ async function writeRegistration(registration) {
     }
 }
 
-// Helper function to write new echelon data
-async function writeEchelonData(echelonPost) {
-    try {
-        if (!echelonCollection) {
-            throw new Error('MongoDB connection not established for echelon-data');
-        }
-        const result = await echelonCollection.insertOne(echelonPost);
-        return result.acknowledged;
-    } catch (error) {
-        console.error('Error writing echelon data to MongoDB:', error);
-        return false;
-    }
-}
 // Helper function to write new loginn data
-async function writeLoginData(echelonPost) {
+async function writeLoginData(loginPost) {
     try {
         if (!loginCollection) {
             throw new Error('MongoDB connection not established for login-data');
         }
-        const result = await loginCollection.insertOne(echelonPost);
+        const result = await loginCollection.insertOne(loginPost);
         return result.acknowledged;
     } catch (error) {
-        console.error('Error writing echelon data to MongoDB:', error);
+        console.error('Error writing login data to MongoDB:', error);
         return false;
     }
 }
@@ -187,7 +171,7 @@ function validateFormData(formData) {
     const errors = [];
     
     // Required fields validation
-    const requiredFields = ['fullName', 'teamName', 'class', 'school', 'contactNumber', 'location', 'guardianPhone'];
+    const requiredFields = ['fullName', 'school', 'contactNumber'];
     requiredFields.forEach(field => {
         if (!formData[field] || formData[field].trim() === '') {
             errors.push(`${field} is required`);
@@ -216,7 +200,7 @@ function validateFormData(formData) {
 
 
 
-// --- NEW VALIDATION FUNCTION ---
+// --- NEW VALIDATION FUNCTION --- A mouse tracker function to analyse behaviours
 function validateGameDebugData(data) {
     const errors = [];
     if (!data.mousepath) {
@@ -353,20 +337,41 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
                 
-                // Add timestamp and ID to the registration
+                // Add timestamp and ID to the registration new registration model.
                 const newRegistration = {
                     id: Date.now().toString(),
                     timestamp: new Date().toISOString(),
                     fullName: formData.fullName.trim(),
-                    teamName: formData.teamName.trim(),
-                    class: formData.class.trim(),
                     school: formData.school.trim(),
                     contactNumber: formData.contactNumber.trim(),
                     email: formData.email ? formData.email.trim() : '',
-                    location: formData.location.trim(),
-                    guardianPhone: formData.guardianPhone.trim()
+
+                    // Updated quiz participant fields
+                    quizParticipant1: formData.quizParticipant1 ? formData.quizParticipant1.trim() : '',
+                    quizParticipant2: formData.quizParticipant2 ? formData.quizParticipant2.trim() : '',
+
+                    // --- Other event parameters ---
+                    kartkraftParticipant1: formData.kartkraftParticipant1 ? formData.kartkraftParticipant1.trim() : '',
+                    kartkraftParticipant2: formData.kartkraftParticipant2 ? formData.kartkraftParticipant2.trim() : '',
+                    reelgearParticipant1: formData.reelgearParticipant1 ? formData.reelgearParticipant1.trim() : '',
+                    reelgearParticipant2: formData.reelgearParticipant2 ? formData.reelgearParticipant2.trim() : '',
+                    ideajamParticipant1: formData.ideajamParticipant1 ? formData.ideajamParticipant1.trim() : '',
+                    ideajamParticipant2: formData.ideajamParticipant2 ? formData.ideajamParticipant2.trim() : '',
+                    escapeParticipant1: formData.escapeParticipant1 ? formData.escapeParticipant1.trim() : '',
+                    escapeParticipant2: formData.escapeParticipant2 ? formData.escapeParticipant2.trim() : '',
+                    wealthParticipant1: formData.wealthParticipant1 ? formData.wealthParticipant1.trim() : '',
+                    wealthParticipant2: formData.wealthParticipant2 ? formData.wealthParticipant2.trim() : '',
+                    varietyParticipant1: formData.varietyParticipant1 ? formData.varietyParticipant1.trim() : '',
+                    varietyParticipant2: formData.varietyParticipant2 ? formData.varietyParticipant2.trim() : '',
+                    varietyParticipant3: formData.varietyParticipant3 ? formData.varietyParticipant3.trim() : '',
+                    varietyParticipant4: formData.varietyParticipant4 ? formData.varietyParticipant4.trim() : '',
+                    varietyParticipant5: formData.varietyParticipant5 ? formData.varietyParticipant5.trim() : '',
+                    varietyParticipant6: formData.varietyParticipant6 ? formData.varietyParticipant6.trim() : '',
+                    varietyParticipant7: formData.varietyParticipant7 ? formData.varietyParticipant7.trim() : '',
+                    varietyParticipant8: formData.varietyParticipant8 ? formData.varietyParticipant8.trim() : '',
+                    varietyParticipant9: formData.varietyParticipant9 ? formData.varietyParticipant9.trim() : '',
+                    varietyParticipant10: formData.varietyParticipant10 ? formData.varietyParticipant10.trim() : '',
                 };
-                
                 // Write to MongoDB
                 if (await writeRegistration(newRegistration)) {
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -393,66 +398,6 @@ const server = http.createServer(async (req, res) => {
             }
         });
     } 
-    // Handle POST requests to /echelon-post
-    else if (req.method === 'POST' && req.url === '/echelon-post') {
-        let body = '';
-        
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-        
-        req.on('end', async () => {
-            try {
-                const formData = querystring.parse(body);
-                
-                // Validate echelon form data
-                const validationErrors = validateEchelonData(formData);
-                if (validationErrors.length > 0) {
-                    res.writeHead(400, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ 
-                        success: false, 
-                        message: 'Validation failed',
-                        errors: validationErrors 
-                    }));
-                    return;
-                }
-                
-                // Create the new post object
-                const newEchelonPost = {
-                    id: Date.now().toString(),
-                    timestamp: new Date().toISOString(),
-                    fullName: formData.fullName.trim(),
-                    teamName: formData.teamName.trim(),
-                    class: formData.class.trim(),
-                    school: formData.school.trim()
-                };
-                
-                // Write to MongoDB
-                if (await writeEchelonData(newEchelonPost)) {
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ 
-                        success: true, 
-                        message: 'Echelon post successful!',
-                        data: newEchelonPost
-                    }));
-                } else {
-                    res.writeHead(500, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ 
-                        success: false, 
-                        message: 'Failed to save echelon post. Please try again.' 
-                    }));
-                }
-                
-            } catch (error) {
-                console.error('Error processing echelon request:', error);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ 
-                    success: false, 
-                    message: 'Internal server error' 
-                }));
-            }
-        });
-    }
     // --- NEW /gamedebug POST REQUEST HANDLER ---
     else if (req.method === 'POST' && req.url === '/gamedebug') {
         let body = '';

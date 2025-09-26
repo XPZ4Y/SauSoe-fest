@@ -260,11 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const openModal = (modal, text) => {
                 if (!modal) return;
                 text ? valueX=text : valueX='eee';//a small fix that ensures that the code is only accessed if available
-                window.eee=modal.querySelector('#teamName') //only if the modal is form registraion
+                //removed the event code logic
                 
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
-                setTimeout(() => {modal.querySelector('.modal-content').classList.add('active'); window.eee.value=valueX; window.eee.readOnly=true;}, 10);
+                setTimeout(() => {modal.querySelector('.modal-content').classList.add('active');}, 10);
             };
 
             const closeModal = (modal) => {
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formMessage.classList.add('hidden');
 
                 let isValid = true;
-                const requiredFields = ['fullName', 'teamName', 'class', 'school', 'contactNumber', 'location', 'guardianPhone'];
+                const requiredFields = ['fullName', 'school', 'contactNumber'];
 
                 requiredFields.forEach(fieldId => {
                     const input = document.getElementById(fieldId);
