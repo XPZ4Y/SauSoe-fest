@@ -543,7 +543,7 @@
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#about" class="nav-link font-medium">About</a>
                 <a href="#events" class="nav-link font-medium">Events</a>
-                <!-- <a href="#sponsors" class="nav-link font-medium">Sponsors</a> -->
+                <a href="#sponsors" class="nav-link font-medium">Sponsors</a>
                 <a href="#team" class="nav-link font-medium">Team</a>
                 <a href="#soe" class="nav-link font-medium">About SOE</a>
                 <a href="#contact" class="nav-link font-medium">Contact</a>
@@ -561,7 +561,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-zinc-900/90 backdrop-blur-sm border-t border-zinc-700">
             <a href="#about" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About</a>
             <a href="#events" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Events</a>
-            <!--<a href="#sponsors" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Sponsors</a> -->
+            <a href="#sponsors" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Sponsors</a>
             <a href="#team" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Team</a>
             <a href="#soe" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">About SOE</a>
             <a href="#contact" class="block py-3 px-6 text-sm text-stone-300 hover:bg-zinc-800">Contact</a>
@@ -1190,8 +1190,8 @@
                                 Events</a></li>
                         <li class="mb-2"><a href="#" class="hover:text-primary-yellow transition-colors">Schedule</a>
                         </li>
-                        <!-- <li class="mb-2"><a href="#sponsors"
-                                class="hover:text-primary-yellow transition-colors">Sponsorship</a></li> -->
+                        <li class="mb-2"><a href="#sponsors"
+                                class="hover:text-primary-yellow transition-colors">Sponsorship</a></li>
                     </ul>
                 </div>
                 <div>
@@ -1284,13 +1284,18 @@
         class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div
             class="modal-content bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            
+            <!-- Close Button -->
             <button
                 class="close-modal-btn absolute top-4 right-6 text-stone-500 hover:text-white text-3xl leading-none">&times;</button>
+            
+            <!-- Title -->
             <h1 class="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">Register for Resonance</h1>
 
             <form id="registrationForm" action="/register" method="post" novalidate>
-                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Team Lead / Primary
-                    Contact</h2>
+                
+                <!-- Primary Contact -->
+                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Team Lead / Primary Contact</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8">
                     <div>
                         <label for="fullName" class="block text-sm font-medium text-stone-300 mb-1">Full name*</label>
@@ -1298,123 +1303,117 @@
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="fullNameError">Name is required</p>
                     </div>
-
                     <div>
-                        <label for="school" class="block text-sm font-medium text-stone-300 mb-1">School or College
-                            name*</label>
+                        <label for="school" class="block text-sm font-medium text-stone-300 mb-1">School or College name*</label>
                         <input type="text" id="school" name="school" placeholder="Aaron's Middle School" required
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="schoolError">School/College is required.</p>
                     </div>
                     <div>
-                        <label for="contactNumber" class="block text-sm font-medium text-stone-300 mb-1">Contact
-                            Number*</label>
+                        <label for="contactNumber" class="block text-sm font-medium text-stone-300 mb-1">Contact Number*</label>
                         <input type="tel" id="contactNumber" name="contactNumber" placeholder="eg:1234567890" required
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="contactNumberError">Contact number is required.</p>
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-medium text-stone-300 mb-1">Email ID
-                            (optional)</label>
+                        <label for="email" class="block text-sm font-medium text-stone-300 mb-1">Email ID (optional)</label>
                         <input type="email" id="email" name="email" placeholder="Eg: You@gmail.com"
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="emailError">Please enter a valid email.</p>
                     </div>
-
                 </div>
 
-                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Event Participant
-                    Details</h2>
-                <p class="text-stone-400 text-sm mb-6">Fill in the names for the events you wish to participate in.
-                    Leave others blank.</p>
+                <!-- Event Participants -->
+                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Event Participant Details</h2>
+                <p class="text-stone-400 text-sm mb-6">Fill in the names for the events you wish to participate in. Leave others blank.</p>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">Brain wave (Quiz competition)</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="quizParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="quizParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- Brain Wave -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Brain wave (Quiz competition)</summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="quizParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">Kartkraft (Build a Car)</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="kartkraftParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="kartkraftParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- Kartkraft -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Kartkraft (Build a Car)</summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="kartkraftParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">ReelGear (Make those reels!!)</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="reelgearParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="reelgearParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- ReelGear -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">ReelGear (Make those reels!!)</summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="reelgearParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">IdeaJam (The best ideas win!!)</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="ideajamParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="ideajamParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- IdeaJam -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">IdeaJam (The best ideas win!!)</summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="ideajamParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">Escape room</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="escapeParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="escapeParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- Escape Room -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Escape room</summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="escapeParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">Wealth out of waste!!</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="wealthParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="wealthParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- Wealth out of Waste -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Wealth out of waste!!</summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="wealthParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
-                <fieldset class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <legend class="px-2 text-lg font-medium text-stone-300">Variety entertainment</legend>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                        <input type="text" name="varietyParticipant1" placeholder="Participant 1 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant2" placeholder="Participant 2 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant3" placeholder="Participant 3 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant4" placeholder="Participant 4 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant5" placeholder="Participant 5 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant6" placeholder="Participant 6 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant7" placeholder="Participant 7 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant8" placeholder="Participant 8 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant9" placeholder="Participant 9 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant10" placeholder="Participant 10 Name"
-                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                <!-- Variety Entertainment -->
+                <details class="border border-zinc-700 rounded-lg p-4 mb-6">
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Variety entertainment</summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <input type="text" name="varietyParticipant1" placeholder="Participant 1 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant2" placeholder="Participant 2 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant3" placeholder="Participant 3 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant4" placeholder="Participant 4 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant5" placeholder="Participant 5 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant6" placeholder="Participant 6 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant7" placeholder="Participant 7 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant8" placeholder="Participant 8 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant9" placeholder="Participant 9 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant10" placeholder="Participant 10 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
-                </fieldset>
+                </details>
 
+                <!-- Form Message -->
                 <div id="form-message" class="hidden text-center p-3 rounded-lg mb-4"></div>
+
+                <!-- Submit Button -->
                 <div class="mt-6">
                     <button type="submit"
                         class="w-full btn btn-primary font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-800 focus:ring-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
@@ -1424,6 +1423,7 @@
             </form>
         </div>
     </div>
+
 
     <!-- Floating Action Buttons Container -->
     <div id="fab-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-4" style="display: none;">
