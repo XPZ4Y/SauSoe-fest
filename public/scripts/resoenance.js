@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const detailsModal = document.getElementById('details-modal');
             const soeDetailsModal = document.getElementById('soe-details-modal');
             const registerModal = document.getElementById('register-modal');
-            const openDetailsButtons = document.querySelectorAll('.swiper-slide');
+            const openDetailsButtons = document.querySelectorAll('.events-slider .swiper-slide'); // FIX: Scoped to events-slider
             const openSoeDetailsButtons = document.querySelectorAll('.open-soe-details-modal');
             const openRegisterButtons = document.querySelectorAll('.open-register-modal');
             const openRegisterFromDetailsBtn = document.querySelector('.open-register-modal-from-details');
@@ -278,9 +278,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             openDetailsButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const eventTitle = button.children[3].dataset.event;
-                    const eventDetails = button.children[3].dataset.details;
-                    const iconContainer = document.getElementById(button.children[3].dataset.icon);
+                    // Check if the click target is the "Learn More" button itself, if so, let the other handler do the work
+                    if (event.target.closest('.open-details-modal')) {
+                        return;
+                    }
+
+                    const learnMoreButton = button.querySelector('.open-details-modal');
+                    if (!learnMoreButton) return;
+
+                    const eventTitle = learnMoreButton.dataset.event;
+                    const eventDetails = learnMoreButton.dataset.details;
+                    const iconContainer = document.getElementById(learnMoreButton.dataset.icon);
+                    
                     if (detailsModal) {
                         document.getElementById('modal-event-title').textContent = eventTitle;
                         document.getElementById('modal-event-details').textContent = eventDetails;
