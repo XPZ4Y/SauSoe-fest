@@ -349,18 +349,35 @@ const server = http.createServer(async (req, res) => {
                     // Updated quiz participant fields
                     quizParticipant1: formData.quizParticipant1 ? formData.quizParticipant1.trim() : '',
                     quizParticipant2: formData.quizParticipant2 ? formData.quizParticipant2.trim() : '',
+                    quizParticipant3: formData.quizParticipant3 ? formData.quizParticipant3.trim() : '',
+                    quizParticipant4: formData.quizParticipant4 ? formData.quizParticipant4.trim() : '',
 
                     // --- Other event parameters ---
                     kartkraftParticipant1: formData.kartkraftParticipant1 ? formData.kartkraftParticipant1.trim() : '',
                     kartkraftParticipant2: formData.kartkraftParticipant2 ? formData.kartkraftParticipant2.trim() : '',
+                    kartkraftParticipant3: formData.kartkraftParticipant3 ? formData.kartkraftParticipant3.trim() : '',
+                    kartkraftParticipant4: formData.kartkraftParticipant4 ? formData.kartkraftParticipant4.trim() : '',
+
                     reelgearParticipant1: formData.reelgearParticipant1 ? formData.reelgearParticipant1.trim() : '',
                     reelgearParticipant2: formData.reelgearParticipant2 ? formData.reelgearParticipant2.trim() : '',
+                    reelgearParticipant3: formData.reelgearParticipant3 ? formData.reelgearParticipant3.trim() : '',
+                    reelgearParticipant4: formData.reelgearParticipant4 ? formData.reelgearParticipant4.trim() : '',
+
                     ideajamParticipant1: formData.ideajamParticipant1 ? formData.ideajamParticipant1.trim() : '',
                     ideajamParticipant2: formData.ideajamParticipant2 ? formData.ideajamParticipant2.trim() : '',
+                    ideajamParticipant3: formData.ideajamParticipant3 ? formData.ideajamParticipant3.trim() : '',
+                    ideajamParticipant4: formData.ideajamParticipant4 ? formData.ideajamParticipant4.trim() : '',
+
                     escapeParticipant1: formData.escapeParticipant1 ? formData.escapeParticipant1.trim() : '',
                     escapeParticipant2: formData.escapeParticipant2 ? formData.escapeParticipant2.trim() : '',
+                    escapeParticipant3: formData.escapeParticipant3 ? formData.escapeParticipant3.trim() : '',
+                    escapeParticipant4: formData.escapeParticipant4 ? formData.escapeParticipant4.trim() : '',
+
                     wealthParticipant1: formData.wealthParticipant1 ? formData.wealthParticipant1.trim() : '',
                     wealthParticipant2: formData.wealthParticipant2 ? formData.wealthParticipant2.trim() : '',
+                    wealthParticipant3: formData.wealthParticipant3 ? formData.wealthParticipant3.trim() : '',
+                    wealthParticipant4: formData.wealthParticipant4 ? formData.wealthParticipant4.trim() : '',
+
                     varietyParticipant1: formData.varietyParticipant1 ? formData.varietyParticipant1.trim() : '',
                     varietyParticipant2: formData.varietyParticipant2 ? formData.varietyParticipant2.trim() : '',
                     varietyParticipant3: formData.varietyParticipant3 ? formData.varietyParticipant3.trim() : '',
@@ -371,6 +388,7 @@ const server = http.createServer(async (req, res) => {
                     varietyParticipant8: formData.varietyParticipant8 ? formData.varietyParticipant8.trim() : '',
                     varietyParticipant9: formData.varietyParticipant9 ? formData.varietyParticipant9.trim() : '',
                     varietyParticipant10: formData.varietyParticipant10 ? formData.varietyParticipant10.trim() : '',
+
                 };
                 // Write to MongoDB
                 if (await writeRegistration(newRegistration)) {
