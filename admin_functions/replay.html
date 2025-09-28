@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Replay Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #e2e8f0;
+            overflow: hidden; /* Hide scrollbars */
+        }
+
+        .hidden {
+            display: none;
+            visibility: hidden;
+        }
+
+        #replay-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #replay-stage {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            position: relative; /* For click effects */
+        }
+        
+        #initial-drop-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #9ca3af;
+            background-color: #1f2937;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        #drag-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 4px dashed #3b82f6;
+            box-sizing: border-box;
+            z-index: 1000;
+            pointer-events: none; /* Important */
+        }
+
+        #controls-panel {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background-color: rgba(26, 32, 44, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #475569;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            white-space: nowrap;
+        }
+        
+        #progress-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #session-duration {
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        
+        .mouse-cursor {
+            position: absolute;
+            width: 1rem;
+            height: 1rem;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            transition: transform 0.05s linear, opacity 0.2s;
+        }
+
+        .click-effect {
+            position: absolute;
+            width: 2rem;
+            height: 2rem;
+            background-color: #ef4444;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            animation: click-ripple 0.5s ease-out forwards;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+            transform: translate(-50%, -50%); /* Center the ripple on click */
+        }
+
+        #event-log-container {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 280px;
+            max-height: 50%;
+            background-color: rgba(26, 32, 44, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            border: 1px solid #475569;
+            padding: 0.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse; /* Newest items on bottom */
+            z-index: 50;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin-top: 0.5rem; /* Space between items */
+            border-radius: 0.5rem;
+            animation: fadeIn 0.4s ease-out;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+        }
+        
+        .log-item-click {
+             background-color: rgba(59, 130, 246, 0.2); /* Blue tint */
+             border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .log-item-keypress {
+            background-color: rgba(139, 92, 246, 0.2); /* Violet tint */
+            border: 1px solid rgba(139, 92, 246, 0.5);
+        }
+
+        .log-item strong {
+            font-weight: 600;
+            color: #ffffff;
+            background-color: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes click-ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="replay-container">
+        <!-- The white "screen" where the replay happens -->
+        <div id="replay-stage">
+            <!-- The custom blue dot cursor for the replay -->
+            <div id="mouse-cursor" class="mouse-cursor hidden"></div>
+        </div>
+        
+        <!-- Initial message prompting user to add a file -->
+        <div id="initial-drop-message">
+            <p>Drag & drop JSON file anywhere to begin</p>
+        </div>
+
+        <!-- Overlay that appears when dragging a file over the window -->
+        <div id="drag-overlay" class="hidden">
+            <p>Drop file to load replay</p>
+        </div>
+
+        <!-- Controls Panel, designed like a video player -->
+        <div id="controls-panel" class="hidden">
+            <!-- Play Button -->
+            <button id="replay-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 rounded-full shadow-md transition duration-200 flex items-center justify-center w-10 h-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+            <!-- Stop Button -->
+            <button id="stop-button" class="bg-red-500 hover:bg-red-600 text-white font-bold p-2 rounded-full shadow-md transition duration-200 hidden items-center justify-center w-10 h-10">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+            </button>
+
+            <!-- Progress Bar and Time Display -->
+            <div id="progress-container">
+                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-100 ease-linear" style="width: 0%;"></div>
+                </div>
+                <div id="session-duration" class="text-sm text-gray-400">0:00.0 / 0:00.0</div>
+            </div>
+
+            <!-- IP Address and Session Selection Dropdowns -->
+            <div class="control-group">
+                <label for="ip-select" class="block text-sm font-medium text-gray-400">IP:</label>
+                <select id="ip-select" class="block rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"></select>
+            </div>
+            <div class="control-group">
+                <label for="session-select" class="block text-sm font-medium text-gray-400">Session:</label>
+                <select id="session-select" class="block rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"></select>
+            </div>
+             <!-- Status Message Area -->
+            <div id="status-message" class="text-center font-semibold text-gray-400 text-sm"></div>
+        </div>
+        
+
+            <div id="event-log-container">
+                </div>
+        
+    </div>
+
+    
+    <!-- This input is never shown, but used to trigger the file dialog -->
+    <input type="file" id="file-input" class="hidden" accept=".json">
+
+    <script>
+        // --- Element References ---
+        const fileInput = document.getElementById('file-input');
+        const initialDropMessage = document.getElementById('initial-drop-message');
+        const dragOverlay = document.getElementById('drag-overlay');
+        const ipSelect = document.getElementById('ip-select');
+        const sessionSelect = document.getElementById('session-select');
+        const controlsPanel = document.getElementById('controls-panel');
+        const replayButton = document.getElementById('replay-button');
+        const stopButton = document.getElementById('stop-button');
+        const replayStage = document.getElementById('replay-stage');
+        const mouseCursor = document.getElementById('mouse-cursor');
+        const statusMessage = document.getElementById('status-message');
+        const sessionDurationElem = document.getElementById('session-duration');
+        const progressBarElem = document.getElementById('progress-bar');
+        const eventLogContainer = document.getElementById('event-log-container'); // ADD THIS
+
+        const MOUSE_TRACKING_INTERVAL = 100;
+        
+        // --- State Variables ---
+        let allData = null;
+        let selectedSessionData = null;
+        let totalDuration = 0;
+        let animationFrameId = null;
+        let startTime = null;
+        let mousePathIndex = 0;
+        let clickIndex = 0;
+        let keypressIndex = 0;
+        let dragCounter = 0; // To handle nested drag events
+
+        // --- File Handling ---
+        
+        // Make the entire window a drop zone
+        window.addEventListener('dragenter', (e) => {
+            e.preventDefault();
+            if (allData) return; // Don't show overlay if data is already loaded
+            dragCounter++;
+            dragOverlay.classList.remove('hidden');
+        });
+        
+        window.addEventListener('dragover', (e) => {
+            e.preventDefault(); // This is necessary to allow dropping
+        });
+
+        window.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            if (allData) return;
+            dragCounter--;
+            if (dragCounter === 0) {
+                dragOverlay.classList.add('hidden');
+            }
+        });
+        
+        window.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (allData) return; // Don't process another file if one is loaded
+            dragCounter = 0;
+            dragOverlay.classList.add('hidden');
+            handleFileDrop(e);
+        });
+        
+        // Allow clicking the initial message to open the file browser
+        initialDropMessage.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+             if (e.target.files.length > 0) {
+                const mockEvent = {
+                    dataTransfer: { files: e.target.files },
+                    preventDefault: () => {}
+                };
+                handleFileDrop(mockEvent);
+            }
+        });
+
+        function handleFileDrop(e) {
+            const file = e.dataTransfer.files[0];
+            
+            if (file) {
+                if (file.type !== 'application/json') {
+                    displayMessage('Please use a valid JSON file.', true);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        allData = JSON.parse(event.target.result);
+                        // Hide initial message and show the controls
+                        initialDropMessage.classList.add('hidden');
+                        controlsPanel.classList.remove('hidden');
+                        populateIpAddresses();
+                    } catch (err) {
+                        displayMessage('Failed to parse JSON file.', true);
+                        console.error(err);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // --- UI Population and Updates ---
+
+        function populateIpAddresses() {
+            ipSelect.innerHTML = '<option value="">Select IP</option>';
+            allData.forEach((user) => {
+                const option = document.createElement('option');
+                option.value = user.clientIP;
+                option.textContent = user.clientIP;
+                ipSelect.appendChild(option);
+            });
+        }
+
+        ipSelect.addEventListener('change', () => {
+            const selectedIp = ipSelect.value;
+            if (selectedIp) {
+                const user = allData.find(u => u.clientIP === selectedIp);
+                populateSessions(user.sessions);
+            } else {
+                sessionSelect.innerHTML = '';
+            }
+            // Reset player when IP changes
+            resetPlaybackUI();
+        });
+
+        function formatTime(ms) {
+            if (isNaN(ms) || ms < 0) return '0:00.0';
+            const minutes = Math.floor(ms / 60000);
+            const seconds = ((ms % 60000) / 1000).toFixed(1);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        // --- Add this new function somewhere before "--- Playback Logic ---" ---
+
+        function logEvent(type, data) {
+            const logItem = document.createElement('div');
+            logItem.classList.add('log-item');
+
+            let icon = '';
+            let content = '';
+
+            if (type === 'click') {
+                logItem.classList.add('log-item-click');
+                icon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"></path><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path></svg>`;
+                content = `<span>Click: "${data.element}"</span>`;
+            } else if (type === 'keypress') {
+                logItem.classList.add('log-item-keypress');
+                icon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><path d="M5 12h.01M8 12h.01M11 12h.01M14 12h.01M17 12h.01M5 16.5h.01M8 16.5h.01M11 16.5h.01M14 16.5h.01M17 16.5h.01"></path></svg>`;
+                const key = data.key === ' ' ? 'Space' : data.key; // Make spacebar visible
+                content = `<span>Pressed: <strong>${key}</strong></span>`;
+            }
+
+            logItem.innerHTML = icon + content;
+            eventLogContainer.prepend(logItem); // Use prepend to add to the top
+
+            // Optional: Limit the number of log items to prevent performance issues
+            if (eventLogContainer.children.length > 15) {
+                eventLogContainer.lastElementChild.remove();
+            }
+        }  //log the event 
+
+        function populateSessions(sessions) {
+            sessionSelect.innerHTML = '<option value="">Select Session</option>';
+            sessions.forEach((session, index) => {
+                const option = document.createElement('option');
+                const date = new Date(session.timestamp).toLocaleString();
+                option.value = index;
+                option.textContent = `#${index + 1} (${date})`;
+                sessionSelect.appendChild(option);
+            });
+        }
+
+        sessionSelect.addEventListener('change', () => {
+            const selectedIp = ipSelect.value;
+            const selectedSessionIndex = sessionSelect.value;
+            
+            resetPlaybackUI();
+            
+            if (selectedIp && selectedSessionIndex !== '') {
+                const user = allData.find(u => u.clientIP === selectedIp);
+                selectedSessionData = user.sessions[selectedSessionIndex];
+                calculateDuration();
+                displayMessage('Ready to replay.', false);
+            }
+        });
+
+        function calculateDuration() {
+            let maxTimestamp = 0;
+            if (selectedSessionData.mousepath.length > 0) {
+                maxTimestamp = (selectedSessionData.mousepath.length - 1) * MOUSE_TRACKING_INTERVAL;
+            }
+            selectedSessionData.clicks.forEach(click => {
+                if (click.timestamp > maxTimestamp) maxTimestamp = click.timestamp;
+            });
+            selectedSessionData.keypresses.forEach(keypress => {
+                if (keypress.timestamp > maxTimestamp) maxTimestamp = keypress.timestamp;
+            });
+            totalDuration = maxTimestamp;
+            sessionDurationElem.textContent = `0:00.0 / ${formatTime(totalDuration)}`;
+        }
+        
+        function resetPlaybackUI() {
+            stopReplay();
+            selectedSessionData = null;
+            totalDuration = 0;
+            progressBarElem.style.width = '0%';
+            sessionDurationElem.textContent = '0:00.0 / 0:00.0';
+            displayMessage('', false);
+        }
+
+        // --- Playback Logic ---
+
+        function displayMessage(message, isError = false) {
+            statusMessage.textContent = message;
+            statusMessage.style.color = isError ? '#ef4444' : '#60a5fa';
+        }
+
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.left = `${x}px`;
+            effect.style.top = `${y}px`;
+            replayStage.appendChild(effect);
+            // Clean up the element after the animation finishes
+            setTimeout(() => effect.remove(), 500);
+        }
+
+        function updateReplay() {
+            if (!selectedSessionData) return;
+
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - startTime;
+
+            // Update progress bar & time display
+            const progress = Math.min((elapsedTime / totalDuration) * 100, 100);
+            progressBarElem.style.width = `${progress}%`;
+            sessionDurationElem.textContent = `${formatTime(elapsedTime)} / ${formatTime(totalDuration)}`;
+
+            // Update mouse position
+            const targetMouseIndex = Math.floor(elapsedTime / MOUSE_TRACKING_INTERVAL);
+            if (mousePathIndex < selectedSessionData.mousepath.length) {
+                if (mousePathIndex < targetMouseIndex) {
+                    mousePathIndex = Math.min(targetMouseIndex, selectedSessionData.mousepath.length - 1);
+                }
+                const [x, y] = selectedSessionData.mousepath[mousePathIndex];
+                mouseCursor.style.left = `${x}px`;
+                mouseCursor.style.top = `${y}px`;
+            }
+
+            // Show click effects at the right time
+            while (clickIndex < selectedSessionData.clicks.length && elapsedTime >= selectedSessionData.clicks[clickIndex].timestamp) {
+                console.log(selectedSessionData)
+                const click = selectedSessionData.clicks[clickIndex];
+                createClickEffect(click.x, click.y);
+                logEvent('click', click); // ADD THIS LINE
+                clickIndex++;
+            }           
+
+            // Process keypresses (no visual feedback in this version, but logic is here)
+            while (keypressIndex < selectedSessionData.keypresses.length && elapsedTime >= selectedSessionData.keypresses[keypressIndex].timestamp) {
+                const keypress = selectedSessionData.keypresses[keypressIndex];
+                logEvent('keypress', keypress); // ADD THIS LINE
+                keypressIndex++;
+            }
+            
+            // Continue the loop or finish
+            if (elapsedTime < totalDuration) {
+                animationFrameId = requestAnimationFrame(updateReplay);
+            } else {
+                displayMessage('Replay finished.', false);
+                stopReplay();
+                progressBarElem.style.width = '100%'; 
+            }
+        }
+
+        function startReplay() {
+            if (!selectedSessionData) {
+                displayMessage('Please select a session first.', true);
+                return;
+            }
+            // Reset state for a new replay
+            mouseCursor.classList.remove('hidden');
+            displayMessage('Replaying...', false);
+            mousePathIndex = 0;
+            clickIndex = 0;
+            keypressIndex = 0;
+            
+            startTime = Date.now();
+            replayButton.classList.add('hidden');
+            stopButton.classList.remove('hidden');
+            
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(updateReplay);
+        }
+
+        function stopReplay() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            if (selectedSessionData) {
+                 displayMessage('Replay stopped.', false);
+            }
+            // Hide the custom cursor when not playing
+            mouseCursor.classList.add('hidden');
+            replayButton.classList.remove('hidden');
+            stopButton.classList.add('hidden');
+        }
+
+        replayButton.addEventListener('click', startReplay);
+        stopButton.addEventListener('click', stopReplay);
+
+    </script>
+</body>
+</html>
+
