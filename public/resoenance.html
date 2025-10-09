@@ -415,6 +415,7 @@
             height: 600px;
             padding-top: 50px;
             padding-bottom: 50px;
+           
         }
 
         .team-slider .swiper-slide {
@@ -422,6 +423,7 @@
             height: 450px;
             transition: transform 0.5s ease, opacity 0.5s ease;
             opacity: 0.8;
+             backdrop-filter: blur(40px);
             transform: scale(0.85);
         }
 
@@ -777,45 +779,30 @@
             </div>
         </section>
 
-        <!--  Sponsors Section 
-        <section id="sponsors" class="py-20 lg:py-32 overflow-hidden bg-transparent">
+        
+        <section id="sponsors" class="py-20 lg:py-32 bg-transparent">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Sponsors</h2>
-                <p class="text-stone-300 max-w-2xl mx-auto mb-12">Powering innovation with the support of industry
-                    leaders.</p>
-                <div class="rfm-marquee-container">
-                    <div class="rfm-overlay"></div>
-                    <div class="rfm-marquee">
-                        <div class="flex flex-shrink-0 justify-around items-center w-full">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=MicroHard" alt="Sponsor A Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=MomoCafe" alt="Sponsor B Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=Googol" alt="Sponsor C Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+D" alt="Sponsor D Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+E" alt="Sponsor E Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                        </div>
-                    </div>
-                    <div class="rfm-marquee">
-                        <div class="flex flex-shrink-0 justify-around items-center w-full">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=Bihar" alt="Sponsor A Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+B" alt="Sponsor B Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+C" alt="Sponsor C Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+D" alt="Sponsor D Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                            <img src="https://placehold.co/150x50/e0e0e0/111827?text=SPONSOR+E" alt="Sponsor E Logo"
-                                class="h-10 md:h-12 opacity-60 hover:opacity-100 transition-opacity mx-8">
-                        </div>
-                    </div>
+                <p class="text-stone-300 max-w-2xl mx-auto mb-12">
+                    Powering innovation with the support of industry leaders.
+                </p>
+
+                <div class="flex justify-center items-center flex-wrap gap-x-12 gap-y-8 md:gap-x-16">
+                    
+                    <img 
+                        src="iconic/sponsor1.jpeg" 
+                        alt="Sponsor A Logo"
+                        class="h-40 md:h-48 object-contain transition-transform duration-300 hover:scale-110"
+                    >
+                    <img 
+                        src="iconic/sponsor2.png" 
+                        alt="Sponsor B Logo"
+                        class="h-40 md:h-48 object-contain transition-transform duration-300 hover:scale-110"
+                    >
+                    
                 </div>
             </div>
-        </section> -->
+        </section>
 
         <!-- Team Section -->
         <!-- Team Section -->
@@ -937,9 +924,9 @@
                         <div class="team-card-wrapper cursor-pointer">
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
-                                    <img src="##" alt="Profile picture of Shawn"
+                                    <img src="iconic/thisguy.jpg" alt="Profile picture of Shawn"
                                         class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                        onerror="this.onerror=null;this.src='';">
                                     <h3 class="text-2xl font-bold text-white mb-1">Finance</h3>
                                     <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Izhan
                                     </p>
@@ -999,7 +986,7 @@
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
                                     <img src="#" alt="Profile picture of Shawn"
                                         class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shawn';">
+                                        onerror="this.onerror=null;this.src='https://placehold.co/128x128/ccc/000?text=Shreya';">
                                     <h3 class="text-2xl font-bold text-white mb-1">Cultural</h3>
                                     <p class="font-semibold text-primary-yellow uppercase tracking-wider text-sm">Shreya
                                         Das</p>
@@ -1068,7 +1055,7 @@
                         <div class="team-card-wrapper cursor-pointer">
                             <div class="team-card-inner">
                                 <div class="card-front p-8 flex flex-col items-center justify-center text-center">
-                                    <img src="https://placehold.co/128x128/ccc/000?text=Alex"
+                                    <img src="https://placehold.co/128x128/ccc/000?text=Suhana"
                                         alt="Profile picture of Alex"
                                         class="w-32 h-32 rounded-full object-cover border-4 border-zinc-700 mb-4 shadow-md">
                                     <h3 class="text-2xl font-bold text-white mb-1">Publicity</h3>
