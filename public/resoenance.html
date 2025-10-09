@@ -632,7 +632,8 @@
                     beyond boundaries.
                 </p>
                 <div class="flex justify-center gap-4">
-                    <a href="#events" class="btn btn-secondary">Register Now</a>
+                    <button id="hero-register-btn"
+                        class="btn btn-primary text-lg px-8 py-4 transform hover:scale-105">Register Now</button>
                 </div>
             </div>
         </section>
@@ -739,7 +740,8 @@
                         <h3 class="text-2xl font-bold text-white mb-3">KartKraft</h3>
                         <p class="text-stone-300 flex-grow mb-6">You build a car</p>
                         <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
-                            data-event="KartKraft" data-icon="event-icon-5" data-details="DIY RC ride. Build it, race it, win with it- no excuses">Learn
+                            data-event="KartKraft" data-icon="event-icon-5"
+                            data-details="DIY RC ride. Build it, race it, win with it- no excuses">Learn
                             More And Register &rarr;</button>
                     </div>
                     <div class="swiper-slide">
@@ -753,7 +755,8 @@
                         <h3 class="text-2xl font-bold text-white mb-3">Trashformers</h3>
                         <p class="text-stone-300 flex-grow mb-6">Wealth out of waste</p>
                         <button class="open-details-modal text-primary-yellow font-semibold hover:underline mt-auto"
-                            data-event="Trashformers" data-icon="event-icon-5" data-details="Turn scraps into showstoppers-your creativity, your build">Learn
+                            data-event="Trashformers" data-icon="event-icon-5"
+                            data-details="Turn scraps into showstoppers-your creativity, your build">Learn
                             More And Register &rarr;</button>
                     </div>
                     <div class="swiper-slide">
@@ -1285,18 +1288,19 @@
         class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
         <div
             class="modal-content bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
-            
+
             <!-- Close Button -->
             <button
                 class="close-modal-btn absolute top-4 right-6 text-stone-500 hover:text-white text-3xl leading-none">&times;</button>
-            
+
             <!-- Title -->
             <h1 class="text-2xl sm:text-3xl font-bold text-white mb-6 text-center">Register for Resonance</h1>
 
             <form id="registrationForm" action="/register" method="post" novalidate>
-                
+
                 <!-- Primary Contact -->
-                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Team Lead / Primary Contact</h2>
+                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Teacher / Primary
+                    Contact</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8">
                     <div>
                         <label for="fullName" class="block text-sm font-medium text-stone-300 mb-1">Full name*</label>
@@ -1305,19 +1309,22 @@
                         <p class="error-message" id="fullNameError">Name is required</p>
                     </div>
                     <div>
-                        <label for="school" class="block text-sm font-medium text-stone-300 mb-1">School or College name*</label>
+                        <label for="school" class="block text-sm font-medium text-stone-300 mb-1">School or College
+                            name*</label>
                         <input type="text" id="school" name="school" placeholder="Aaron's Middle School" required
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="schoolError">School/College is required.</p>
                     </div>
                     <div>
-                        <label for="contactNumber" class="block text-sm font-medium text-stone-300 mb-1">Contact Number*</label>
+                        <label for="contactNumber" class="block text-sm font-medium text-stone-300 mb-1">Contact
+                            Number*</label>
                         <input type="tel" id="contactNumber" name="contactNumber" placeholder="eg:1234567890" required
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="contactNumberError">Contact number is required.</p>
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-medium text-stone-300 mb-1">Email ID (optional)</label>
+                        <label for="email" class="block text-sm font-medium text-stone-300 mb-1">Email ID
+                            (optional)</label>
                         <input type="email" id="email" name="email" placeholder="Eg: You@gmail.com"
                             class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200">
                         <p class="error-message" id="emailError">Please enter a valid email.</p>
@@ -1325,50 +1332,72 @@
                 </div>
 
                 <!-- Event Participants -->
-                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Event Participant Details</h2>
-                <p class="text-stone-400 text-sm mb-6">Fill in the names for the events you wish to participate in. Leave others blank.</p>
+                <h2 class="text-xl font-semibold text-yellow-500 mb-4 border-b border-zinc-700 pb-2">Event Participant
+                    Details</h2>
+                <p class="text-stone-400 text-sm mb-6">Fill in the names for the events you wish to participate in.
+                    Leave others blank.</p>
 
                 <!-- Brain Wave -->
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Brain wave (Quiz competition)</summary>
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Brain wave (Quiz
+                        competition)</summary>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="quizParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="quizParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="quizParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="quizParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant1" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant2" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant3" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="quizParticipant4" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
                 <!-- Kartkraft -->
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Kartkraft (Build a Car)</summary>
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Kartkraft (Build a Car)
+                    </summary>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="kartkraftParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="kartkraftParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="kartkraftParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="kartkraftParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant1" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant2" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant3" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="kartkraftParticipant4" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
                 <!-- ReelGear -->
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">ReelGear (Make those reels!!)</summary>
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">ReelGear (Make those
+                        reels!!)</summary>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="reelgearParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="reelgearParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="reelgearParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="reelgearParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant1" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant2" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant3" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="reelgearParticipant4" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
                 <!-- IdeaJam -->
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">IdeaJam (The best ideas win!!)</summary>
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">IdeaJam (The best ideas
+                        win!!)</summary>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="ideajamParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="ideajamParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="ideajamParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="ideajamParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant1" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant2" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant3" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="ideajamParticipant4" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
@@ -1376,38 +1405,58 @@
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
                     <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Escape room</summary>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="escapeParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="escapeParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="escapeParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="escapeParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant1" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant2" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant3" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="escapeParticipant4" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
                 <!-- Wealth out of Waste -->
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Wealth out of waste!!</summary>
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Wealth out of waste!!
+                    </summary>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="wealthParticipant1" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="wealthParticipant2" placeholder="Team 1" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="wealthParticipant3" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="wealthParticipant4" placeholder="Team 2" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant1" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant2" placeholder="Team 1"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant3" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="wealthParticipant4" placeholder="Team 2"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
                 <!-- Variety Entertainment -->
                 <details class="border border-zinc-700 rounded-lg p-4 mb-6">
-                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Variety entertainment</summary>
+                    <summary class="px-2 text-lg font-medium text-stone-300 cursor-pointer">Variety entertainment
+                    </summary>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-                        <input type="text" name="varietyParticipant1" placeholder="Participant 1 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant2" placeholder="Participant 2 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant3" placeholder="Participant 3 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant4" placeholder="Participant 4 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant5" placeholder="Participant 5 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant6" placeholder="Participant 6 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant7" placeholder="Participant 7 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant8" placeholder="Participant 8 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant9" placeholder="Participant 9 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
-                        <input type="text" name="varietyParticipant10" placeholder="Participant 10 Name" class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant1" placeholder="Participant 1 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant2" placeholder="Participant 2 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant3" placeholder="Participant 3 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant4" placeholder="Participant 4 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant5" placeholder="Participant 5 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant6" placeholder="Participant 6 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant7" placeholder="Participant 7 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant8" placeholder="Participant 8 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant9" placeholder="Participant 9 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
+                        <input type="text" name="varietyParticipant10" placeholder="Participant 10 Name"
+                            class="w-full px-4 py-3 bg-zinc-800 border border-zinc-600 text-white rounded-lg">
                     </div>
                 </details>
 
@@ -1597,6 +1646,7 @@
             const detailsModal = document.getElementById('details-modal');
             const soeModal = document.getElementById('soe-details-modal');
             const registerModal = document.getElementById('register-modal');
+            const heroRegisterBtn = document.getElementById('hero-register-btn'); // Get the hero register button
 
             // --- FAB Visibility & Actions ---
             if (fabContainer) {
@@ -1648,6 +1698,13 @@
             });
 
             // --- Specific Modal Openers ---
+
+            // For Hero Section "Register Now" button
+            if (heroRegisterBtn) {
+                heroRegisterBtn.addEventListener('click', () => {
+                    openModal(registerModal);
+                });
+            }
 
             // For "THE ARENAS" (Events) section
             document.querySelectorAll('.open-details-modal').forEach(button => {
